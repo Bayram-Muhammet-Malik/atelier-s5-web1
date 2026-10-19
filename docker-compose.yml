@@ -18,9 +18,10 @@ services:
     image: leot88/php:8.5.6
     ports:
       - "16798:80"
-    volumes :
+    volumes:
       - ./nrv.core/:/var/php/
-    working_dir: /var/php/src
+    # composer.json est à la racine de nrv.core, pas dans src/
+    working_dir: /var/php
     networks:
       - nrv.net
     depends_on:
@@ -32,11 +33,11 @@ services:
     env_file:
       - .env
     ports:
-      - "167979:3306"
+      - "16799:3306"
     volumes:
       - ./data:/var/lib/mysql
     networks:
-      minipress.net:
+      nrv.net:
         aliases:
           - sql.db
 
@@ -47,3 +48,5 @@ services:
     command: ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
     networks:
       - nrv.net
+    depends_on:
+      - sql
