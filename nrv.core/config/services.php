@@ -2,8 +2,13 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
+use nrv\adapters\persistence\JaugeRepository;
+use nrv\application\ports\api\ServiceJaugeInterface;
+use nrv\application\ports\spi\JaugeRepositoryInterface;
+use nrv\application\usecases\ServiceJauge;
 
 return [
+    // Connexion PDO partagée, injectée dans les repositories
     \PDO::class => function (ContainerInterface $c): \PDO {
         $dsn = sprintf(
             '%s:host=%s;port=%s;dbname=%s;charset=utf8mb4',
@@ -19,5 +24,12 @@ return [
         ]);
     },
 
-    // Les repositories et services
+    // Jauge du back-office
+    JaugeRepositoryInterface::class => function (ContainerInterface $c) {
+        return new JaugeRepository($c->get(\PDO::class));
+    },
+
+    ServiceJaugeInterface::class => function (ContainerInterface $c) {
+        return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
+    },
 ];
