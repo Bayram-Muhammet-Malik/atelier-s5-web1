@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "esbuild ts/main.ts --bundle --outfile=dist/index.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "esbuild": "^0.28.1",
+    "handlebars": "^4.7.8"
+  }
+}

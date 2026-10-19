@@ -1,0 +1,11 @@
+/* GLOBAL */
+:root {
+    --bg-color: #ffffff;
+    --bg-color-medium: #efefef;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 5px 10px;
+    background-color: var(--bg-color-medium);
+}

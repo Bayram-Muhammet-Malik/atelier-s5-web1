@@ -1,0 +1,49 @@
+networks:
+  nrv.net:
+    driver: bridge
+
+services:
+  frontend:
+    image: caddy:2.11.4-alpine
+    volumes:
+      - ./nrv.web/:/usr/share/caddy/
+    ports:
+      - "16797:80"
+    networks:
+      - nrv.net
+    depends_on:
+      - app
+
+  app:
+    image: leot88/php:8.5.6
+    ports:
+      - "16798:80"
+    volumes :
+      - ./nrv.core/:/var/php/
+    working_dir: /var/php/src
+    networks:
+      - nrv.net
+    depends_on:
+      - sql
+    command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
+
+  sql:
+    image: mariadb:12.3.2
+    env_file:
+      - .env
+    ports:
+      - "167979:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      minipress.net:
+        aliases:
+          - sql.db
+
+  adminer:
+    image: adminer:5.4.2
+    ports:
+      - "16800:8080"
+    command: ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
+    networks:
+      - nrv.net
