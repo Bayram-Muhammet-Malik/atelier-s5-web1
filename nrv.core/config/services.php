@@ -6,6 +6,10 @@ use nrv\adapters\persistence\JaugeRepository;
 use nrv\application\ports\api\ServiceJaugeInterface;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
 use nrv\application\usecases\ServiceJauge;
+use nrv\adapters\persistence\BilletRepository;
+use nrv\application\ports\api\ServiceBilletInterface;
+use nrv\application\ports\spi\BilletRepositoryInterface;
+use nrv\application\usecases\ServiceBillet;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
@@ -25,5 +29,14 @@ return [
 
     ServiceJaugeInterface::class => function (ContainerInterface $c) {
         return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
+    },
+
+    // Billets
+    BilletRepositoryInterface::class => function (ContainerInterface $c) {
+        return new BilletRepository($c->get(\PDO::class));
+    },
+
+    ServiceBilletInterface::class => function (ContainerInterface $c) {
+        return new ServiceBillet($c->get(BilletRepositoryInterface::class));
     },
 ];
