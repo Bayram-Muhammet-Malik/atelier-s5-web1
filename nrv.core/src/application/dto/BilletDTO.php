@@ -7,6 +7,7 @@ class BilletDTO {
 
     public string $reference;
     public string $nomAcheteur;
+    public string $idSoiree;
     public string $nomSoiree;
     public string $lieu;
     public string $dateSoiree;
@@ -15,9 +16,10 @@ class BilletDTO {
     public float $prixPaye;
     public bool $estPass;
 
-    public function __construct(string $reference, string $nomAcheteur, string $nomSoiree, string $lieu, string $dateSoiree, string $heureDebut, string $categorieTarif, float $prixPaye, bool $estPass) {
+        public function __construct(string $reference, string $nomAcheteur, string $idSoiree, string $nomSoiree, string $lieu, string $dateSoiree, string $heureDebut, string $categorieTarif, float $prixPaye, bool $estPass) {
         $this->reference = $reference;
         $this->nomAcheteur = $nomAcheteur;
+        $this->idSoiree = $idSoiree;
         $this->nomSoiree = $nomSoiree;
         $this->lieu = $lieu;
         $this->dateSoiree = $dateSoiree;
