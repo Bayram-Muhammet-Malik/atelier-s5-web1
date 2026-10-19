@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace nrv\application\ports\spi;
 
-use nrv\application\dto\JaugeSoireeDTO;
+use nrv\domain\entities\JaugeSoiree;
 
 interface JaugeRepositoryInterface {
 
     /**
-     * @return JaugeSoireeDTO[] la jauge de chaque soirée
+     * @return JaugeSoiree[] la jauge de chaque soirée
      */
     public function getJaugeSoirees(): array;
 }

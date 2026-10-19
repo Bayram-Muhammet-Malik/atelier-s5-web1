@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace nrv\application\usecases;
 
+use nrv\application\dto\JaugeSoireeDTO;
 use nrv\application\ports\api\ServiceJaugeInterface;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
 
@@ -15,6 +16,21 @@ class ServiceJauge implements ServiceJaugeInterface {
     }
 
     public function afficherJauge(): array {
-        return $this->jaugeRepository->getJaugeSoirees();
+        $jauges = $this->jaugeRepository->getJaugeSoirees();
+        $dtos = [];
+        foreach ($jauges as $jauge) {
+            $soiree = $jauge->getSoiree();
+
+            $dtos[] = new JaugeSoireeDTO(
+                $soiree->getId(),
+                $soiree->getNom(),
+                $soiree->getDateHeureDebut()->format('Y-m-d'),
+                $soiree->getLieu()->getNbrePlace(),
+                $jauge->getPlacesVendues(),
+                $soiree->getPlacesRestantes(),
+                $jauge->getRecette()
+            );
+        }
+        return $dtos;
     }
 }
