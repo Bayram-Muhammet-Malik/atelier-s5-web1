@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace tests\pest\fakes;
 
-use nrv\application\dto\JaugeSoireeDTO;
+use nrv\domain\entities\JaugeSoiree;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
 
 // Faux repository : renvoie des données écrites à la main, sans base de données
