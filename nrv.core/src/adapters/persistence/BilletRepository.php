@@ -18,7 +18,7 @@ class BilletRepository implements BilletRepositoryInterface {
 
     public function getBilletByToken(string $token): BilletDTO {
         // Le billet + l'acheteur + la soirée et son lieu + le tarif
-        $sql = "SELECT b.reference, b.prix_paye, b.est_pass,
+        $sql = "SELECT b.reference, b.prix_paye, b.est_pass, b.id_soiree,
                        u.nom, u.prenom,
                        s.nom AS nom_soiree, s.date_soiree, s.heure_debut,
                        l.nom AS nom_lieu,
@@ -42,6 +42,7 @@ class BilletRepository implements BilletRepositoryInterface {
         return new BilletDTO(
             $ligne['reference'],
             $ligne['prenom'] . ' ' . $ligne['nom'],
+            $ligne['id_soiree'],
             $ligne['nom_soiree'],
             $ligne['nom_lieu'],
             $ligne['date_soiree'],
