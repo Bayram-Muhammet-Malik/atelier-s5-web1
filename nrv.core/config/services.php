@@ -11,6 +11,11 @@ use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\application\ports\spi\BilletRepositoryInterface;
 use nrv\application\usecases\ServiceBillet;
 
+use nrv\application\ports\spi\SoireeRepositoryInterface;
+use nrv\adapters\persistence\SoireeRepository;
+use nrv\application\ports\api\ServiceSoireeInterface;
+use nrv\application\usecases\ServiceSoiree;
+
 return [
     // Connexion PDO partagée, injectée dans les repositories
     \PDO::class => function (ContainerInterface $c) {
@@ -31,6 +36,7 @@ return [
         return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
     },
 
+<<<<<<< HEAD
     // Billets
     BilletRepositoryInterface::class => function (ContainerInterface $c) {
         return new BilletRepository($c->get(\PDO::class));
@@ -38,5 +44,19 @@ return [
 
     ServiceBilletInterface::class => function (ContainerInterface $c) {
         return new ServiceBillet($c->get(BilletRepositoryInterface::class));
+=======
+    // Soirée (Fonctionnalité 2)
+    SoireeRepositoryInterface::class => function (ContainerInterface $c) {
+        return new SoireeRepository($c->get(\PDO::class));
+    },
+
+    ServiceSoireeInterface::class => function (ContainerInterface $c) {
+        return new ServiceSoiree($c->get(SoireeRepositoryInterface::class));
+    },
+
+    // Inscription explicite de l'action Slim
+    AfficherSoireeAction::class => function (ContainerInterface $c) {
+        return new AfficherSoireeAction($c->get(ServiceSoireeInterface::class));
+>>>>>>> fonctionnalite-2-affichage-soiree
     },
 ];

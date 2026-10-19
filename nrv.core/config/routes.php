@@ -9,6 +9,10 @@ return function (App $app): App {
 
     // Routes ici
     $app->get('/admin/jauge', AfficherJaugeAction::class);
+<<<<<<< HEAD
     $app->get('/billets/{token}', AfficherBilletAction::class);
+=======
+    $app->get('/soirees/{id}', \nrv\adapters\controllers\actions\AfficherSoireeAction::class);
+>>>>>>> fonctionnalite-2-affichage-soiree
     return $app;
 };
