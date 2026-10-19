@@ -9,7 +9,11 @@ class Soiree {
     public function __construct(
         private string $id,
         private string $nom,
+<<<<<<< HEAD
         private string $thematique,
+=======
+        private Style $theme,
+>>>>>>> d6f83d044dae240f642ca7cd4961b1b6f8edd4d4
         private DateTimeInterface $dateHeureDebut,
         private int $placesRestantes,
         private Lieu $lieu,
