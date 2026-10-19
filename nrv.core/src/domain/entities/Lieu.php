@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace app\domain\entities;
+namespace nrv\domain\entities;
 
 class Lieu {
     public function __construct(
         private string $id,
         private string $nom,
         private string $adresse,
-        private int $nbrePlace
+        private int $nbPlaces
     ) {}
 
     public function getId(): string {
@@ -23,7 +23,7 @@ class Lieu {
         return $this->adresse;
     }
 
-    public function getNbrePlace(): int {
-        return $this->nbrePlace;
+    public function getNbPlaces(): int {
+        return $this->nbPlaces;
     }
 }
