@@ -132,7 +132,7 @@ INSERT INTO image (id, url, id_spectacle) VALUES
 ('f1a2b3c4-d5e6-4789-8012-3456789a0b16', 'img/spectacles/spectacle-10-2.jpg', 'f6bcfdf1-1bc8-43aa-bfdb-1b1574daef92'),
 ('01928374-65f4-4321-8098-76543210fe17', 'img/spectacles/spectacle-10-3.jpg', 'f6bcfdf1-1bc8-43aa-bfdb-1b1574daef92'),
 ('12345678-9abc-4def-8012-3456789abc18', 'img/spectacles/spectacle-11-1.jpg', 'e3bfa2e4-9844-4860-91bf-a8fa2e0d3cb3'),
-('98765432-10fe-4dcba-9012-3456789abc19', 'img/spectacles/spectacle-12-1.jpg', '6ca90130-9b0d-4bb1-8c4d-b6a1e948ff11'),
+('98765432-10fe-4dcb-9012-3456789abc19', 'img/spectacles/spectacle-12-1.jpg', '6ca90130-9b0d-4bb1-8c4d-b6a1e948ff11'),
 ('abcdef01-2345-4789-8012-3456789abc20', 'img/spectacles/spectacle-12-2.jpg', '6ca90130-9b0d-4bb1-8c4d-b6a1e948ff11'),
 ('fe201938-4756-4123-8098-76543210fe21', 'img/spectacles/spectacle-13-1.jpg', 'd508216c-e4f6-4bdf-b59d-d8e23f0fb9aa'),
 ('10928374-56a1-4b2c-8d3e-4f5a6b7c8d22', 'img/spectacles/spectacle-14-1.jpg', '7be8d122-358b-491c-b8e9-d754703a589e'),
