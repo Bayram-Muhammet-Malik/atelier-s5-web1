@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace app\domain\entities;
+namespace nrv\domain\entities;
 
 class Lieu {
     public function __construct(
