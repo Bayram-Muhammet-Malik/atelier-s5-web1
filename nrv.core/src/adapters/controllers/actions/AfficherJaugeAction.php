@@ -18,7 +18,24 @@ class AfficherJaugeAction {
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
         $jauges = $this->serviceJauge->afficherJauge();
 
-        $rs->getBody()->write(json_encode(['soirees' => $jauges]));
+        $soirees = [];
+        foreach ($jauges as $jauge) {
+            $soirees[] = [
+                'jauge' => $jauge,
+                'links' => [
+                    'soiree' => ['href' => '/soirees/' . $jauge->idSoiree],
+                ],
+            ];
+        }
+
+        $data = [
+            'soirees' => $soirees,
+            'links' => [
+                'self' => ['href' => '/admin/jauge'],
+            ],
+        ];
+
+        $rs->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES));
         return $rs->withStatus(200)
                   ->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
