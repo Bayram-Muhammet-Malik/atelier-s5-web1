@@ -6,8 +6,8 @@ use tests\pest\fakes\FakeJaugeRepository;
 
 it('renvoie la jauge de chaque soirée', function () {
     $repo = new FakeJaugeRepository([
-        new JaugeSoireeDTO(1, 'Ouverture du festival', '2027-06-11', 1200, 4, 1196, 109.10),
-        new JaugeSoireeDTO(5, "Chansons au fil de l'eau", '2027-06-16', 20, 20, 0, 560.00),
+        new JaugeSoireeDTO('e2a4a751-2481-4203-9d41-3d7120db82b3', 'Ouverture du festival', '2027-06-11', 1200, 4, 1196, 109.10),
+        new JaugeSoireeDTO('a1b2c3d4-e5f6-4789-8012-3456789abcde', "Chansons au fil de l'eau", '2027-06-16', 20, 20, 0, 560.00),
     ]);
     $service = new ServiceJauge($repo);
 
