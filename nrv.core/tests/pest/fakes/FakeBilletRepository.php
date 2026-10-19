@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace tests\pest\fakes;
 
-use nrv\application\dto\BilletDTO;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\spi\BilletRepositoryInterface;
+use nrv\domain\entities\Billet;
 
-// Faux repository : les billets sont rangés dans un tableau [token => BilletDTO]
+// Faux repository : les billets sont rangés dans un tableau [token => Billet]
 class FakeBilletRepository implements BilletRepositoryInterface {
 
     private array $billets;
@@ -16,7 +16,7 @@ class FakeBilletRepository implements BilletRepositoryInterface {
         $this->billets = $billets;
     }
 
-    public function getBilletByToken(string $token): BilletDTO {
+    public function getBilletByToken(string $token): Billet {
         if (!isset($this->billets[$token])) {
             throw new DataNotFoundException("Billet introuvable");
         }
