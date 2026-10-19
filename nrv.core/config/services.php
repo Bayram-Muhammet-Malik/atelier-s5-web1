@@ -16,6 +16,11 @@ use nrv\adapters\persistence\SoireeRepository;
 use nrv\application\ports\api\ServiceSoireeInterface;
 use nrv\application\usecases\ServiceSoiree;
 
+use nrv\application\ports\spi\TarifRepositoryInterface;
+use nrv\adapters\persistence\TarifRepository;
+use nrv\application\ports\api\ServiceSpectacleInterface;
+use nrv\application\usecases\ServiceSpectacle;
+
 return [
     // Connexion PDO partagée, injectée dans les repositories
     \PDO::class => function (ContainerInterface $c) {
@@ -43,8 +48,8 @@ return [
 
     ServiceBilletInterface::class => function (ContainerInterface $c) {
         return new ServiceBillet($c->get(BilletRepositoryInterface::class));
-    
-        },
+    },
+
     // Soirée (Fonctionnalité 2)
     SoireeRepositoryInterface::class => function (ContainerInterface $c) {
         return new SoireeRepository($c->get(\PDO::class));
@@ -52,6 +57,19 @@ return [
 
     ServiceSoireeInterface::class => function (ContainerInterface $c) {
         return new ServiceSoiree($c->get(SoireeRepositoryInterface::class));
+    },
+
+    // Soirée d'un spectacle (Fonctionnalité 3)
+    SoireeRepositoryInterface::class => function (ContainerInterface $c) {
+        return new SoireeRepository($c->get(\PDO::class));
+    },
+
+    TarifRepositoryInterface::class => function (ContainerInterface $c) {
+        return new TarifRepository($c->get(\PDO::class));
+    },
+
+    ServiceSpectacleInterface::class => function (ContainerInterface $c) {
+        return new ServiceSpectacle($c->get(SoireeRepositoryInterface::class), $c->get(TarifRepositoryInterface::class));
     },
 
     // Inscription explicite de l'action Slim

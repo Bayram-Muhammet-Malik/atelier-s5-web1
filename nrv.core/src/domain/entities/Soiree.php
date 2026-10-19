@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace nrv\domain\entities;
 
-use DateTime;
+use DateTimeInterface;
 
 class Soiree {
     public function __construct(
         private string $id,
         private string $nom,
-        private string $theme,
-        private DateTime $dateHeureDebut,
+        private string $thematique,
+        private DateTimeInterface $dateHeureDebut,
         private int $placesRestantes,
-        private Lieu $lieu
+        private Lieu $lieu,
+        private array $spectacles = []
     ) {}
 
     public function getId(): string {
@@ -23,11 +24,11 @@ class Soiree {
         return $this->nom;
     }
 
-    public function getTheme(): string {
-        return $this->theme;
+    public function getThematique(): string {
+        return $this->thematique;
     }
 
-    public function getDateHeureDebut(): DateTime {
+    public function getDateHeureDebut(): DateTimeInterface {
         return $this->dateHeureDebut;
     }
 
@@ -37,5 +38,13 @@ class Soiree {
 
     public function getLieu(): Lieu {
         return $this->lieu;
+    }
+
+    public function getSpectacles(): array {
+        return $this->spectacles;
+    }
+
+    public function addSpectacle(Spectacle $spectacle): void {
+        $this->spectacles[] = $spectacle;
     }
 }

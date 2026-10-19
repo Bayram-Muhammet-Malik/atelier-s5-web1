@@ -8,7 +8,7 @@ class Lieu {
         private string $id,
         private string $nom,
         private string $adresse,
-        private int $nbrePlace
+        private int $nbPlaces
     ) {}
 
     public function getId(): string {
@@ -23,7 +23,7 @@ class Lieu {
         return $this->adresse;
     }
 
-    public function getNbrePlace(): int {
-        return $this->nbrePlace;
+    public function getNbPlaces(): int {
+        return $this->nbPlaces;
     }
 }

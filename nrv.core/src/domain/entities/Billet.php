@@ -8,11 +8,10 @@ class Billet {
         private string $id,
         private string $reference,
         private string $token,
-        private string $nomAcheteur,
         private Soiree $soiree,
-        private string $categorieTarif,
+        private Tarif $tarif,
         private float $prixPaye,
-        private bool $estPass
+        private bool $estPass = false
     ) {}
 
     public function getId(): string {
@@ -27,16 +26,12 @@ class Billet {
         return $this->token;
     }
 
-    public function getNomAcheteur(): string {
-        return $this->nomAcheteur;
-    }
-
     public function getSoiree(): Soiree {
         return $this->soiree;
     }
 
-    public function getCategorieTarif(): string {
-        return $this->categorieTarif;
+    public function getTarif(): Tarif {
+        return $this->tarif;
     }
 
     public function getPrixPaye(): float {

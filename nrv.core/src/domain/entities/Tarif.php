@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+
+namespace nrv\domain\entities;
+
+class Tarif {
+    public function __construct(
+        private string $id,
+        private string $libelle,
+        private float $prix
+    ) {}
+
+    public function getId(): string {
+        return $this->id;
+    }
+
+    public function getLibelle(): string {
+        return $this->libelle;
+    }
+
+    public function getPrix(): float {
+        return $this->prix;
+    }
+}
