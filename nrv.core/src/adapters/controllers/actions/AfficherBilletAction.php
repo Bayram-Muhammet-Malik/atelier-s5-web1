@@ -26,7 +26,15 @@ class AfficherBilletAction {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
-        $rs->getBody()->write(json_encode(['billet' => $billet]));
+        $data = [
+            'billet' => $billet,
+            'links' => [
+                'self'   => ['href' => '/billets/' . $token],
+                'soiree' => ['href' => '/soirees/' . $billet->idSoiree],
+            ],
+        ];
+
+        $rs->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES));
         return $rs->withStatus(200)
                   ->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
