@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace nrv\adapters\persistence;
 
+use DateTime;
 use PDO;
-use nrv\application\dto\JaugeSoireeDTO;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
+use nrv\domain\entities\JaugeSoiree;
+use nrv\domain\entities\Lieu;
+use nrv\domain\entities\Soiree;
 
 class JaugeRepository implements JaugeRepositoryInterface {
 
@@ -18,26 +21,40 @@ class JaugeRepository implements JaugeRepositoryInterface {
     public function getJaugeSoirees(): array {
         // Pour chaque soirée : capacité du lieu, nombre de billets vendus et total payé.
         // LEFT JOIN sur billet pour garder aussi les soirées sans aucun billet vendu.
-        $sql = "SELECT s.id, s.nom, s.date_soiree, l.nb_places, s.places_restantes,
+        $sql = "SELECT s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
+                       l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places,
                        COUNT(b.id) AS places_vendues,
                        COALESCE(SUM(b.prix_paye), 0) AS recette
                 FROM soiree s
                 JOIN lieu l ON l.id = s.id_lieu
                 LEFT JOIN billet b ON b.id_soiree = s.id
-                GROUP BY s.id, s.nom, s.date_soiree, l.nb_places, s.places_restantes
+                GROUP BY s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
+                         l.id, l.nom, l.adresse, l.nb_places
                 ORDER BY s.date_soiree";
 
         $lignes = $this->pdo->query($sql)->fetchAll();
 
         $jauges = [];
         foreach ($lignes as $ligne) {
-            $jauges[] = new JaugeSoireeDTO(
+            $lieu = new Lieu(
+                $ligne['id_lieu'],
+                $ligne['nom_lieu'],
+                $ligne['adresse'],
+                (int) $ligne['nb_places']
+            );
+
+            $soiree = new Soiree(
                 $ligne['id'],
                 $ligne['nom'],
-                $ligne['date_soiree'],
-                (int) $ligne['nb_places'],
-                (int) $ligne['places_vendues'],
+                $ligne['thematique'],
+                new DateTime($ligne['date_soiree'] . ' ' . $ligne['heure_debut']),
                 (int) $ligne['places_restantes'],
+                $lieu
+            );
+
+            $jauges[] = new JaugeSoiree(
+                $soiree,
+                (int) $ligne['places_vendues'],
                 (float) $ligne['recette']
             );
         }
