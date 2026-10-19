@@ -32,7 +32,7 @@ class JaugeRepository implements JaugeRepositoryInterface {
         $jauges = [];
         foreach ($lignes as $ligne) {
             $jauges[] = new JaugeSoireeDTO(
-                (int) $ligne['id'],
+                $ligne['id'],
                 $ligne['nom'],
                 $ligne['date_soiree'],
                 (int) $ligne['nb_places'],

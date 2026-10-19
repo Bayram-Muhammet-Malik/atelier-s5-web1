@@ -6,7 +6,7 @@ namespace nrv\application\dto;
 // Les chiffres de la jauge pour une soirée (affichés dans le back-office)
 class JaugeSoireeDTO {
 
-    public int $idSoiree;
+    public string $idSoiree;
     public string $nomSoiree;
     public string $dateSoiree;
     public int $capacite;
@@ -14,7 +14,7 @@ class JaugeSoireeDTO {
     public int $placesRestantes;
     public float $recette;
 
-    public function __construct(int $idSoiree, string $nomSoiree, string $dateSoiree, int $capacite, int $placesVendues, int $placesRestantes, float $recette) {
+       public function __construct(string $idSoiree, string $nomSoiree, string $dateSoiree, int $capacite, int $placesVendues, int $placesRestantes, float $recette) {
         $this->idSoiree = $idSoiree;
         $this->nomSoiree = $nomSoiree;
         $this->dateSoiree = $dateSoiree;
