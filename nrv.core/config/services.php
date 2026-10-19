@@ -9,14 +9,8 @@ use nrv\application\usecases\ServiceJauge;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
-    \PDO::class => function (ContainerInterface $c): \PDO {
-        $dsn = sprintf(
-            '%s:host=%s;port=%s;dbname=%s;charset=utf8mb4',
-            $c->get('db.driver'),
-            $c->get('db.host'),
-            $c->get('db.port'),
-            $c->get('db.database')
-        );
+    \PDO::class => function (ContainerInterface $c) {
+        $dsn = $c->get('db.driver') . ':host=' . $c->get('db.host') . ';dbname=' . $c->get('db.database');
 
         return new \PDO($dsn, $c->get('db.username'), $c->get('db.password'), [
             \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
