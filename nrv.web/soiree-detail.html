@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/soiree.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="./" class="selected"><h1>Programme</h1></a>
+                    <a href="pass.html"><h1>Pass 3 jours</h1></a>
+                    <a href="billets.html"><h1>Mes billets</h1></a>
+                    <a href="billets.html"><h1>Mon compte</h1></a>
+                </div>
+            </div>
+        </header>
+        
+        <main id="app">
+            <section class="content-main">
+                <a href="./soiree.html"><i class="fa-solid fa-arrow-left"></i> Retour aux soirées</a>
+                <p id="error">Chargement du détail de la soirée...</p>
+            </section>
+        </main>
+
+        <script id="soiree-detail-template" type="text/x-handlebars-template">
+            <section class="head-main">
+                <div class="head-main-left">
+                    <a href="./soiree.html"><i class="fa-solid fa-arrow-left"></i> Retour aux soirées</a>
+                    <p>{{date}} à {{horaire}} / {{thematique}}</p>
+                    <h1>{{nom}}</h1>
+                    <p>{{lieu}}</p>
+                </div>
+                <div class="head-main-right"></div>
+            </section>
+
+            <section class="content-main deuxtiers">
+                <div class="spectacles-grid">
+                    <h1>À L’AFFICHE</h1>
+                    {{#each spectacles}}
+                        <article class="spectacle-card">
+                            <p>{{horaire}} / {{style}}</p>
+                            <h2>{{titre}}</h2>
+                            <h3>Artistes : {{artistes}}</h3>
+                            <p>{{description}}</p>
+                            {{#if video}}
+                                <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                            {{/if}}
+                        </article>
+                    {{/each}}
+                </div>
+
+                <aside id="add-billet">
+                    <h1>Réserver vos billets</h1>
+                    <form id="ticket-form">
+                        <div class="ticket-option">
+                            <label for="tarif-type">Tarif :</label>
+                            <select id="tarif-type" name="tarifType">
+                                <option value="normal">Normal - {{tarifNormal}} €</option>
+                                <option value="reduit">Réduit - {{tarifReduit}} €</option>
+                            </select>
+                        </div>
+
+                        <div class="ticket-option">
+                            <label for="quantite">Quantité :</label>
+                            <input type="number" id="quantite" name="quantite" min="1" max="10" value="1" required>
+                        </div>
+
+                        <button type="submit" class="btn-add-cart">
+                            Ajouter au panier <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </form>
+                    <div id="cart-message" class="hidden"></div>
+                </aside>
+            </section>
+        </script>
+    </body>
+</html>
