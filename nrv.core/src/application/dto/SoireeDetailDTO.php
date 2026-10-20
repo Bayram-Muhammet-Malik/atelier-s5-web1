@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace nrv\application\dto;
 
+use nrv\domain\entities\Soiree;
+use nrv\domain\entities\Tarif;
+
 class SoireeDetailDTO {
     public string $id;
     public string $nom;
@@ -24,5 +27,34 @@ class SoireeDetailDTO {
         $this->tarifNormal = $tarifNormal;
         $this->tarifReduit = $tarifReduit;
         $this->spectacles = $spectacles;
+    }
+    public static function fromSoiree(Soiree $soiree, array $tarifs): SoireeDetailDTO {
+        $tarifNormal = 0.0;
+        $tarifReduit = 0.0;
+        foreach ($tarifs as $tarif) {
+            $libelle = strtolower($tarif->getLibelle());
+            if ($libelle === 'normal') {
+                $tarifNormal = $tarif->getPrix();
+            } elseif ($libelle === 'réduit' || $libelle === 'reduit') {
+                $tarifReduit = $tarif->getPrix();
+            }
+        }
+
+        $spectacles = [];
+        foreach ($soiree->getSpectacles() as $spectacle) {
+            $spectacles[] = SpectacleDTO::fromSpectacle($spectacle);
+        }
+
+        return new SoireeDetailDTO(
+            $soiree->getId(),
+            $soiree->getNom(),
+            $soiree->getThematique(),
+            $soiree->getDateHeureDebut()->format('Y-m-d'),
+            $soiree->getDateHeureDebut()->format('H:i:s'),
+            $soiree->getLieu()->getNom(),
+            $tarifNormal,
+            $tarifReduit,
+            $spectacles
+        );
     }
 }
