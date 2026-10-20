@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use nrv\adapters\persistence\JaugeRepository;
 use nrv\application\ports\api\ServiceJaugeInterface;
@@ -20,6 +21,7 @@ use nrv\application\ports\spi\TarifRepositoryInterface;
 use nrv\adapters\persistence\TarifRepository;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 use nrv\application\usecases\ServiceSpectacle;
+use nrv\adapters\persistence\SpectacleRepository;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
@@ -27,12 +29,12 @@ return [
         $dsn = $c->get('db.driver') . ':host=' . $c->get('db.host') . ';dbname=' . $c->get('db.database');
 
         return new \PDO($dsn, $c->get('db.username'), $c->get('db.password'), [
-            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
         ]);
     },
 
-    // Jauge du back-office
+        // Jauge du back-office
     JaugeRepositoryInterface::class => function (ContainerInterface $c) {
         return new JaugeRepository($c->get(\PDO::class));
     },
@@ -41,7 +43,7 @@ return [
         return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
     },
 
-    // Billets
+        // Billets
     BilletRepositoryInterface::class => function (ContainerInterface $c) {
         return new BilletRepository($c->get(\PDO::class));
     },
@@ -50,7 +52,7 @@ return [
         return new ServiceBillet($c->get(BilletRepositoryInterface::class));
     },
 
-    // Soirée (Fonctionnalité 2)
+        // Soirée (Fonctionnalité 2)
     SoireeRepositoryInterface::class => function (ContainerInterface $c) {
         return new SoireeRepository($c->get(\PDO::class));
     },
@@ -59,7 +61,7 @@ return [
         return new ServiceSoiree($c->get(SoireeRepositoryInterface::class));
     },
 
-    // Soirée d'un spectacle (Fonctionnalité 3)
+        // Soirée d'un spectacle (Fonctionnalité 3)
     SoireeRepositoryInterface::class => function (ContainerInterface $c) {
         return new SoireeRepository($c->get(\PDO::class));
     },
@@ -69,9 +71,13 @@ return [
     },
 
     ServiceSpectacleInterface::class => function (ContainerInterface $c) {
-        return new ServiceSpectacle($c->get(SoireeRepositoryInterface::class), $c->get(TarifRepositoryInterface::class));
+        return new ServiceSpectacle($c->get(SoireeRepositoryInterface::class), $c->get(TarifRepositoryInterface::class), $c->get(SpectacleRepositoryInterface::class));
     },
 
+    SpectacleRepositoryInterface::class => function (ContainerInterface $c) {
+        return new SpectacleRepository($c->get(\PDO::class));
+    },
+    
     // Inscription explicite de l'action Slim
     AfficherSoireeAction::class => function (ContainerInterface $c) {
         return new AfficherSoireeAction($c->get(ServiceSoireeInterface::class));

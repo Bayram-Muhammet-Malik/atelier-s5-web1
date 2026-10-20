@@ -31,7 +31,7 @@ class GetSpectaclesAction extends AbstractAction {
                 'description' => $dto->description,
                 'style' => $dto->style,
                 'horaire' => $dto->horaire,
-                'urlVideo' => $dto->urlVideo,
+                'urlVideo' => $dto->video,
                 'dateSoiree' => $dto->dateSoiree
             ];
         }

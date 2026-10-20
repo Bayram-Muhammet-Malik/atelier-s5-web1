@@ -32,6 +32,10 @@ class Spectacle {
         return $this->urlVideo;
     }
 
+    public function getDateSoiree(): ?string {
+        return $this->dateSoiree;
+    }
+
     public function getHoraire(): ?string {
         return $this->horaire;
     }
