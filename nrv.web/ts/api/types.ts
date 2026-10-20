@@ -4,8 +4,10 @@ export interface Spectacle {
     artistes: string;
     description: string;
     style: string;
+    dateSoiree: string | null;
     horaire: string;
     video: string | null;
+    image: string | null;
 }
 
 export interface SoireeDetail {

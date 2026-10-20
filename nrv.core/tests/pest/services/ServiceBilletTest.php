@@ -5,13 +5,17 @@ use nrv\application\usecases\ServiceBillet;
 use nrv\domain\entities\Billet;
 use nrv\domain\entities\Lieu;
 use nrv\domain\entities\Soiree;
+use nrv\domain\entities\Tarif;
+use nrv\domain\entities\Utilisateur;
 use tests\pest\fakes\FakeBilletRepository;
 
 it('transforme le billet en DTO avec toutes les informations à imprimer', function () {
     $lieu = new Lieu('lieu-1', "L'Autre Canal", "45 boulevard d'Austrasie, 54000 Nancy", 1200);
     $soiree = new Soiree('soiree-1', 'Ouverture du festival', 'Soirée classic rock',
         new DateTime('2027-06-11 20:00:00'), 1196, $lieu);
-    $billet = new Billet('billet-1', 'NRV-2027-0001', 'abc123', 'Johan Schaeffer', $soiree, 'Normal', 30.00, false);
+    $tarif = new Tarif('tarif-1', 'Normal', 30.00);
+    $acheteur = new Utilisateur('user-1', 'Schaeffer', 'Johan', 'johan.schaeffer@mail.fr', 'hash', 0);
+    $billet = new Billet('billet-1', 'NRV-2027-0001', 'abc123', $soiree, $tarif, 30.00, false, $acheteur);
 
     $service = new ServiceBillet(new FakeBilletRepository(['abc123' => $billet]));
 

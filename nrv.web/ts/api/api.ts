@@ -14,7 +14,7 @@ export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
 }
 
 export async function fetchSoireeBySpectacleId(id: string): Promise<SoireeDetail> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}spectacle/${id}/soiree`);
+  const response = await fetch(`${API_BASE_URL}${API_PATH}spectacles/${id}/soiree`);
   if (!response.ok) {
     throw new Error('Impossible de charger le détail de la soirée');
   }

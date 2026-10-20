@@ -25,9 +25,12 @@ class GetSoireeBySpectacleIdAction extends AbstractAction {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
-        $rs->getBody()->write(json_encode(['soiree' => $soireeDetail], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        
-        return $rs->withStatus(200)
-                  ->withHeader('Content-Type', 'application/json;charset=utf-8');
+        return $this->json($rs, [
+            'soiree' => $soireeDetail,
+            'links' => [
+                'self'   => ['href' => '/spectacles/' . $idSpectacle . '/soiree'],
+                'soiree' => ['href' => '/soirees/' . $soireeDetail->id],
+            ],
+        ]);
     }
 }
