@@ -11,7 +11,8 @@ class Billet {
         private Soiree $soiree,
         private Tarif $tarif,
         private float $prixPaye,
-        private bool $estPass = false
+        private bool $estPass = false,
+        private ?Utilisateur $acheteur = null
     ) {}
 
     public function getId(): string {
@@ -40,5 +41,10 @@ class Billet {
 
     public function isPass(): bool {
         return $this->estPass;
+    }
+
+    // L'utilisateur qui a passé la commande (null si on ne l'a pas chargé)
+    public function getAcheteur(): ?Utilisateur {
+        return $this->acheteur;
     }
 }
