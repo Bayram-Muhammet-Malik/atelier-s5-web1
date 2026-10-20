@@ -3,7 +3,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "esbuild ts/main.ts ts/soiree.ts ts/spectacles.ts --bundle --outdir=dist"
+    "build": "esbuild ts/main.ts ts/soirees.ts ts/spectacles.ts --bundle --outdir=dist"
   },
   "type": "module",
   "dependencies": {

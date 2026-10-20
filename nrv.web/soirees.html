@@ -7,7 +7,7 @@
         <link rel="preload" href="css/fa7.css" as="style">
         <link rel="stylesheet" href="css/fa7.css">
         <link rel="stylesheet" href="css/style.css" />
-        <script src="dist/soiree.js" defer></script>
+        <script src="dist/soirees.js" defer></script>
     </head>
     <body>
         <header class="menu">
@@ -76,9 +76,24 @@
                 </div>
 
                 <div id="add-billet">
-                    <h1>Tarifs :</h1>
-                    <p>Normal {{tarifNormal}} € | Réduit {{tarifReduit}} €</p>
-                    <button type="button" data-soiree-id="{{id}}" data-action="add-ticket">Ajouter au panier <i class="fa-solid fa-cart-shopping"></i></button>
+                    <h1>Réserver vos billets</h1>
+                    <form id="ticket-form">
+                        <div class="ticket-option">
+                            <label for="tarif-type">Tarif :</label>
+                            <select id="tarif-type" name="tarifType">
+                                <option value="normal">Normal - {{tarifNormal}} €</option>
+                                <option value="reduit">Réduit - {{tarifReduit}} €</option>
+                            </select>
+                        </div>
+
+                        <div class="ticket-option">
+                            <label for="quantite">Quantité :</label>
+                            <input type="number" id="quantite" name="quantite" min="1" max="10" value="1" required>
+                        </div>
+
+                        <button type="submit" class="btn-add-cart">Ajouter au panier <i class="fa-solid fa-cart-shopping"></i></button>
+                    </form>
+                    <div id="cart-message" class="hidden"></div>
                 </div>
             </section>
         </script>

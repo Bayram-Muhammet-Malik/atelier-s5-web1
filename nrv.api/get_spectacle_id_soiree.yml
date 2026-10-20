@@ -1,0 +1,15 @@
+info:
+  name: get_spectacle_id_soiree
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:16798/spectacles/0bb622cf-90f7-4148-93f8-dc1f2f0b7849/soiree
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
