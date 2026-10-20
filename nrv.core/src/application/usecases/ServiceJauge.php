@@ -25,7 +25,7 @@ class ServiceJauge implements ServiceJaugeInterface {
                 $soiree->getId(),
                 $soiree->getNom(),
                 $soiree->getDateHeureDebut()->format('Y-m-d'),
-                $soiree->getLieu()->getNbrePlace(),
+                $soiree->getLieu()->getNbPlaces(),
                 $jauge->getPlacesVendues(),
                 $soiree->getPlacesRestantes(),
                 $jauge->getRecette()
