@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use nrv\application\ports\api\ServiceSoireeInterface;
 use nrv\application\exceptions\DataNotFoundException;
 
-class AfficherSoireeAction {
+class AfficherSoireeAction extends AbstractAction {
     private ServiceSoireeInterface $serviceSoiree;
 
     public function __construct(ServiceSoireeInterface $serviceSoiree) {

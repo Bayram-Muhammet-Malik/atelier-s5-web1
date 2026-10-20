@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace nrv\application\dto;
 
-use app\domain\entities\Soiree;
+use nrv\domain\entities\Soiree;
 
 class SoireeDTO
 {
@@ -23,7 +23,7 @@ class SoireeDTO
             return new self(
                   $soiree->getId(),
                   $soiree->getNom(),
-                  $soiree->getTheme(),
+                  $soiree->getThematique(),
                   $soiree->getDateHeureDebut()->format('Y-m-d H:i:s'),
                   $soiree->getPlacesRestantes(),
                   LieuDTO::fromEntity($soiree->getLieu())

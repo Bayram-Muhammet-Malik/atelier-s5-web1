@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 
-class GetSoireeBySpectacleIdAction {
+class GetSoireeBySpectacleIdAction extends AbstractAction {
     private ServiceSpectacleInterface $serviceSpectacle;
 
     public function __construct(ServiceSpectacleInterface $serviceSpectacle) {

@@ -4,19 +4,55 @@ declare(strict_types=1);
 namespace nrv\adapters\persistence;
 
 use PDO;
-use nrv\application\ports\spi\SoireeRepositoryInterface;
-use nrv\application\dto\SoireeDetailDTO;
+use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use nrv\domain\entities\Soiree;
+use nrv\domain\entities\Lieu;
+use nrv\domain\entities\Style;
 use nrv\domain\entities\Spectacle;
 
-class SpectacleRepository implements SpectacleRepositoryInterface {
+class SpectacleRepository implements SpectacleRepositoryInterface
+{
     private PDO $pdo;
 
-    public function __construct(PDO $pdo) {
+    public function __construct(PDO $pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function getSoireeBySpectacleId(string $id): ?Soiree {
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->query("
+        SELECT sp.id, sp.titre, sp.description, sp.url_video, sp.horaire,
+               st.id AS id_style, st.libelle AS style_libelle,
+               s.id AS id_soiree, s.date_soiree
+        FROM spectacle sp
+        INNER JOIN style st ON sp.id_style = st.id
+        INNER JOIN soiree s ON sp.id_soiree = s.id
+        ORDER BY s.date_soiree ASC, sp.horaire ASC
+    ");
+
+        $allData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $spectacles = [];
+        foreach ($allData as $data) {
+            $style = new Style((string) $data['id_style'], (string) $data['style_libelle']);
+
+            $spectacles[] = new Spectacle(
+                id: (string) $data['id'],
+                titre: $data['titre'],
+                description: $data['description'] ?? null,
+                urlVideo: $data['url_video'] ?? null,
+                dateSoiree: $data['date_soiree'] ?? null,
+                horaire: $data['horaire'] ?? null,
+                style: $style
+            );
+        }
+
+        return $spectacles;
+    }
+
+    public function getSoireeBySpectacleId(string $id): ?Soiree
+    {
         $stmt = $this->pdo->prepare("
             SELECT s.id AS soiree_id, s.nom AS soiree_nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
                    l.id AS lieu_id, l.nom AS lieu_nom, l.adresse AS lieu_adresse, l.nb_places AS lieu_nb_places
@@ -28,7 +64,8 @@ class SpectacleRepository implements SpectacleRepositoryInterface {
         $stmt->execute(['id_spectacle' => $id]);
         $res = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$res) return null;
+        if (!$res)
+            return null;
 
         $lieu = new Lieu((string) $res['lieu_id'], (string) $res['lieu_nom'], (string) $res['lieu_adresse'], (int) $res['lieu_nb_places']);
 
@@ -60,7 +97,8 @@ class SpectacleRepository implements SpectacleRepositoryInterface {
             $resArt = $stmtArtistes->fetchAll(\PDO::FETCH_ASSOC);
 
             $artistes = [];
-            foreach ($resArt as $art) $artistes[] = new Artiste((string) $art['id'], (string) $art['nom']);
+            foreach ($resArt as $art)
+                $artistes[] = new Artiste((string) $art['id'], (string) $art['nom']);
 
             $spectacle = new Spectacle((string) $sp['spectacle_id'], (string) $sp['titre'], $sp['description'] ?? null, $sp['url_video'] ?? null, $sp['horaire'] ?? null, $style, $artistes);
 

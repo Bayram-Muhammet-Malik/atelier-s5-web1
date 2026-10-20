@@ -6,5 +6,7 @@ namespace nrv\application\ports\spi;
 use nrv\domain\entities\Soiree;
 
 interface SpectacleRepositoryInterface {
-    public function getSoireeDetail(): ?Soiree;
+
+    public function findAll(): array;
+    public function getSoireeBySpectacleId(string $id): ?Soiree;
 }

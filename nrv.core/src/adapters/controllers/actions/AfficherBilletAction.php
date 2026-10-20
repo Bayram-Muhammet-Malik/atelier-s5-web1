@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceBilletInterface;
 
-class AfficherBilletAction {
+class AfficherBilletAction extends AbstractAction {
 
     private ServiceBilletInterface $serviceBillet;
 
