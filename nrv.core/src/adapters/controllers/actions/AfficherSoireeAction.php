@@ -5,8 +5,9 @@ namespace nrv\adapters\controllers\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use nrv\application\ports\api\ServiceSoireeInterface;
+use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
+use nrv\application\ports\api\ServiceSoireeInterface;
 
 class AfficherSoireeAction extends AbstractAction {
     private ServiceSoireeInterface $serviceSoiree;
@@ -20,11 +21,15 @@ class AfficherSoireeAction extends AbstractAction {
 
         try {
             $soiree = $this->serviceSoiree->getSoireeDetail($id);
-            $response->getBody()->write(json_encode($soiree));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
         } catch (DataNotFoundException $e) {
-            $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+            throw new HttpNotFoundException($request, $e->getMessage());
         }
+
+        return $this->json($response, [
+            'soiree' => $soiree,
+            'links' => [
+                'self' => ['href' => '/soirees/' . $soiree->id],
+            ],
+        ]);
     }
 }
