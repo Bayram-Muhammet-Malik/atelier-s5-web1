@@ -20,7 +20,6 @@ services:
       - "16798:80"
     volumes:
       - ./nrv.core/:/var/php/
-    # composer.json est à la racine de nrv.core, pas dans src/
     working_dir: /var/php
     networks:
       - nrv.net

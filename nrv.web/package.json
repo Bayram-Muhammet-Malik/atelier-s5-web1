@@ -3,7 +3,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "esbuild ts/main.ts --bundle --outfile=dist/index.js"
+    "build": "esbuild ts/main.ts ts/soiree.ts --bundle --outdir=dist"
   },
   "type": "module",
   "dependencies": {

@@ -1,11 +1,174 @@
-/* GLOBAL */
+/* Global */
 :root {
-    --bg-color: #ffffff;
-    --bg-color-medium: #efefef;
+    --black-color: #000000;
+    --red-color: #F34346;
+    --bg-color: #F4F1E8;
+    --container-color: #FFFFFA;
+    --badge-color: #FFE3D4;
+    --medium-badge-color: #E9E5DA;
+    --small-txt-color: #726F65;
 }
 
-body {
+html, body {
     font-family: Arial, sans-serif;
-    margin: 5px 10px;
-    background-color: var(--bg-color-medium);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    color: var(--small-txt-color);
+}
+
+button{
+    background-color: var(--red-color);
+    color: var(--black-color);
+    padding: 20px 40px;
+    border: none;
+    cursor: pointer;
+}
+button:hover{
+    background-color: var(--badge-color);
+}
+
+/* Menu */
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--black-color);
+    height: 75px;
+    padding: 0 20px;
+}
+
+.menu-title {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+}
+
+.menu-title > .big-title{
+    font-size: 2.5em;
+    margin: 0;
+    color: var(--red-color);
+}
+
+.menu-title > .medium-title{
+    font-size: 0.75em;
+    margin: 0;
+    color: var(--container-color);
+    width: 110px;
+}
+
+.menu > h1{
+    color: var(--bg-color);
+    background-color: var(--black-color);
+    width: 100%;
+}
+
+.menu-link{
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100%;
+    align-items: center;
+}
+.menu input {display: none;}
+.menu label {z-index: 10;}
+
+.menu label {
+    display: flex;
+    cursor: pointer;
+    height: 100%;
+}
+
+.menu path {
+    fill: none;
+    stroke: var(--container-color);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    --length: 24;
+    --offset: -38;
+    stroke-dasharray: var(--length) var(--total-length);
+    stroke-dashoffset: var(--offset);
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.menu label:hover circle {opacity: 1;}
+
+.menu input:checked ~ label > svg .line1, .menu input:checked ~ label > svg .line3 {--length: 22.627416998;}
+.menu input:checked ~ label > svg .line2 {--length: 0;}
+.menu .line1, .menu .line3 {--total-length: 126.64183044433594;}
+.menu .line2 {--total-length: 70;}
+.menu input:checked ~ label > svg .line1, .menu input:checked ~ label > svg .line3 {--offset: -94.1149185097;}
+.menu input:checked ~ label > svg .line2 {--offset: -50;}
+
+.menu-content {display: none; color: var(--container-color); font-size: 0.5em;}
+.menu-content .selected {color: var(--red-color);}
+.menu input:checked ~ .menu-content {display: block; position: absolute; top: 0px; left: 0px; height: 100vh; width: 100vw; padding: 20px; background-color: var(--black-color);}
+
+/* Content */
+#error{
+    color: var(--red-color);
+}
+
+.head-main{
+    background-color: var(--black-color);
+    color: var(--container-color);
+    padding: 20px;
+}
+.head-main-left{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.head-main-left > p:first-of-type, .spectacle-card > p:first-of-type{
+    color: var(--red-color);
+    font-weight: bold;
+}
+.head-main-left > p, .head-main-left > h1{
+    margin: 0;
+}
+.head-main-left > h1{
+    text-transform: uppercase;
+    font-size: 3.2em;
+    width: 300px;
+}
+
+.content-main{
+    padding: 20px;
+}
+.content-main h1{
+    font-size: 2.5em;
+}
+
+/* Specifique */
+.spectacle-card{padding-bottom: 10px;}
+.spectacle-card > h2{
+    text-transform: uppercase;
+    margin: 0;
+}
+
+#add-billet{
+    padding: 20px;
+    color: var(--container-color);
+    background-color: var(--black-color);
+    border-radius: 10px;
+}
+
+@media screen and (min-width:768px){
+    .menu-content {display: flex; gap: 10px;}
+    .menu label { display: none;}
+
+    .deuxtiers{display: flex; }
+    .deuxtiers > *:first-child {flex: 2; }
+    .deuxtiers > *:last-child {flex: 1; }
 }
