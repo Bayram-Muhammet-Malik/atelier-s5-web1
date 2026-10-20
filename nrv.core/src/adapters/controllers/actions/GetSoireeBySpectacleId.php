@@ -7,12 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
-use nrv\application\ports\api\ServiceBilletInterface;
+use nrv\application\ports\api\ServiceSpectacleInterface;
 
-class AfficherBilletAction {
+class AfficherBilletAction extends AbstractAction{
     private ServiceSpectacleInterface $serviceSpectacle;
 
-    public function __construct(ServiceSoireeInterface $serviceSpectacle) {
+    public function __construct(ServiceSpectacleInterface $serviceSpectacle) {
         $this->serviceSpectacle = $serviceSpectacle;
     }
 

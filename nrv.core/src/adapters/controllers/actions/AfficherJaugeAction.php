@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use nrv\application\ports\api\ServiceJaugeInterface;
 
-class AfficherJaugeAction {
+class AfficherJaugeAction extends AbstractAction {
 
     private ServiceJaugeInterface $serviceJauge;
 
