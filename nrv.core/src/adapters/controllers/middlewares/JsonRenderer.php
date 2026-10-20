@@ -10,7 +10,7 @@ class JsonRenderer {
         $rs = $rs->withStatus($code)
                  ->withHeader('Content-Type', 'application/json;charset=utf-8');
         if (!is_null($data)) {
-            $rs->getBody()->write(json_encode($data));
+            $rs->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         }
         return $rs;
     }
