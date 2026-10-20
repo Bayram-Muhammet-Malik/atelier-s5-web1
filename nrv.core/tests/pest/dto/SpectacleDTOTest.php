@@ -55,3 +55,6 @@ it('met l\'image à null quand le spectacle n\'en a pas', function () {
         new Style('style-2', 'Blues rock'));
 
     $dto = SpectacleDTO::fromSpectacle($spectacle);
+
+    expect($dto->image)->toBe(null);
+});
