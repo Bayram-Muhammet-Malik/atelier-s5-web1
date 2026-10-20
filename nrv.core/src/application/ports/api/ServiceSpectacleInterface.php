@@ -6,5 +6,7 @@ namespace nrv\application\ports\api;
 use nrv\application\dto\SoireeDetailDTO;
 
 interface ServiceSpectacleInterface {
+
+    public function getListeSpectacles(): array;
     public function getSoireeDetailBySpectacleId(string $idSpectacle): SoireeDetailDTO;
 }

@@ -23,7 +23,8 @@ class SpectacleRepository implements SpectacleRepositoryInterface
     {
         $stmt = $this->pdo->query("
         SELECT sp.id, sp.titre, sp.description, sp.url_video, sp.horaire,
-               st.id AS id_style, st.libelle AS style_libelle
+               st.id AS id_style, st.libelle AS style_libelle,
+               s.id AS id_soiree, s.date_soiree
         FROM spectacle sp
         INNER JOIN style st ON sp.id_style = st.id
         INNER JOIN soiree s ON sp.id_soiree = s.id
@@ -34,13 +35,14 @@ class SpectacleRepository implements SpectacleRepositoryInterface
 
         $spectacles = [];
         foreach ($allData as $data) {
-            $style = new Style((string) $data['style_id'], (string) $data['style_libelle']);
+            $style = new Style((string) $data['id_style'], (string) $data['style_libelle']);
 
             $spectacles[] = new Spectacle(
                 id: (string) $data['id'],
                 titre: $data['titre'],
                 description: $data['description'] ?? null,
                 urlVideo: $data['url_video'] ?? null,
+                dateSoiree: $data['date_soiree'] ?? null,
                 horaire: $data['horaire'] ?? null,
                 style: $style
             );

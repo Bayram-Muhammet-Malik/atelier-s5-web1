@@ -9,6 +9,7 @@ class Spectacle {
         private string $titre,
         private ?string $description,
         private ?string $urlVideo,
+        private ?string $dateSoiree,
         private ?string $horaire,
         private Style $style,
         private array $artistes = [],
