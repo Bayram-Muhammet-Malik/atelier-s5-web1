@@ -18,16 +18,16 @@ class ServiceBillet implements ServiceBilletInterface {
     public function afficherBillet(string $token): BilletDTO {
         $billet = $this->billetRepository->getBilletByToken($token);
         $soiree = $billet->getSoiree();
-
+        $acheteur = $billet->getAcheteur();
         return new BilletDTO(
             $billet->getReference(),
-            $billet->getNomAcheteur(),
+            $acheteur !== null ? $acheteur->getPrenom() . ' ' . $acheteur->getNom() : '',
             $soiree->getId(),
             $soiree->getNom(),
             $soiree->getLieu()->getNom(),
             $soiree->getDateHeureDebut()->format('Y-m-d'),
             $soiree->getDateHeureDebut()->format('H:i:s'),
-            $billet->getCategorieTarif(),
+            $billet->getTarif()->getLibelle(),
             $billet->getPrixPaye(),
             $billet->isPass()
         );
