@@ -1,0 +1,15 @@
+info:
+  name: get_billet_token
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:16798/billets/741fa4af3827e5b9e6301cd453708d2b
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
