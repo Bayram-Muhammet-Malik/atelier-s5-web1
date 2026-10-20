@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 
-class AfficherBilletAction extends AbstractAction{
+class AfficherBilletAction extends AbstractAction {
     private ServiceSpectacleInterface $serviceSpectacle;
 
     public function __construct(ServiceSpectacleInterface $serviceSpectacle) {
