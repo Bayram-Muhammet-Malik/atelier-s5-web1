@@ -56,14 +56,22 @@
                     <h1>À L’AFFICHE</h1>
                     {{#each spectacles}}
                         <article class="spectacle-card">
+                        {{#if image}}
+                        <div class="spectacle-image">
+                            <img src="{{image}}" alt="Image du spectacle {{titre}}">
+                        </div>
+                        <div>
+                        {{/if}}
+                        <div class="spectacle-content">
                             <p>{{horaire}} / {{style}}</p>
                             <h2>{{titre}}</h2>
                             <h3>Artistes : {{artistes}}</h3>
                             <p>{{description}}</p>
                             {{#if video}}
-                                <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
                             {{/if}}
-                        </article>
+                        </div>
+                    </article>
                     {{/each}}
                 </div>
 

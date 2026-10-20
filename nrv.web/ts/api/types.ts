@@ -10,6 +10,17 @@ export interface Spectacle {
     image: string | null;
 }
 
+export interface SpectaclesResponse {
+    spectacles: {
+        spectacle: Spectacle;
+        links: {
+            soiree: {
+                href: string;
+            };
+        };
+    }[];
+}
+
 export interface SoireeDetail {
     id: string;
     nom: string;

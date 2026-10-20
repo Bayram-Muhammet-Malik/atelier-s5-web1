@@ -34,9 +34,10 @@ button{
     border: none;
     cursor: pointer;
 }
-button:hover{
-    background-color: var(--badge-color);
-}
+button:hover{background-color: var(--badge-color);}
+
+p {margin: 0 0 10px 0;}
+h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 
 /* Menu */
 .menu {
@@ -130,7 +131,7 @@ button:hover{
     flex-direction: column;
     gap: 20px;
 }
-.head-main-left > p:first-of-type, .spectacle-card > p:first-of-type{
+.head-main-left p:first-of-type, .spectacle-card p:first-of-type{
     color: var(--red-color);
     font-weight: bold;
 }
@@ -139,7 +140,7 @@ button:hover{
 }
 .head-main-left > h1{
     text-transform: uppercase;
-    font-size: 3.2em;
+    font-size: 3em;
     width: 300px;
 }
 
@@ -151,10 +152,36 @@ button:hover{
 }
 
 /* Specifique */
-.spectacle-card{padding-bottom: 10px;}
+.spectacles-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 .spectacle-card > h2{
     text-transform: uppercase;
     margin: 0;
+}
+.spectacle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+}
+.spectacle-image {
+    flex-shrink: 0;
+    padding-right: 0px;
+    padding-bottom: 15px;
+}
+.spectacle-image img {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.spectacle-content {
+    flex: 1;
 }
 
 #add-billet{
@@ -171,4 +198,13 @@ button:hover{
     .deuxtiers{display: flex; }
     .deuxtiers > *:first-child {flex: 2; }
     .deuxtiers > *:last-child {flex: 1; }
+
+    .spectacle-card {
+        flex-direction: row;
+    }
+    .spectacle-image {
+        width: 250px;
+        padding-right: 15px;
+        padding-bottom: 0px;
+    }
 }

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/spectacles.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="./" class="selected"><h1>Programme</h1></a>
+                    <a href="pass.html"><h1>Pass 3 jours</h1></a>
+                    <a href="billets.html"><h1>Mes billets</h1></a>
+                    <a href="billets.html"><h1>Mon compte</h1></a>
+                </div>
+            </div>
+        </header>
+
+        <main id="app">
+            <section class="content-main">
+                <a href="./index.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
+                <p id="error">Erreur de chargement.</p>
+            </section>
+        </main>
+
+        <script id="spectacles-template" type="text/x-handlebars-template">
+            <section class="content-main deuxtiers">
+                {{#if spectacles.length}}
+                <div class="spectacles-grid">
+                    {{#each spectacles}}
+                    <article class="spectacle-card">
+                        {{#if image}}
+                        <div class="spectacle-image">
+                            <img src="{{image}}" alt="Image du spectacle {{titre}}">
+                        </div>
+                        <div>
+                        {{/if}}
+                        <div class="spectacle-content">
+                            <p>{{horaire}} / {{style}}</p>
+                            <h2>{{titre}}</h2>
+                            <h3>Artistes : {{artistes}}</h3>
+                            <p>{{description}}</p>
+                            {{#if video}}
+                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                            {{/if}}
+                            <a href="./soiree.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    {{/each}}
+                </div>
+                {{else}}
+                    <p>Aucun spectacle disponible.</p>
+                {{/if}}
+            </section>
+        </script>
+    </body>
+</html>
