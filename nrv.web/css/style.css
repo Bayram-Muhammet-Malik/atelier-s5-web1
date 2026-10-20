@@ -19,13 +19,8 @@ html, body {
     background-color: var(--bg-color);
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-a:hover {
-    color: var(--small-txt-color);
-}
+a {text-decoration: none; color: inherit;}
+a:hover {color: var(--small-txt-color);}
 
 button{
     background-color: var(--red-color);
@@ -117,9 +112,7 @@ h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 .menu input:checked ~ .menu-content {display: block; position: absolute; top: 0px; left: 0px; height: 100vh; width: 100vw; padding: 20px; background-color: var(--black-color);}
 
 /* Content */
-#error{
-    color: var(--red-color);
-}
+#error{color: var(--red-color);}
 
 .head-main{
     background-color: var(--black-color);
@@ -135,18 +128,14 @@ h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
     color: var(--red-color);
     font-weight: bold;
 }
-.head-main-left > p, .head-main-left > h1{
-    margin: 0;
-}
+.head-main-left > p, .head-main-left > h1{margin: 0;}
 .head-main-left > h1{
     text-transform: uppercase;
     font-size: 3em;
     width: 300px;
 }
 
-.content-main{
-    padding: 20px;
-}
+.content-main{padding: 20px;}
 .content-main h1{
     font-size: 2.5em;
     text-transform: uppercase;
@@ -181,9 +170,7 @@ h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
     object-fit: cover;
     display: block;
 }
-.spectacle-content {
-    flex: 1;
-}
+.spectacle-content {flex: 1;}
 
 #add-billet{
     padding: 20px;
@@ -196,13 +183,13 @@ h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
     .menu-content {display: flex; gap: 10px;}
     .menu label { display: none;}
 
+    .head-main-left > h1{ width: 400px; }
+
     .deuxtiers{display: flex; }
     .deuxtiers > *:first-child {flex: 2; }
     .deuxtiers > *:last-child {flex: 1; }
 
-    .spectacle-card {
-        flex-direction: row;
-    }
+    .spectacle-card {flex-direction: row;}
     .spectacle-image {
         width: 250px;
         padding-right: 15px;
