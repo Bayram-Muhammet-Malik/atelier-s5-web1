@@ -10,6 +10,8 @@ use nrv\application\ports\spi\BilletRepositoryInterface;
 use nrv\domain\entities\Billet;
 use nrv\domain\entities\Lieu;
 use nrv\domain\entities\Soiree;
+use nrv\domain\entities\Tarif;
+use nrv\domain\entities\Utilisateur;
 
 class BilletRepository implements BilletRepositoryInterface {
 
@@ -21,11 +23,11 @@ class BilletRepository implements BilletRepositoryInterface {
 
     public function getBilletByToken(string $token): Billet {
         $sql = "SELECT b.id, b.reference, b.token, b.prix_paye, b.est_pass,
-                       u.nom, u.prenom,
+                       u.id AS id_utilisateur, u.nom, u.prenom, u.email, u.mot_de_passe, u.role,
                        s.id AS id_soiree, s.nom AS nom_soiree, s.thematique,
                        s.date_soiree, s.heure_debut, s.places_restantes,
                        l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places,
-                       t.libelle AS tarif
+                       t.id AS id_tarif, t.libelle AS tarif, t.prix
                 FROM billet b
                 JOIN commande c ON c.id = b.id_commande
                 JOIN utilisateur u ON u.id = c.id_utilisateur
@@ -34,6 +36,7 @@ class BilletRepository implements BilletRepositoryInterface {
                 JOIN tarif t ON t.id = b.id_tarif
                 WHERE b.token = :token";
 
+        // Requête préparée : le token vient de l'URL, on ne le colle jamais directement dans le SQL
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['token' => $token]);
         $ligne = $stmt->fetch();
@@ -42,7 +45,7 @@ class BilletRepository implements BilletRepositoryInterface {
             throw new DataNotFoundException("Billet introuvable");
         }
 
-        // On reconstruit les entités : le lieu, puis la soirée qui contient le lieu, puis le billet
+        // On reconstruit les entités : le lieu, la soirée qui contient le lieu, le tarif, l'acheteur, puis le billet
         $lieu = new Lieu(
             $ligne['id_lieu'],
             $ligne['nom_lieu'],
@@ -59,15 +62,30 @@ class BilletRepository implements BilletRepositoryInterface {
             $lieu
         );
 
+        $tarif = new Tarif(
+            $ligne['id_tarif'],
+            $ligne['tarif'],
+            (float) $ligne['prix']
+        );
+
+        $acheteur = new Utilisateur(
+            $ligne['id_utilisateur'],
+            $ligne['nom'],
+            $ligne['prenom'],
+            $ligne['email'],
+            $ligne['mot_de_passe'],
+            (int) $ligne['role']
+        );
+
         return new Billet(
             $ligne['id'],
             $ligne['reference'],
             $ligne['token'],
-            $ligne['prenom'] . ' ' . $ligne['nom'],
             $soiree,
-            $ligne['tarif'],
+            $tarif,
             (float) $ligne['prix_paye'],
-            (bool) $ligne['est_pass']
+            (bool) $ligne['est_pass'],
+            $acheteur
         );
     }
 }

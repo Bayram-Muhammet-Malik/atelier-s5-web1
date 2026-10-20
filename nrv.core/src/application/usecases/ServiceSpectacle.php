@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace nrv\application\usecases;
 
-use nrv\application\ports\api\ServiceSpectacleInterface;
-use nrv\application\ports\spi\SoireeRepositoryInterface;
-use nrv\application\ports\spi\TarifRepositoryInterface;
-use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use nrv\application\dto\SoireeDetailDTO;
 use nrv\application\dto\SpectacleDTO;
 use nrv\application\exceptions\DataNotFoundException;
+use nrv\application\ports\api\ServiceSpectacleInterface;
+use nrv\application\ports\spi\SoireeRepositoryInterface;
+use nrv\application\ports\spi\SpectacleRepositoryInterface;
+use nrv\application\ports\spi\TarifRepositoryInterface;
 
 class ServiceSpectacle implements ServiceSpectacleInterface
 {
@@ -29,83 +29,24 @@ class ServiceSpectacle implements ServiceSpectacleInterface
 
     public function getListeSpectacles(): array
     {
-        $spectacles = $this->spectacleRepository->findAll();
-
         $spectaclesDTO = [];
-        foreach ($spectacles as $spectacle) {
-            $nomsArtistes = [];
-            foreach ($spectacle->getArtistes() as $artiste) {
-                $nomsArtistes[] = $artiste->getNom();
-            }
-            $artistesNoms = implode(', ', $nomsArtistes);
-
-            $spectaclesDTO[] = new SpectacleDTO(
-                $spectacle->getId(),
-                $spectacle->getTitre(),
-                $artistesNoms ?: 'Artiste inconnu',
-                $spectacle->getDescription() ?? '',
-                $spectacle->getStyle()->getLibelle(),
-                $spectacle->getDateSoiree() ?? '',
-                $spectacle->getHoraire() ?? '',
-                $spectacle->getUrlVideo(),
-            );
+        foreach ($this->spectacleRepository->findAll() as $spectacle) {
+            $spectaclesDTO[] = SpectacleDTO::fromSpectacle($spectacle);
         }
-
         return $spectaclesDTO;
     }
 
     public function getSoireeDetailBySpectacleId(string $idSpectacle): SoireeDetailDTO
     {
         $soiree = $this->soireeRepository->getSoireeBySpectacleId($idSpectacle);
-
-        if (!$soiree) {
+        if ($soiree === null) {
             throw new DataNotFoundException("La soirée associée à ce spectacle n'existe pas.");
         }
 
-        $tarifs = $this->tarifRepository->findAll();
-
-        $tarifNormal = 0.0;
-        $tarifReduit = 0.0;
-
-        foreach ($tarifs as $tarif) {
-            $libelle = strtolower($tarif->getLibelle());
-            if ($libelle === 'normal') {
-                $tarifNormal = $tarif->getPrix();
-            } elseif ($libelle === 'reduit' || $libelle === 'réduit') {
-                $tarifReduit = $tarif->getPrix();
-            }
+        foreach ($this->spectacleRepository->findBySoireeId($soiree->getId()) as $spectacle) {
+            $soiree->addSpectacle($spectacle);
         }
 
-        $spectaclesDTO = [];
-        foreach ($soiree->getSpectacles() as $spectacle) {
-            // Remplacement de array_map + fn par une boucle foreach classique
-            $nomsArtistes = [];
-            foreach ($spectacle->getArtistes() as $artiste) {
-                $nomsArtistes[] = $artiste->getNom();
-            }
-            $artistesNoms = implode(', ', $nomsArtistes);
-
-            $spectaclesDTO[] = new SpectacleDTO(
-                $spectacle->getId(),
-                $spectacle->getTitre(),
-                $artistesNoms ?: 'Inconnu',
-                $spectacle->getDescription() ?? '',
-                $spectacle->getStyle()->getLibelle(),
-                $spectacle->getHoraire() ?? '',
-                $spectacle->getUrlVideo()
-            );
-        }
-
-        return new SoireeDetailDTO(
-            $soiree->getId(),
-            $soiree->getNom(),
-            $soiree->getThematique(),
-            $soiree->getDateHeureDebut()->format('Y-m-d'),
-            $soiree->getDateHeureDebut()->format('H:i:s'),
-            $soiree->getLieu()->getNom(),
-            $tarifNormal,
-            $tarifReduit,
-            $spectaclesDTO
-        );
+        return SoireeDetailDTO::fromSoiree($soiree, $this->tarifRepository->findAll());
     }
 }

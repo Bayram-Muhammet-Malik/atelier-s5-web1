@@ -5,7 +5,7 @@ namespace nrv\domain\entities;
 
 class Utilisateur {
     public const ROLE_CLIENT = 0;
-    public const ROLE_ADMIN = 100;
+    public const ROLE_ADMIN = 1;
 
     public function __construct(
         private string $id,

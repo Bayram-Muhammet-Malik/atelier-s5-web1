@@ -1,21 +1,24 @@
 import { API_BASE_URL, API_PATH } from "./config";
-import { SoireeDetail } from './types';
+import { SoireeDetail, SoireeResponse } from './types';
 
 export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
-  const response = await fetch(`/soirees/${id}`);
+  const response = await fetch(`${API_BASE_URL}${API_PATH}soirees/${id}`);
   if (!response.ok) {
     throw new Error('Impossible de charger le détail de la soirée');
   }
-  return await response.json();
+
+  const data = await response.json() as SoireeResponse;
+
+  return data.soiree;
 }
 
 export async function fetchSoireeBySpectacleId(id: string): Promise<SoireeDetail> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}spectacle/${id}/soiree`);
+  const response = await fetch(`${API_BASE_URL}${API_PATH}spectacles/${id}/soiree`);
   if (!response.ok) {
     throw new Error('Impossible de charger le détail de la soirée');
   }
 
-  const data = await response.json() as SoireeDetailResponse;
+  const data = await response.json() as SoireeResponse;
 
   return data.soiree;
 }
