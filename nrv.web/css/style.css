@@ -19,7 +19,7 @@ html, body {
     background-color: var(--bg-color);
 }
 
-a {text-decoration: none; color: inherit;}
+a {text-decoration: none; color: inherit; cursor: pointer;}
 a:hover {color: var(--small-txt-color);}
 
 button{
@@ -33,6 +33,12 @@ button:hover{background-color: var(--badge-color);}
 
 p {margin: 0 0 10px 0;}
 h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
 select, input {
     background-color: var(--container-color);
@@ -149,13 +155,12 @@ select, input {
 
 /* Specifique */
 #filter-spectacles {
-    display: flex;
+    flex-direction: row;
     align-items: center;
     padding: 10px 0;
     margin-bottom: 15px;
     border-top: 1px #D8D4C9 solid;
     border-bottom: 1px #D8D4C9 solid;
-    gap: 10px;
 }
 #filter-spectacles p {
     margin: 0;

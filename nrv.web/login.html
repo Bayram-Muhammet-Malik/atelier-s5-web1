@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/login.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="./"><h1>Programme</h1></a>
+                    <a href="pass.html"><h1>Pass 3 jours</h1></a>
+                    <a href="billets.html"><h1>Mes billets</h1></a>
+                    <a href="billets.html"><h1>Mon compte</h1></a>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-main">
+            <form id="login-form" method="POST">
+                <p>Votre espace NRV</p>
+                <h1>Bon retour</h1>
+                <p>Connectez-vous pour reprendre votre réservation.</p>
+                <label for="email">Adresse email</label>
+                <input type="email" id="email" name="email" placeholder="Saisissez votre adresse email">
+                <label for="mdp">Mot de passe</label>
+                <input type="password" id="mdp" name="mdp" placeholder="Saisissez votre mot de passe">
+                <button type="submit">Se connecter et continuer <i class="fa-solid fa-arrow-up-right"></i></button>
+                <p>Pas encore de compte ? <a>Créer mon compte <i class="fa-solid fa-arrow-up-right"></i></a></p>
+            </form>
+        </main>
+    </body>
+</html>
