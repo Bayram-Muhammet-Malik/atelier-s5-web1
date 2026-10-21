@@ -27,10 +27,10 @@ class ServiceSpectacle implements ServiceSpectacleInterface
         $this->spectacleRepository = $spectacleRepository;
     }
 
-    public function getListeSpectacles(): array
+    public function getListeSpectacles(?string $style = null, ?string $date = null): array
     {
         $spectaclesDTO = [];
-        foreach ($this->spectacleRepository->findAll() as $spectacle) {
+        foreach ($this->spectacleRepository->findAll($style, $date) as $spectacle) {
             $spectaclesDTO[] = SpectacleDTO::fromSpectacle($spectacle);
         }
         return $spectaclesDTO;
