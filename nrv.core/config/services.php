@@ -9,6 +9,7 @@ use nrv\adapters\persistence\SoireeRepository;
 use nrv\adapters\persistence\SpectacleRepository;
 use nrv\adapters\persistence\TarifRepository;
 use nrv\adapters\persistence\StyleRepository;
+use nrv\adapters\persistence\PDOUserRepository;
 
 use nrv\application\ports\spi\BilletRepositoryInterface;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
@@ -16,6 +17,7 @@ use nrv\application\ports\spi\SoireeRepositoryInterface;
 use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use nrv\application\ports\spi\TarifRepositoryInterface;
 use nrv\application\ports\spi\StyleRepositoryInterface;
+use nrv\application\ports\spi\UserRepositoryInterface;
 
 use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\application\ports\api\ServiceJaugeInterface;
@@ -28,6 +30,9 @@ use nrv\application\usecases\ServiceJauge;
 use nrv\application\usecases\ServiceSoiree;
 use nrv\application\usecases\ServiceSpectacle;
 use nrv\application\usecases\ServiceStyle;
+use nrv\application\usecases\RegisterUserUseCase;
+use nrv\application\usecases\AuthenticateUserUseCase;
+use nrv\application\usecases\GenerateJwtUseCase;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
@@ -65,6 +70,10 @@ return [
         return new StyleRepository($c->get(\PDO::class));
     },
 
+    UserRepositoryInterface::class => function (ContainerInterface $c) {
+        return new PDOUserRepository($c->get(\PDO::class));
+    },
+
     // Services
     ServiceJaugeInterface::class => function (ContainerInterface $c) {
         return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
@@ -92,5 +101,18 @@ return [
 
     ServiceStyleInterface::class => function (ContainerInterface $c) {
         return new ServiceStyle($c->get(StyleRepositoryInterface::class));
+    },
+
+    GenerateJwtUseCase::class => function (ContainerInterface $c) {
+        $secret = $_ENV['JWT_SECRET'] ?? 'nrv_jwt_secret_key_2026_super_securisee';
+        return new GenerateJwtUseCase($secret);
+    },
+
+    RegisterUserUseCase::class => function (ContainerInterface $c) {
+        return new RegisterUserUseCase($c->get(UserRepositoryInterface::class));
+    },
+
+    AuthenticateUserUseCase::class => function (ContainerInterface $c) {
+        return new AuthenticateUserUseCase($c->get(UserRepositoryInterface::class));
     },
 ];
