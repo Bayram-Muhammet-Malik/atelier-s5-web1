@@ -32,7 +32,7 @@ class ServiceUser implements ServiceUserInterface {
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
         
-        $user = new Utilisateur(Uuid::uuid4()->toString(), $nom, $prenom, $email, $password, Utilisateur::ROLE_CLIENT);
+        $user = new Utilisateur(Uuid::uuid4()->toString(), $nom, $prenom, $email, $hash, Utilisateur::ROLE_CLIENT);
 
         $this->userRepository->save($user);
         return $user;

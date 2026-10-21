@@ -21,7 +21,7 @@ return function (App $app): App {
     $app->get('/styles', GetStylesAction::class);
     $app->get('/dates', GetMinMaxAction::class);
     
-    $app->get('/login', LoginAction::class);
-    $app->get('/signup', SignupAction::class);
+    $app->post('/login', LoginAction::class);
+    $app->post('/signup', SignupAction::class);
     return $app;
 };

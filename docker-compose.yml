@@ -15,7 +15,7 @@ services:
       - app
 
   app:
-    image: leot88/php:8.5.6
+    image: leot88/php:8.5.12
     ports:
       - "16798:80"
     volumes:

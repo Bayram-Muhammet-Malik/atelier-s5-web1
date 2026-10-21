@@ -119,7 +119,7 @@ export async function login(email: string, mdp: string): Promise<AuthResponse> {
 }
 
 export async function signup(prenom: string, nom: string, email: string, mdp: string): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}signin`, {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
