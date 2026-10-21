@@ -20,30 +20,41 @@ class SpectacleRepository implements SpectacleRepositoryInterface
     }
 
 
-    public function findAll(?string $style = null, ?string $date = null): array {
+    public function findAll(?string $style = null, ?string $date = null, ?int $limit = null, ?int $offset = null): array {
         $sql = "SELECT sp.id, sp.titre, sp.description, sp.url_video, sp.horaire,
-                    st.id AS id_style, st.libelle AS style_libelle,s.date_soiree
-                    FROM spectacle sp
-                    JOIN style st ON sp.id_style = st.id
-                    JOIN soiree s ON sp.id_soiree = s.id
-                    WHERE 1 = 1";
+                    st.id AS id_style, st.libelle AS style_libelle, s.date_soiree
+                FROM spectacle sp
+                JOIN style st ON sp.id_style = st.id
+                JOIN soiree s ON sp.id_soiree = s.id
+                WHERE 1 = 1";
+        
         $params = [];
+
         if ($style !== null && $style !== '') {
             $sql .= " AND st.libelle = :style";
             $params['style'] = $style;
         }
+
         if ($date !== null && $date !== '') {
             $sql .= " AND s.date_soiree = :date";
             $params['date'] = $date;
         }
+
         $sql .= " ORDER BY s.date_soiree ASC, sp.horaire ASC";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        return $this->construireSpectacles($stmt->fetchAll(PDO::FETCH_ASSOC)
-        );
-    }
+        if ($limit !== null && $limit > 0) {
+            $sql .= " LIMIT " . (int)$limit;
+        }
+        if ($offset !== null && $offset >= 0) {
+            $sql .= " OFFSET " . (int)$offset;
+        }
 
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($params);
+
+        return $this->construireSpectacles($stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
 
     public function findBySoireeId(string $idSoiree): array
     {

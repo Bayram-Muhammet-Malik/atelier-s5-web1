@@ -25,7 +25,8 @@
                     </svg>
                 </label>
                 <div class="menu-content">
-                    <a href="./"><h1>Programme</h1></a>
+                    <a href="index.html"><h1>Accueil</h1></a>
+                    <a href="spectacles.html"><h1>Programme</h1></a>
                     <a href="pass.html"><h1>Pass 3 jours</h1></a>
                     <a href="billets.html"><h1>Mes billets</h1></a>
                     <a href="billets.html"><h1>Mon compte</h1></a>
@@ -35,7 +36,6 @@
 
         <main id="app">
             <section class="content-main">
-                <a href="./index.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
                 <p id="error">Erreur de chargement.</p>
             </section>
         </main>
@@ -43,7 +43,7 @@
         <script id="soiree-detail-template" type="text/x-handlebars-template">
             <section class="head-main">
                 <div class="head-main-left">
-                    <a href="./index.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
+                    <a href="spectacles.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
                     <p>{{date}} à {{horaire}} / {{thematique}}</p>
                     <h1>{{nom}}</h1>
                     <p>{{lieu}}</p>
@@ -68,7 +68,7 @@
                             <h3>Artistes : {{artistes}}</h3>
                             <p>{{description}}</p>
                             {{#if video}}
-                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-brands fa-youtube"></i>></a></p>
+                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-brands fa-youtube"></i></a></p>
                             {{/if}}
                         </div>
                     </article>

@@ -7,6 +7,6 @@ use nrv\application\dto\SoireeDetailDTO;
 
 interface ServiceSpectacleInterface {
 
-    public function getListeSpectacles(?string $style = null, ?string $date = null): array;
+    public function getListeSpectacles(?string $style = null, ?string $date = null, ?int $limit = null, ?int $offset = null): array;
     public function getSoireeDetailBySpectacleId(string $idSpectacle): SoireeDetailDTO;
 }

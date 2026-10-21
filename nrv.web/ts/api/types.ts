@@ -19,6 +19,20 @@ export interface SpectaclesResponse {
             };
         };
     }[];
+    links: {
+        prev?: {
+            href: string;
+        };
+        next?: {
+            href: string;
+        };
+    }
+}
+
+export interface SpectaclesResult {
+    spectacles: Spectacle[];
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
 }
 
 export interface SoireeDetail {
@@ -52,5 +66,3 @@ export interface StyleResponse {
         };
     }[];
 }
-
-export type StylesResponse = StyleResponse;

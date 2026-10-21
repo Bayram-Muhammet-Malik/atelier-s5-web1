@@ -37,15 +37,15 @@ export async function fetchSoireeBySpectacleId(id: string): Promise<SoireeDetail
   return data.soiree;
 }
 
-export async function fetchSpectacles(style?: string | null, date?: string | null): Promise<Spectacle[]> {
+export async function fetchSpectacles(style?: string | null, date?: string | null, limit?: number, offset?: number,): Promise<SpectaclesResult> {
   const url = new URL(`${API_BASE_URL}${API_PATH}spectacles`);
 
-  if (style) {
-    url.searchParams.append('style', style);
-  }
-  if (date) {
-    url.searchParams.append('date', date);
-  }
+  if (style) url.searchParams.append("style", style);
+  if (date) url.searchParams.append("date", date);
+  if (limit !== undefined) url.searchParams.append("limit", String(limit));
+  if (offset !== undefined) url.searchParams.append("offset", String(offset));
+
+  console.log(url.toString());
 
   const response = await fetch(url.toString());
 
@@ -53,7 +53,7 @@ export async function fetchSpectacles(style?: string | null, date?: string | nul
 
   const data = await response.json() as SpectaclesResponse;
 
-  return data.spectacles.map((item) => {
+  const spectacles = data.spectacles.map((item) => {
     const spectacle = item.spectacle;
 
     spectacle.image = formatMediaUrl(spectacle.image);
@@ -61,6 +61,12 @@ export async function fetchSpectacles(style?: string | null, date?: string | nul
 
     return spectacle;
   });
+
+  return {
+    spectacles,
+    hasPreviousPage: Boolean(data.links.prev),
+    hasNextPage: Boolean(data.links.next),
+  };
 }
 
 export async function fetchStyles(): Promise<Style[]> {
@@ -69,12 +75,8 @@ export async function fetchStyles(): Promise<Style[]> {
   if (!response.ok) throw new Error("Impossible de charger les styles");
 
   const data = await response.json() as StylesResponse;
-  
-  if (Array.isArray(data.styles) && data.styles.length > 0 && 'style' in data.styles[0]) {
-    return (data.styles as any).map((item: any) => item.style);
-  }
 
-  return data.styles as unknown as Style[]; 
+  return data.styles;
 }
 
 export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> {

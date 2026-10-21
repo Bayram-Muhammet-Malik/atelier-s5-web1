@@ -7,6 +7,7 @@
     --badge-color: #FFE3D4;
     --medium-badge-color: #E9E5DA;
     --small-txt-color: #726F65;
+    --border-color: #D8D4C9;
 }
 
 html, body {
@@ -40,10 +41,11 @@ form{
     gap: 15px;
 }
 
-select, input {
+select, input, .pbtn {
     background-color: var(--container-color);
     border: none;
-    padding: 10px 20px;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
 }
 
 /* Menu */
@@ -159,8 +161,8 @@ select, input {
     align-items: center;
     padding: 10px 0;
     margin-bottom: 15px;
-    border-top: 1px #D8D4C9 solid;
-    border-bottom: 1px #D8D4C9 solid;
+    border-top: 1px var(--border-color) solid;
+    border-bottom: 1px var(--border-color) solid;
 }
 #filter-spectacles p {
     margin: 0;
@@ -195,6 +197,14 @@ select, input {
     display: block;
 }
 .spectacle-content {flex: 1;}
+
+.pagination {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
 
 #add-billet{
     padding: 20px;

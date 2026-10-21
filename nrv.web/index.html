@@ -25,7 +25,8 @@
                     </svg>
                 </label>
                 <div class="menu-content">
-                    <a href="./" class="selected"><h1>Programme</h1></a>
+                    <a href="." class="selected"><h1>Accueil</h1></a>
+                    <a href="spectacles.html"><h1>Programme</h1></a>
                     <a href="pass.html"><h1>Pass 3 jours</h1></a>
                     <a href="billets.html"><h1>Mes billets</h1></a>
                     <a href="billets.html"><h1>Mon compte</h1></a>
@@ -34,6 +35,15 @@
         </header>
 
         <main id="app">
+            <section class="head-main">
+                <div class="head-main-left">
+                    <p>Du ... au ... / Nancy</p>
+                    <h1>NANCY ROCK VIBRATION</h1>
+                </div>
+                <div  class="head-main-right">
+                    <img src="">
+                </div>
+            </section>
             <section class="content-main">
                 <p id="error">Erreur de chargement.</p>
             </section>
@@ -84,6 +94,15 @@
                         </div>
                     </article>
                     {{/each}}
+                </div>
+                <div class="pagination">
+                    {{#if previousPageUrl}}
+                    <a href="{{previousPageUrl}}" class="pbtn"><i class="fa-solid fa-arrow-left"></i> Précédent</a>
+                    {{/if}}
+                    <span class="pbtn">Page {{page}}</span>
+                    {{#if nextPageUrl}}
+                    <a href="{{nextPageUrl}}" class="pbtn">Suivant <i class="fa-solid fa-arrow-right"></i></a>
+                    {{/if}}
                 </div>
                 {{else}}
                 <p>Aucun spectacle disponible.</p>
