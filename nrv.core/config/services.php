@@ -104,7 +104,7 @@ return [
 
     ServiceUserInterface::class => function (ContainerInterface $c) {
         return new ServiceUser(
-            c->get(UserRepositoryInterface::class),
+            $c->get(UserRepositoryInterface::class),
             'nrv_jwt_secret_key_super_securisee'
         );
     },

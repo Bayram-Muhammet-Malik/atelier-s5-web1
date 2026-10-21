@@ -66,3 +66,9 @@ export interface StyleResponse {
         };
     }[];
 }
+
+export interface AuthResponse {
+  token: string;
+  message?: string;
+  error?: string;
+}

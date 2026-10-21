@@ -1,5 +1,5 @@
 import { API_BASE_URL, API_PATH } from "./config";
-import { SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse } from './types';
+import { SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -88,6 +88,7 @@ export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> 
   return data.date_limits; 
 }
 
+
 export function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem("auth_token");
   const headers: Record<string, string> = {
@@ -99,4 +100,36 @@ export function getAuthHeaders(): HeadersInit {
   }
 
   return headers;
+}
+
+export async function login(email: string, mdp: string): Promise<AuthResponse> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(email, mdp)
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) throw new Error(data.error || "Erreur lors de la connexion.");
+
+  return data;
+}
+
+export async function signup(prenom: string, nom: string, email: string, mdp: string): Promise<AuthResponse> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(prenom, nom, email, mdp)
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) throw new Error(data.error || "Erreur lors de la création du compte.");
+
+  return data;
 }

@@ -5,7 +5,7 @@ namespace nrv\application\ports\spi;
 
 use nrv\domain\entities\Utilisateur;
 
-class UserRepositoryInterface {
+interface UserRepositoryInterface {
     public function findByEmail(string $email): ?Utilisateur;
     public function save(Utilisateur $user): void;
 }

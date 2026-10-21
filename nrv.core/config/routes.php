@@ -10,7 +10,7 @@ use \nrv\adapters\controllers\actions\AfficherSoireeAction;
 use nrv\adapters\controllers\actions\GetStylesAction;
 use nrv\adapters\controllers\actions\GetMinMaxAction;
 use nrv\adapters\controllers\actions\LoginAction;
-use nrv\adapters\controllers\actions\SigninAction;
+use nrv\adapters\controllers\actions\SignupAction;
 
 return function (App $app): App {
     $app->get('/admin/jauge', AfficherJaugeAction::class);
@@ -21,7 +21,7 @@ return function (App $app): App {
     $app->get('/styles', GetStylesAction::class);
     $app->get('/dates', GetMinMaxAction::class);
     
-    $app->post('/login', LoginAction::class);
-    $app->post('/signup', SignupAction::class);
+    $app->get('/login', LoginAction::class);
+    $app->get('/signup', SignupAction::class);
     return $app;
 };

@@ -3,27 +3,27 @@ declare(strict_types=1);
 
 namespace nrv\adapters\controllers\actions;
 
-use nrv\application\usecases\RegisterUserUseCase;
-use nrv\application\usecases\GenerateJwtUseCase;
+use nrv\application\ports\api\ServiceUserInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class SigninAction {
-    public function __construct(
-        private RegisterUserUseCase $registerUseCase,
-        private GenerateJwtUseCase $jwtUseCase
-    ) {}
+class SignupAction {
+    private ServiceUserInterface $serviceUser;
+
+    public function __construct(ServiceUserInterface $serviceUser) {
+        $this->serviceUser = $serviceUser;
+    }
 
     public function __invoke(Request $request, Response $response): Response {
         $data = (array) $request->getParsedBody();
         try {
-            $user = $this->registerUseCase->execute(
+            $user = $this->serviceUser->register(
                 filter_var($data['nom'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS),
                 filter_var($data['prenom'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS),
                 filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL),
                 $data['mdp'] ?? ''
             );
-            $token = $this->jwtUseCase->execute($user);
+            $token = $this->serviceUser->generateJwt($user);
 
             $response->getBody()->write(json_encode(['token' => $token]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(201);

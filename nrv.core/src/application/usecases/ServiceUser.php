@@ -6,10 +6,12 @@ namespace nrv\application\usecases;
 use Firebase\JWT\JWT;
 use nrv\domain\entities\Utilisateur;
 use nrv\application\ports\spi\UserRepositoryInterface;
+use nrv\application\ports\api\ServiceUserInterface;
 use Ramsey\Uuid\Uuid;
+use nrv\application\exceptions\UnauthorizedException;
 
 class ServiceUser implements ServiceUserInterface {
-    private UserRepositoryInterface $jaugeRepository;
+    private UserRepositoryInterface $userRepository;
     private string $secretKey;
 
     public function __construct(UserRepositoryInterface $userRepository, string $secretKey) {
@@ -18,9 +20,9 @@ class ServiceUser implements ServiceUserInterface {
     }
 
     public function login(string $email, string $password): Utilisateur {
-        $user = $this->userRepo->findByEmail($email);
+        $user = $this->userRepository->findByEmail($email);
 
-        if ($user === null || !password_verify($password, $user->getMotDePasse())) throw new \UnauthorizedException("Email ou mot de passe incorrect.");
+        if ($user === null || !password_verify($password, $user->getMotDePasse())) throw new UnauthorizedException("Email ou mot de passe incorrect." . $password . "doit être" . $user->getMotDePasse() );
 
         return $user;
     }

@@ -10,6 +10,9 @@ use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 use nrv\adapters\controllers\actions\GetStylesAction;
 use nrv\application\ports\api\ServiceStyleInterface;
+use nrv\adapters\controllers\actions\LoginAction;
+use nrv\adapters\controllers\actions\SignupAction;
+use nrv\application\ports\api\ServiceUserInterface;
 
 return [
     AfficherJaugeAction::class => function (ContainerInterface $c) {
