@@ -17,7 +17,6 @@ async function main(): Promise<void> {
 
   const parsedPage = Number.parseInt(params.get("page") ?? "1", 10);
   const page = parsedPage >= 1 ? parsedPage : 1;
-
   const offset = (page - 1) * PAGE_SIZE;
 
   try {

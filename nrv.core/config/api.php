@@ -12,7 +12,6 @@ use nrv\adapters\controllers\actions\GetStylesAction;
 use nrv\application\ports\api\ServiceStyleInterface;
 
 return [
-    // Actions ici
     AfficherJaugeAction::class => function (ContainerInterface $c) {
         return new AfficherJaugeAction($c->get(ServiceJaugeInterface::class));
     },
@@ -31,5 +30,13 @@ return [
 
     GetMinMaxAction::class => function (ContainerInterface $c) {
         return new GetMinMaxAction($c->get(ServiceSoireeInterface::class));
+    },
+
+    LoginAction::class => function (ContainerInterface $c) {
+        return new LoginAction($c->get(ServiceUserInterface::class));
+    },
+
+    SignupAction::class => function (ContainerInterface $c) {
+        return new SignupAction($c->get(ServiceUserInterface::class));
     },
 ];

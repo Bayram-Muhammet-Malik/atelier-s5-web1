@@ -22,6 +22,6 @@ return function (App $app): App {
     $app->get('/dates', GetMinMaxAction::class);
     
     $app->post('/login', LoginAction::class);
-    $app->post('/signin', SigninAction::class);
+    $app->post('/signup', SignupAction::class);
     return $app;
 };

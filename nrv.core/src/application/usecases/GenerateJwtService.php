@@ -6,7 +6,7 @@ namespace nrv\application\usecases;
 use Firebase\JWT\JWT;
 use nrv\domain\entities\Utilisateur;
 
-class GenerateJwtUseCase {
+class GenerateJwtService implements GenerateJwtServiceInterface {
     public function __construct(private string $secretKey) {}
 
     public function execute(Utilisateur $user): string {

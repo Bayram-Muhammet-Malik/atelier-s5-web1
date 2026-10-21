@@ -18,9 +18,9 @@ class SigninAction {
         $data = (array) $request->getParsedBody();
         try {
             $user = $this->registerUseCase->execute(
-                $data['nom'] ?? '',
-                $data['prenom'] ?? '',
-                $data['email'] ?? '',
+                filter_var($data['nom'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var($data['prenom'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL),
                 $data['mdp'] ?? ''
             );
             $token = $this->jwtUseCase->execute($user);
