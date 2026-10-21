@@ -7,6 +7,7 @@ use nrv\adapters\controllers\actions\AfficherBilletAction;
 use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
 use nrv\adapters\controllers\actions\GetSpectaclesAction;
 use \nrv\adapters\controllers\actions\AfficherSoireeAction;
+use nrv\adapters\controllers\actions\GetStylesAction;
 
 return function (App $app): App {
     $app->get('/admin/jauge', AfficherJaugeAction::class);
@@ -14,5 +15,6 @@ return function (App $app): App {
     $app->get('/soirees/{id}', AfficherSoireeAction::class);
     $app->get('/spectacles/{id}/soiree', GetSoireeBySpectacleIdAction::class);
     $app->get('/spectacles', GetSpectaclesAction::class);
+    $app->get('/styles', GetStylesAction::class);
     return $app;
 };

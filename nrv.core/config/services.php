@@ -8,22 +8,26 @@ use nrv\adapters\persistence\JaugeRepository;
 use nrv\adapters\persistence\SoireeRepository;
 use nrv\adapters\persistence\SpectacleRepository;
 use nrv\adapters\persistence\TarifRepository;
+use nrv\adapters\persistence\StyleRepository;
 
 use nrv\application\ports\spi\BilletRepositoryInterface;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
 use nrv\application\ports\spi\SoireeRepositoryInterface;
 use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use nrv\application\ports\spi\TarifRepositoryInterface;
+use nrv\application\ports\spi\StyleRepositoryInterface;
 
 use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\application\ports\api\ServiceJaugeInterface;
 use nrv\application\ports\api\ServiceSoireeInterface;
 use nrv\application\ports\api\ServiceSpectacleInterface;
+use nrv\application\ports\api\ServiceStyleInterface;
 
 use nrv\application\usecases\ServiceBillet;
 use nrv\application\usecases\ServiceJauge;
 use nrv\application\usecases\ServiceSoiree;
 use nrv\application\usecases\ServiceSpectacle;
+use nrv\application\usecases\ServiceStyle;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
@@ -57,6 +61,10 @@ return [
         return new TarifRepository($c->get(\PDO::class));
     },
 
+    StyleRepositoryInterface::class => function (ContainerInterface $c) {
+        return new StyleRepository($c->get(\PDO::class));
+    },
+
     // Services
     ServiceJaugeInterface::class => function (ContainerInterface $c) {
         return new ServiceJauge($c->get(JaugeRepositoryInterface::class));
@@ -80,5 +88,9 @@ return [
             $c->get(TarifRepositoryInterface::class),
             $c->get(SpectacleRepositoryInterface::class)
         );
+    },
+
+    ServiceStyleInterface::class => function (ContainerInterface $c) {
+        return new ServiceStyle($c->get(StyleRepositoryInterface::class));
     },
 ];

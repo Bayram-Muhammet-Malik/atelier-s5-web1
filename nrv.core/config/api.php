@@ -8,6 +8,8 @@ use nrv\adapters\controllers\actions\AfficherBilletAction;
 use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
 use nrv\application\ports\api\ServiceSpectacleInterface;
+use nrv\adapters\controllers\actions\GetStylesAction;
+use nrv\application\ports\api\ServiceStyleInterface;
 
 return [
     // Actions ici
@@ -21,5 +23,9 @@ return [
 
     GetSoireeBySpectacleIdAction::class => function (ContainerInterface $c) {
         return new GetSoireeBySpectacleIdAction($c->get(ServiceSpectacleInterface::class));
+    },
+
+    GetStylesAction::class => function (ContainerInterface $c) {
+        return new GetStylesAction($c->get(ServiceStyleInterface::class));
     },
 ];
