@@ -9,6 +9,8 @@ use nrv\adapters\controllers\actions\GetSpectaclesAction;
 use \nrv\adapters\controllers\actions\AfficherSoireeAction;
 use nrv\adapters\controllers\actions\GetStylesAction;
 use nrv\adapters\controllers\actions\GetMinMaxAction;
+use nrv\adapters\controllers\actions\LoginAction;
+use nrv\adapters\controllers\actions\SigninAction;
 
 return function (App $app): App {
     $app->get('/admin/jauge', AfficherJaugeAction::class);
@@ -18,5 +20,8 @@ return function (App $app): App {
     $app->get('/spectacles', GetSpectaclesAction::class);
     $app->get('/styles', GetStylesAction::class);
     $app->get('/dates', GetMinMaxAction::class);
+    
+    $app->post('/login', LoginAction::class);
+    $app->post('/signin', SigninAction::class);
     return $app;
 };
