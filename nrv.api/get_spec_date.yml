@@ -1,0 +1,19 @@
+info:
+  name: get_spec_date
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:16798/spectacles?date=2027-06-15
+  params:
+    - name: date
+      value: 2027-06-15
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
