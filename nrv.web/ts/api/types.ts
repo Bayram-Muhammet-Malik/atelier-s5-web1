@@ -36,3 +36,19 @@ export interface SoireeDetail {
 export interface SoireeResponse {
     soiree: SoireeDetail;
 }
+
+export interface Style {
+    id: string;
+    libelle: string;
+}
+
+export interface StyleResponse {
+    styles: {
+        style: Style;
+        links: {
+            spectacles: {
+                href: string;
+            };
+        };
+    }[];
+}

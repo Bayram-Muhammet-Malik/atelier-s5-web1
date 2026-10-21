@@ -7,7 +7,7 @@
         <link rel="preload" href="css/fa7.css" as="style">
         <link rel="stylesheet" href="css/fa7.css">
         <link rel="stylesheet" href="css/style.css" />
-        <script src="dist/spectacles.js" defer></script>
+        <script src="dist/main.js" defer></script>
     </head>
     <body>
         <header class="menu">
@@ -25,7 +25,7 @@
                     </svg>
                 </label>
                 <div class="menu-content">
-                    <a href="./" class="selected"><h1>Programme</h1></a>
+                    <a href="./"><h1>Programme</h1></a>
                     <a href="pass.html"><h1>Pass 3 jours</h1></a>
                     <a href="billets.html"><h1>Mes billets</h1></a>
                     <a href="billets.html"><h1>Mon compte</h1></a>
@@ -41,33 +41,45 @@
         </main>
 
         <script id="spectacles-template" type="text/x-handlebars-template">
-            <section class="content-main deuxtiers">
-                {{#if spectacles.length}}
-                <div class="spectacles-grid">
-                    {{#each spectacles}}
-                    <article class="spectacle-card">
-                        {{#if image}}
-                        <div class="spectacle-image">
-                            <img src="{{image}}" alt="Image du spectacle {{titre}}">
-                        </div>
-                        <div>
-                        {{/if}}
-                        <div class="spectacle-content">
-                            <p>{{horaire}} / {{style}}</p>
-                            <h2>{{titre}}</h2>
-                            <h3>Artistes : {{artistes}}</h3>
-                            <p>{{description}}</p>
-                            {{#if video}}
-                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+            <section class="content-main">
+                <form id="filter-spectacles" method="GET">
+                    <p><i class="fa-solid fa-sliders"></i> Filter</p>
+                    <select id="style-select" name="style">
+                        <option value="">Tous les styles</option>
+                        {{#each styles}}
+                            <option value="{{style.libelle}}">{{style.libelle}}</option>
+                        {{/each}}
+                    </select>
+                    <input type="date" id="date-input" name="date" min="2027-06-11" max="2027-06-24">
+                </form>
+                <div class="deuxtiers">
+                    {{#if spectacles.length}}
+                    <div class="spectacles-grid">
+                        {{#each spectacles}}
+                        <article class="spectacle-card">
+                            {{#if image}}
+                            <div class="spectacle-image">
+                                <img src="{{image}}" alt="Image du spectacle {{titre}}">
+                            </div>
+                            <div>
                             {{/if}}
-                            <a href="./soirees.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
-                        </div>
-                    </article>
-                    {{/each}}
+                            <div class="spectacle-content">
+                                <p>Le {{dateSoiree}} à {{horaire}} / {{style}}</p>
+                                <h2>{{titre}}</h2>
+                                <h3>Artistes : {{artistes}}</h3>
+                                <p>{{description}}</p>
+                                {{#if video}}
+                                <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                                {{/if}}
+                                <a href="./soirees.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+                        {{/each}}
+                    </div>
+                    {{else}}
+                        <p>Aucun spectacle disponible.</p>
+                    {{/if}}
                 </div>
-                {{else}}
-                    <p>Aucun spectacle disponible.</p>
-                {{/if}}
             </section>
         </script>
     </body>

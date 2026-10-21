@@ -1,5 +1,5 @@
 import { API_BASE_URL, API_PATH } from "./config";
-import { SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse } from './types';
+import { SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse } from './types';
 
 export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
   const response = await fetch(`${API_BASE_URL}${API_PATH}soirees/${id}`);
@@ -29,8 +29,17 @@ export async function fetchSoireeBySpectacleId(id: string): Promise<SoireeDetail
   return data.soiree;
 }
 
-export async function fetchSpectacles(): Promise<Spectacle[]> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}spectacles`);
+export async function fetchSpectacles(style?: string | null, date?: string | null): Promise<Spectacle[]> {
+  const url = new URL(`${API_BASE_URL}${API_PATH}spectacles`);
+
+  if (style) {
+    url.searchParams.append('style', style);
+  }
+  if (date) {
+    url.searchParams.append('date', date);
+  }
+
+  const response = await fetch(url.toString());
 
   if (!response.ok) throw new Error("Impossible de charger les spectacles");
 
@@ -44,4 +53,13 @@ export async function fetchSpectacles(): Promise<Spectacle[]> {
 
     return spectacle;
   });
+}
+
+export async function fetchStyles(): Promise<Style[]> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}styles`);
+
+  if (!response.ok) throw new Error("Impossible de charger les styles");
+
+  const data = await response.json() as StyleResponse;
+  return data.styles; 
 }

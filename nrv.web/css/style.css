@@ -34,6 +34,12 @@ button:hover{background-color: var(--badge-color);}
 p {margin: 0 0 10px 0;}
 h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 
+select, input {
+    background-color: var(--container-color);
+    border: none;
+    padding: 10px 20px;
+}
+
 /* Menu */
 .menu {
     display: flex;
@@ -142,6 +148,19 @@ h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 }
 
 /* Specifique */
+#filter-spectacles {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-top: 1px #D8D4C9 solid;
+    border-bottom: 1px #D8D4C9 solid;
+    gap: 10px;
+}
+#filter-spectacles p {
+    margin: 0;
+}
+
 .spectacles-grid {
     display: flex;
     flex-direction: column;

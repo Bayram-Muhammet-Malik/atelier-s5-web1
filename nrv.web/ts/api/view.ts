@@ -1,14 +1,14 @@
 import Handlebars from "handlebars";
-import { SoireeDetail, Spectacle } from './types';
+import { SoireeDetail, Spectacle, Style } from './types';
 
-export function renderSpectacles(spectacles: Spectacle[]): string {
+export function renderSpectacles(spectacles: Spectacle[], styles: Style[]): string {
     const templateElement = document.querySelector<HTMLScriptElement>("#spectacles-template");
 
     if (!templateElement) throw new Error("Le template #spectacles-template est introuvable.");
 
     const template = Handlebars.compile(templateElement.innerHTML);
 
-    return template({spectacles});
+    return template({spectacles, styles});
 }
 
 export function renderSoireeDetailView(soiree: SoireeDetail): string {

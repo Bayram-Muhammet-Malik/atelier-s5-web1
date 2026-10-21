@@ -10,7 +10,7 @@
         <script src="dist/main.js" defer></script>
     </head>
     <body>
-        <div class="menu">
+        <header class="menu">
             <div class="menu-title">
                 <h1 class="big-title">NRV.net</h1>
                 <p class="medium-title">NANCY ROCK VIBRATION</p>
@@ -31,6 +31,56 @@
                     <a href="billets.html"><h1>Mon compte</h1></a>
                 </div>
             </div>
-        </div>
+        </header>
+
+        <main id="app">
+            <section class="content-main">
+                <a href="./index.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
+                <p id="error">Erreur de chargement.</p>
+            </section>
+        </main>
+
+        <script id="spectacles-template" type="text/x-handlebars-template">
+            <section class="content-main">
+                <form id="filter-spectacles" method="GET">
+                    <p><i class="fa-solid fa-sliders"></i> Filter</p>
+                    <select id="style-select" name="style">
+                        <option value="">Tous les styles</option>
+                        {{#each styles}}
+                            <option value="{{style.libelle}}">{{style.libelle}}</option>
+                        {{/each}}
+                    </select>
+                    <input type="date" id="date-input" name="date" min="2027-06-11" max="2027-06-24">
+                </form>
+                <div class="deuxtiers">
+                    {{#if spectacles.length}}
+                    <div class="spectacles-grid">
+                        {{#each spectacles}}
+                        <article class="spectacle-card">
+                            {{#if image}}
+                            <div class="spectacle-image">
+                                <img src="{{image}}" alt="Image du spectacle {{titre}}">
+                            </div>
+                            <div>
+                            {{/if}}
+                            <div class="spectacle-content">
+                                <p>Le {{dateSoiree}} à {{horaire}} / {{style}}</p>
+                                <h2>{{titre}}</h2>
+                                <h3>Artistes : {{artistes}}</h3>
+                                <p>{{description}}</p>
+                                {{#if video}}
+                                <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+                                {{/if}}
+                                <a href="./soirees.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+                        {{/each}}
+                    </div>
+                    {{else}}
+                        <p>Aucun spectacle disponible.</p>
+                    {{/if}}
+                </div>
+            </section>
+        </script>
     </body>
 </html>
