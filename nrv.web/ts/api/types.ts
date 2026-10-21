@@ -52,3 +52,5 @@ export interface StyleResponse {
         };
     }[];
 }
+
+export type StylesResponse = StyleResponse;

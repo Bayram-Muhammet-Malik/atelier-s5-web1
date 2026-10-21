@@ -1,7 +1,6 @@
 import { fetchSoireeDetail, fetchSoireeBySpectacleId } from "./api/api";
 import { renderSoireeDetailView } from "./api/view";
 
-/* A fix marche pas totalement ou alors parce que la connection n'existe pas encore mais je laisse le code au cas où
 interface CartItem {
     soireeId: string | number;
     nomSoiree: string;
@@ -57,35 +56,41 @@ function setupFormHandler(soiree: any): void {
         }
     });
 }
-*/
+
 const container = document.querySelector<HTMLElement>("#app");
 const errorp = document.querySelector<HTMLElement>("#error");
 
 async function main(): Promise<void> {
     if (!container) throw new Error("Élément #app introuvable.");
-    if (!errorp) throw new Error("Élément #error introuvable.");
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
     const spectacleId = params.get("spectacleId");
 
     if (!id && !spectacleId) {
-        errorp.innerHTML = "<p>Identifiant de soirée ou de spectacle manquant.</p>";
+        if (errorp) errorp.innerHTML = "<p>Identifiant de soirée ou de spectacle manquant.</p>";
         return;
     }
 
     try {
-        errorp.innerHTML = "<p>Chargement...</p>";
+        if (errorp) errorp.innerHTML = "<p>Chargement...</p>";
+
         let soiree;
         if (id) {
             soiree = await fetchSoireeDetail(id);
         } else if (spectacleId) {
             soiree = await fetchSoireeBySpectacleId(spectacleId);
         }
+
+        if (!soiree) {
+            throw new Error("Soirée introuvable");
+        }
+
         container.innerHTML = renderSoireeDetailView(soiree);
+        setupFormHandler(soiree);
     } catch (error) {
         console.error(error);
-        errorp.innerHTML = "<p>Impossible de charger la soirée.</p>";
+        if (errorp) errorp.innerHTML = "<p>Impossible de charger la soirée. Vérifiez la connexion à l'API.</p>";
     }
 }
 
