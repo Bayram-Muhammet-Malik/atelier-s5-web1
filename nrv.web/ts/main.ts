@@ -1,4 +1,4 @@
-import { fetchSpectacles, fetchStyles } from "./api/api";
+import { fetchSpectacles, fetchStyles, fetchMinMaxDates } from "./api/api";
 import { renderSpectacles } from "./api/view";
 
 const container = document.querySelector<HTMLElement>("#app");
@@ -17,8 +17,9 @@ async function main(): Promise<void> {
         
         const spectacles = await fetchSpectacles(style, date);
         const styles = await fetchStyles();
+        const minmax = await fetchMinMaxDates();
         
-        container.innerHTML = renderSpectacles(spectacles, styles);
+        container.innerHTML = renderSpectacles(spectacles, styles, minmax);
         errorp.innerHTML = "";
 
         const styleSelect = container.querySelector<HTMLSelectElement>("#style-select");

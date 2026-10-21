@@ -28,4 +28,8 @@ return [
     GetStylesAction::class => function (ContainerInterface $c) {
         return new GetStylesAction($c->get(ServiceStyleInterface::class));
     },
+
+    GetMinMaxAction::class => function (ContainerInterface $c) {
+        return new GetMinMaxAction($c->get(ServiceSoireeInterface::class));
+    },
 ];

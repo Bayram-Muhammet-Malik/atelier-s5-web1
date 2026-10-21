@@ -35,12 +35,20 @@
 
         <main id="app">
             <section class="content-main">
-                <a href="./index.html"><i class="fa-solid fa-arrow-left"></i> Retour au programme</a>
                 <p id="error">Erreur de chargement.</p>
             </section>
         </main>
 
         <script id="spectacles-template" type="text/x-handlebars-template">
+            <section class="head-main">
+                <div class="head-main-left">
+                    <p>Du {{minmax.min}} au {{minmax.max}} / Nancy</p>
+                    <h1>NANCY ROCK VIBRATION</h1>
+                </div>
+                <div  class="head-main-right">
+                    <img src="">
+                </div>
+            </section>
             <section class="content-main">
                 <form id="filter-spectacles" method="GET">
                     <p><i class="fa-solid fa-sliders"></i> Filter</p>
@@ -50,36 +58,35 @@
                             <option value="{{style.libelle}}">{{style.libelle}}</option>
                         {{/each}}
                     </select>
-                    <input type="date" id="date-input" name="date" min="2027-06-11" max="2027-06-24">
+                    <input type="date" id="date-input" name="date" min="{{minmax.min}}" max="{{minmax.max}}">
                 </form>
-                <div class="deuxtiers">
-                    {{#if spectacles.length}}
-                    <div class="spectacles-grid">
-                        {{#each spectacles}}
-                        <article class="spectacle-card">
-                            {{#if image}}
-                            <div class="spectacle-image">
-                                <img src="{{image}}" alt="Image du spectacle {{titre}}">
-                            </div>
-                            <div>
+                <div>
+                {{#if spectacles.length}}
+                <div class="spectacle-grid">
+                    {{#each spectacles}}
+                    <article class="spectacle-card">
+                        {{#if image}}
+                        <div class="spectacle-image">
+                            <img src="{{image}}" alt="Image du spectacle {{titre}}">
+                        </div>
+                        <div>
+                        {{/if}}
+                        <div class="spectacle-content">
+                            <p>Le {{dateSoiree}} à {{horaire}} / {{style}}</p>
+                            <h2>{{titre}}</h2>
+                            <h3>Artistes : {{artistes}}</h3>
+                            <p>{{description}}</p>
+                            {{#if video}}
+                            <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
                             {{/if}}
-                            <div class="spectacle-content">
-                                <p>Le {{dateSoiree}} à {{horaire}} / {{style}}</p>
-                                <h2>{{titre}}</h2>
-                                <h3>Artistes : {{artistes}}</h3>
-                                <p>{{description}}</p>
-                                {{#if video}}
-                                <p><a href="{{video}}" target="_blank" rel="noopener noreferrer">Voir l'extrait vidéo <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
-                                {{/if}}
-                                <a href="./soirees.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
-                            </div>
-                        </article>
-                        {{/each}}
-                    </div>
-                    {{else}}
-                        <p>Aucun spectacle disponible.</p>
-                    {{/if}}
+                            <a href="./soirees.html?spectacleId={{id}}" class="button">Voir la soirée <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    {{/each}}
                 </div>
+                {{else}}
+                <p>Aucun spectacle disponible.</p>
+                {{/if}}
             </section>
         </script>
     </body>

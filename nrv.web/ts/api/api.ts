@@ -63,3 +63,12 @@ export async function fetchStyles(): Promise<Style[]> {
   const data = await response.json() as StyleResponse;
   return data.styles; 
 }
+
+export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}dates`);
+
+  if (!response.ok) throw new Error("Impossible de charger les dates min et max");
+
+  const data = await response.json();
+  return data.date_limits; 
+}

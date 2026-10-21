@@ -5,6 +5,8 @@ namespace nrv\application\usecases;
 
 use nrv\application\dto\SoireeDetailDTO;
 use nrv\application\dto\SpectacleDTO;
+use nrv\application\dto\MinMaxDateDTO;
+
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 use nrv\application\ports\spi\SoireeRepositoryInterface;

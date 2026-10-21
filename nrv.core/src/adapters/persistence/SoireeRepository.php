@@ -67,4 +67,16 @@ class SoireeRepository implements SoireeRepositoryInterface {
             $lieu
         );
     }
+
+    public function getMinMaxDate(): array {
+        $stmt = $this->pdo->prepare("
+            SELECT MIN(date_soiree) AS min_date, MAX(date_soiree) AS max_date 
+            FROM soiree;
+        ");
+        $stmt->execute();
+        
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        return $result ?: ['min_date' => null, 'max_date' => null];
+    }
 }

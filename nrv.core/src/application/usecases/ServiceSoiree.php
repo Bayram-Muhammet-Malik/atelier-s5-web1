@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace nrv\application\usecases;
 
 use nrv\application\dto\SoireeDetailDTO;
+use nrv\application\dto\MinMaxDateDTO;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceSoireeInterface;
 use nrv\application\ports\spi\SoireeRepositoryInterface;
@@ -37,5 +38,10 @@ class ServiceSoiree implements ServiceSoireeInterface {
         }
 
         return SoireeDetailDTO::fromSoiree($soiree, $this->tarifRepository->findAll());
+    }
+
+    public function getMinMaxDate(): MinMaxDateDTO {
+        $dates = $this->soireeRepository->getMinMaxDate();
+        return new MinMaxDateDTO($dates['min_date'], $dates['max_date']);
     }
 }

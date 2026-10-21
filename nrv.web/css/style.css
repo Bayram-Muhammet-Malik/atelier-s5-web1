@@ -123,7 +123,7 @@ select, input {
 .head-main{
     background-color: var(--black-color);
     color: var(--container-color);
-    padding: 20px;
+    padding: 30px 20px;
 }
 .head-main-left{
     display: flex;
@@ -161,21 +161,21 @@ select, input {
     margin: 0;
 }
 
-.spectacles-grid {
+.spectacle-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.spectacle-card > h2{
-    text-transform: uppercase;
-    margin: 0;
-}
-.spectacle-card {
+.spectacle-list .spectacle-card {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     padding: 0;
     overflow: hidden;
+}
+.spectacle-card > h2{
+    text-transform: uppercase;
+    margin: 0;
 }
 .spectacle-image {
     flex-shrink: 0;
@@ -208,10 +208,18 @@ select, input {
     .deuxtiers > *:first-child {flex: 2; }
     .deuxtiers > *:last-child {flex: 1; }
 
-    .spectacle-card {flex-direction: row;}
-    .spectacle-image {
+    .spectacle-list .spectacle-card {flex-direction: row;}
+    .spectacle-list .spectacle-image {
         width: 250px;
         padding-right: 15px;
         padding-bottom: 0px;
+    }
+
+    .spectacle-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 0;
+        overflow: hidden;
     }
 }
