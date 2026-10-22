@@ -214,7 +214,6 @@ select, input, .pbtn {
 
 /* Specifique */
 #filter-spectacles {
-    display: flex;
     flex-direction: row;
     align-items: center;
     padding: 10px 0;
@@ -278,13 +277,16 @@ select, input, .pbtn {
     margin-bottom: 20px;
 }
 
+.head-pass > div p{
+    color: var(--small-txt-color);
+}
 .head-pass > h1{
     font-size: 5rem; 
     color: var(--red-color);
     margin-left: auto;
 }
 
-.soiree {
+.soiree{
     display: flex;
     align-items: center;
     gap: 15px;
