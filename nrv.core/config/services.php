@@ -10,6 +10,7 @@ use nrv\adapters\persistence\SpectacleRepository;
 use nrv\adapters\persistence\TarifRepository;
 use nrv\adapters\persistence\StyleRepository;
 use nrv\adapters\persistence\UserRepository;
+use nrv\adapters\persistence\CommandeRepository;
 
 use nrv\application\ports\spi\BilletRepositoryInterface;
 use nrv\application\ports\spi\JaugeRepositoryInterface;
@@ -18,6 +19,7 @@ use nrv\application\ports\spi\SpectacleRepositoryInterface;
 use nrv\application\ports\spi\TarifRepositoryInterface;
 use nrv\application\ports\spi\StyleRepositoryInterface;
 use nrv\application\ports\spi\UserRepositoryInterface;
+use nrv\application\ports\spi\CommandeRepositoryInterface;
 
 use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\application\ports\api\ServiceJaugeInterface;
@@ -25,6 +27,7 @@ use nrv\application\ports\api\ServiceSoireeInterface;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 use nrv\application\ports\api\ServiceStyleInterface;
 use nrv\application\ports\api\ServiceUserInterface;
+use nrv\application\ports\api\ServiceCommandeInterface;
 
 use nrv\application\usecases\ServiceBillet;
 use nrv\application\usecases\ServiceJauge;
@@ -32,6 +35,7 @@ use nrv\application\usecases\ServiceSoiree;
 use nrv\application\usecases\ServiceSpectacle;
 use nrv\application\usecases\ServiceStyle;
 use nrv\application\usecases\ServiceUser;
+use nrv\application\usecases\ServiceCommande;
 
 use nrv\adapters\controllers\middlewares\AuthMiddleware;
 
@@ -108,6 +112,19 @@ return [
         return new ServiceUser(
             $c->get(UserRepositoryInterface::class),
             $c->get('jwt.secret')
+        );
+    },
+
+    CommandeRepositoryInterface::class => function (ContainerInterface $c) {
+        return new CommandeRepository($c->get(\PDO::class));
+    },
+
+    ServiceCommandeInterface::class => function (ContainerInterface $c) {
+        return new ServiceCommande(
+            $c->get(CommandeRepositoryInterface::class),
+            $c->get(SoireeRepositoryInterface::class),
+            $c->get(TarifRepositoryInterface::class),
+            $c->get(UserRepositoryInterface::class)
         );
     },
 
