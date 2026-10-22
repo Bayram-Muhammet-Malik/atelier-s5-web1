@@ -1,7 +1,7 @@
 import { signup } from "./api/api";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector<HTMLFormElement>("#login-form");
+    const form = document.querySelector<HTMLFormElement>("#signup-form");
 
     if (!form) return;
 

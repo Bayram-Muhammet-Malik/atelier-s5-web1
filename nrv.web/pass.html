@@ -50,23 +50,31 @@
         </main>
 
         <script id="pass-template" type="text/x-handlebars-template">
-            <section class="deuxtiers">
+            <form class="deuxtiers">
                 {{#if soirees.length}}
                 <div class="soirees-list">
                     <h2>01 / CHOISISSEZ VOS SOIRÉES</h2>
                     {{#each soirees}}
-                    <article class="soiree">
-                        <p>{{soiree.date}} à {{soiree.horaire}} / {{soiree.thematique}}</p>
-                        <h1>{{soiree.nom}}</h1>
-                        <p>{{soiree.lieu}}</p>
-                    </article>
+                    <div class="soiree">
+                        <div>
+                            <label for="{{soiree.id}}" class="custom-checkbox">
+                                <input type="checkbox" id="{{soiree.id}}" name="{{soiree.id}}">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <p>Le {{soiree.date}} à {{soiree.horaire}}</p>
+                            <h2>{{soiree.nom}}</h2>
+                            <p>{{soiree.lieu}}</p>
+                        </div>
+                    </div>
                     {{/each}}
                 </div>
                 {{/if}}
 
                 <div>
                     <h2>02 / VOTRE CATÉGORIE</h2>
-                    <form id="ticket-form">
+                    <div id="ticket-form">
                         <h1>Réserver vos billets</h1>
                         <div class="ticket-option">
                             <label for="tarif-type">Tarif :</label>
@@ -82,10 +90,10 @@
                         </div>
 
                         <button type="submit" class="btn-add-cart">Ajouter au panier <i class="fa-solid fa-cart-shopping"></i></button>
-                    </form>
+                    </div>
                     <div id="cart-message" class="hidden"></div>
                 </div>
-            </section>
+            </form>
         </script>
     </body>
 </html>
