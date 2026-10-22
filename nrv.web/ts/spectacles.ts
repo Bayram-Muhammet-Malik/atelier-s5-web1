@@ -1,5 +1,6 @@
 import { fetchSpectacles, fetchStyles, fetchMinMaxDates } from "./api/api";
 import { renderSpectacles } from "./api/view";
+import { initAuthMenu } from "./api/auth";
 
 const container = document.querySelector<HTMLElement>("#app");
 const errorp = document.querySelector<HTMLElement>("#error");
@@ -7,6 +8,8 @@ const errorp = document.querySelector<HTMLElement>("#error");
 async function main(): Promise<void> {
     if (!container) throw new Error("Élément #app introuvable.");
     if (!errorp) throw new Error("Élément #error introuvable.");
+
+    initAuthMenu();
 
     const params = new URLSearchParams(window.location.search);
     const style = params.get("style");

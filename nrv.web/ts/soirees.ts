@@ -1,5 +1,6 @@
 import { fetchSoireeDetail, fetchSoireeBySpectacleId } from "./api/api";
 import { renderSoireeDetailView } from "./api/view";
+import { initAuthMenu } from "./api/auth";
 
 interface CartItem {
     soireeId: string | number;
@@ -62,6 +63,9 @@ const errorp = document.querySelector<HTMLElement>("#error");
 
 async function main(): Promise<void> {
     if (!container) throw new Error("Élément #app introuvable.");
+    if (!errorp) throw new Error("Élément #error introuvable.");
+
+    initAuthMenu();
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");

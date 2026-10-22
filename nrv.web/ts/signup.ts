@@ -1,6 +1,9 @@
-import { signup } from "./api/api";
+import { signup } from "./api/auth";
+import { initAuthMenu } from "./api/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
+    initAuthMenu();
+
     const form = document.querySelector<HTMLFormElement>("#signup-form");
 
     if (!form) return;

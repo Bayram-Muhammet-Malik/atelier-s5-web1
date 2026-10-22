@@ -1,8 +1,10 @@
-import { login } from "./api/api";
+import { login } from "./api/auth";
+import { initAuthMenu } from "./api/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector<HTMLFormElement>("#login-form");
+    initAuthMenu();
 
+    const form = document.querySelector<HTMLFormElement>("#login-form");
     if (!form) return;
 
     form.addEventListener("submit", async (e: SubmitEvent) => {
