@@ -1,0 +1,55 @@
+@use "sass:map";
+@use "variables" as vars;
+
+@mixin flex(
+    $direction: row,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin grid(
+    $columns: 1,
+    $gap: 20px
+) {
+    display: grid;
+    grid-template-columns: repeat($columns, minmax(0, 1fr));
+    gap: $gap;
+}
+
+@mixin responsive($breakpoint) {
+    $value: map.get(vars.$breakpoints, $breakpoint);
+
+    @media screen and (min-width: $value) {
+        @content;
+    }
+}
+
+@mixin responsive-grid(
+    $mobile-columns: 1,
+    $tablet-columns: 2,
+    $desktop-columns: 3,
+    $gap: 20px
+) {
+    @include grid($mobile-columns, $gap);
+
+    @include responsive(tablet) {
+        grid-template-columns: repeat(
+            $tablet-columns,
+            minmax(0, 1fr)
+        );
+    }
+
+    @include responsive(desktop) {
+        grid-template-columns: repeat(
+            $desktop-columns,
+            minmax(0, 1fr)
+        );
+    }
+}

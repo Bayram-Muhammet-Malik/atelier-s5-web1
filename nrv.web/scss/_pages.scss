@@ -1,0 +1,159 @@
+@use "variables" as vars;
+@use "mixins" as mix;
+
+/* Msg erreur */
+#error {
+    color: vars.color(red);
+}
+
+/* Head content pricipale */
+.head-main {
+    padding: 30px 20px;
+    background-color: vars.color(black);
+    color: vars.color(container);
+
+    &-left {
+        @include mix.flex(column, stretch, flex-start, 20px);
+
+        > p,
+        > h1 {
+            margin: 0;
+        }
+
+        > p:first-of-type {
+            color: vars.color(red);
+            font-weight: bold;
+        }
+
+        > h1 {
+            width: 300px;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+        }
+    }
+}
+
+/* Contenu principal */
+.content-main {
+    padding: 20px;
+
+    h1 {
+        font-size: 3rem;
+        text-transform: uppercase;
+    }
+}
+
+/* Filtres */
+#filter-spectacles {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-top: 1px solid vars.color(border);
+    border-bottom: 1px solid vars.color(border);
+
+    p {
+        margin: 0;
+    }
+}
+
+/* Spectacles */
+.spectacle-grid {
+    padding: 0;
+    overflow: hidden;
+}
+
+.spectacle-list,
+.soirees-list {
+    @include mix.flex(column, stretch, flex-start, 20px);
+}
+
+.spectacle-list {
+    .spectacle-card {
+        @include mix.flex(column, stretch);
+
+        padding: 0;
+        overflow: hidden;
+    }
+}
+
+/* Soirees */
+.soirees-list {
+    > div {
+        @include mix.flex(row, center);
+    }
+
+    .badge {
+        margin: 0 0 0 auto;
+    }
+}
+
+/* Forms add panier */
+#pass-form {
+    flex-direction: row;
+}
+
+#ticket-form {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: vars.color(black);
+    color: vars.color(container);
+}
+
+/* head pass 3J */
+.head-pass {
+    @include mix.flex(row, center);
+
+    margin-bottom: 20px;
+
+    > div {
+        p {
+            color: vars.color(small-text);
+        }
+    }
+
+    > h1 {
+        margin-left: auto;
+        color: vars.color(red);
+        font-size: 5rem;
+    }
+}
+
+/* Responsive */
+@include mix.responsive(tablet) {
+    .head-main-left {
+        > h1 {
+            width: 400px;
+        }
+    }
+
+    .deuxtiers {
+        @include mix.flex(row, stretch, flex-start, 20px);
+
+        > * {
+            &:first-child {
+                flex: 2;
+            }
+
+            &:last-child {
+                flex: 1;
+            }
+        }
+    }
+
+    .spectacle-list {
+        .spectacle-card {
+            flex-direction: row;
+        }
+
+        .spectacle-image {
+            width: 250px;
+            padding-right: 15px;
+            padding-bottom: 0;
+        }
+    }
+
+    .spectacle-grid {
+        @include mix.grid(3, 20px);
+    }
+}

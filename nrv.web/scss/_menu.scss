@@ -1,0 +1,125 @@
+@use "variables" as vars;
+@use "mixins" as mix;
+
+.menu {
+    @include mix.flex(row, center, space-between);
+    height: 75px;
+    padding: 0 20px;
+    background-color: vars.color(black);
+
+    &-title {
+        @include mix.flex(row, center, flex-start, 10px);
+        height: 100%;
+
+        > .big-title {
+            margin: 0;
+            color: vars.color(red);
+            font-size: 2.5em;
+        }
+
+        > .medium-title {
+            width: 110px;
+            margin: 0;
+            color: vars.color(container);
+            font-size: 0.75em;
+        }
+    }
+
+    > h1 {
+        width: 100%;
+        background-color: vars.color(black);
+        color: vars.color(background);
+    }
+
+    &-link {
+        @include mix.flex(row-reverse, center);
+        height: 100%;
+    }
+
+    input {
+        display: none;
+
+        &:checked {
+            ~ label > svg {
+                .line1,
+                .line3 {
+                    --length: 22.627416998;
+                    --offset: -94.1149185097;
+                }
+
+                .line2 {
+                    --length: 0;
+                    --offset: -50;
+                }
+            }
+
+            ~ .menu-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 100vw;
+                height: 100vh;
+                padding: 20px;
+                background-color: vars.color(black);
+            }
+        }
+    }
+
+    label {
+        z-index: 10;
+        display: flex;
+        height: 100%;
+        cursor: pointer;
+
+        &:hover {
+            circle {
+                opacity: 1;
+            }
+        }
+    }
+
+    path {
+        --length: 24;
+        --offset: -38;
+
+        fill: none;
+        stroke: vars.color(container);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: var(--length) var(--total-length);
+        stroke-dashoffset: var(--offset);
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .line1,
+    .line3 {
+        --total-length: 126.64183044433594;
+    }
+
+    .line2 {
+        --total-length: 70;
+    }
+
+    &-content {
+        display: none;
+        color: vars.color(container);
+        font-size: 0.6rem;
+
+        .selected {
+            color: vars.color(red);
+        }
+    }
+
+    @include mix.responsive(tablet) {
+        label {
+            display: none;
+        }
+
+        &-content {
+            display: flex;
+            gap: 10px;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+@use "sass:map";
+
+$colors: (
+    black: #000000,
+    red: #f34346,
+    background: #f4f1e8,
+    container: #fffffa,
+    badge: #ffe3d4,
+    medium-badge: #e9e5da,
+    small-text: #5b594e,
+    border: #d8d4c9
+);
+
+$fonts: (
+    body: (Arial, sans-serif),
+    title: ("Barlow Condensed", Arial, sans-serif)
+);
+
+$breakpoints: (
+    tablet: 768px,
+    desktop: 1024px
+);
+
+@function color($name) {
+    @return map.get($colors, $name);
+}
+
+@function font($name) {
+    @return map.get($fonts, $name);
+}
