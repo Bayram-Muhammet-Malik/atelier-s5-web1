@@ -6,6 +6,13 @@ const PAGE_SIZE = 6;
 const container = document.querySelector<HTMLElement>("#app");
 const errorp = document.querySelector<HTMLElement>("#error");
 
+//déconnexion
+document.getElementById('logout-btn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.clear();
+  window.location.href = 'login.html';
+});
+
 async function main(): Promise<void> {
   if (!container) throw new Error("Élément #app introuvable.");
   if (!errorp) throw new Error("Élément #error introuvable.");
