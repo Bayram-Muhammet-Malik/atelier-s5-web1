@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/pass.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="index.html"><h1>Accueil</h1></a>
+                    <a href="spectacles.html"><h1>Programme</h1></a>
+                    <a href="." class="selected"><h1>Pass 3 jours</h1></a>
+                    <a href="billets.html"><h1>Mes billets</h1></a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="content-main">
+                <div class="head-pass">
+                    <div>
+                        <p>Le festival à votre rythme</p>
+                        <h1>Trois nuits. Votre pass.</h1>
+                        <p>3 soirées distinctes, pas forcément consécutives. Tous leurs spectacles. Et exactement 3 % de réduction.</p>
+                    </div>
+                    <h1>-3%</h1>
+                </div>
+                <div id="app" class="deuxtiers">
+                    <p id="error">Erreur de chargement.</p>
+                </div>
+            </section>
+        </main>
+
+        <script id="pass-template" type="text/x-handlebars-template">
+            <section class="deuxtiers">
+                {{#if soirees.length}}
+                <div class="soirees-list">
+                    <h2>01 / CHOISISSEZ VOS SOIRÉES</h2>
+                    {{#each soirees}}
+                    <article class="soiree">
+                        <p>{{soiree.date}} à {{soiree.horaire}} / {{soiree.thematique}}</p>
+                        <h1>{{soiree.nom}}</h1>
+                        <p>{{soiree.lieu}}</p>
+                    </article>
+                    {{/each}}
+                </div>
+                {{/if}}
+
+                <div>
+                    <h2>02 / VOTRE CATÉGORIE</h2>
+                    <form id="ticket-form">
+                        <h1>Réserver vos billets</h1>
+                        <div class="ticket-option">
+                            <label for="tarif-type">Tarif :</label>
+                            <select id="tarif-type" name="tarifType">
+                                <option value="normal">Normal - {{tarifNormal}} €</option>
+                                <option value="reduit">Réduit - {{tarifReduit}} €</option>
+                            </select>
+                        </div>
+
+                        <div class="ticket-option">
+                            <label for="quantite">Quantité :</label>
+                            <input type="number" id="quantite" name="quantite" min="1" max="10" value="1" required>
+                        </div>
+
+                        <button type="submit" class="btn-add-cart">Ajouter au panier <i class="fa-solid fa-cart-shopping"></i></button>
+                    </form>
+                    <div id="cart-message" class="hidden"></div>
+                </div>
+            </section>
+        </script>
+    </body>
+</html>

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace nrv\application\usecases;
 
+use nrv\application\dto\SoireeDTO;
 use nrv\application\dto\SoireeDetailDTO;
 use nrv\application\dto\MinMaxDateDTO;
 use nrv\application\exceptions\DataNotFoundException;
@@ -26,13 +27,21 @@ class ServiceSoiree implements ServiceSoireeInterface {
         $this->tarifRepository = $tarifRepository;
     }
 
+    public function getSoirees(): array {
+        $soirees = $this->soireeRepository->findAll();
+
+        $dtos = [];
+        foreach ($soirees as $soiree) $dtos[] = SoireeDTO::fromSoiree($soiree);
+
+        return $dtos;
+    }
+
     public function getSoireeDetail(string $id): SoireeDetailDTO {
         $soiree = $this->soireeRepository->getSoireeById($id);
         if ($soiree === null) {
             throw new DataNotFoundException("La soirée demandée n'existe pas.");
         }
 
-        // On ajoute à la soirée ses spectacles, puis on transforme le tout en DTO
         foreach ($this->spectacleRepository->findBySoireeId($soiree->getId()) as $spectacle) {
             $soiree->addSpectacle($spectacle);
         }

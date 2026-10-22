@@ -12,18 +12,20 @@ class SoireeDetailDTO {
     public string $thematique;
     public string $date;
     public string $horaire;
+    public int $placesRestantes;
     public string $lieu;
     public float $tarifNormal;
     public float $tarifReduit;
     public array $spectacles;
 
-    public function __construct(string $id, string $nom, string $thematique, string $date, string $horaire, string $lieu, float $tarifNormal, float $tarifReduit, array $spectacles) {
+    public function __construct(string $id, string $nom, string $thematique, string $date, string $horaire, int $placesRestantes, string $lieu, float $tarifNormal, float $tarifReduit, array $spectacles) {
         $this->id = $id;
         $this->nom = $nom;
         $this->thematique = $thematique;
         $this->date = $date;
         $this->horaire = $horaire;
         $this->lieu = $lieu;
+        $this->placesRestantes = $placesRestantes;
         $this->tarifNormal = $tarifNormal;
         $this->tarifReduit = $tarifReduit;
         $this->spectacles = $spectacles;
@@ -51,6 +53,7 @@ class SoireeDetailDTO {
             $soiree->getThematique(),
             $soiree->getDateHeureDebut()->format('Y-m-d'),
             $soiree->getDateHeureDebut()->format('H:i:s'),
+            $soiree->getPlacesRestantes(),
             $soiree->getLieu()->getNom(),
             $tarifNormal,
             $tarifReduit,

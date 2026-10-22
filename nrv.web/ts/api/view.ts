@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import { SoireeDetail, Spectacle, Style } from './types';
+import { Soiree, SoireeDetail, Spectacle, Style } from './types';
 
 export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minmax: { min: string; max: string }, page: number, previousPageUrl: string | null, nextPageUrl: string | null): string {
     const templateElement = document.querySelector<HTMLScriptElement>("#spectacles-template");
@@ -18,4 +18,13 @@ export function renderSoireeDetailView(soiree: SoireeDetail): string {
 
     const template = Handlebars.compile(templateElement.innerHTML);
     return template(soiree);
+}
+
+export function renderPass(soirees: Soiree[]): string {
+    const templateElement = document.querySelector<HTMLScriptElement>("#pass-template");
+
+    if (!templateElement) throw new Error("Template #pass-template introuvable.");
+
+    const template = Handlebars.compile(templateElement.innerHTML);
+    return template({soirees});
 }

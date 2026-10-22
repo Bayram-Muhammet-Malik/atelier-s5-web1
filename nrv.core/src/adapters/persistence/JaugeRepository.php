@@ -32,7 +32,9 @@ class JaugeRepository implements JaugeRepositoryInterface {
                          l.id, l.nom, l.adresse, l.nb_places
                 ORDER BY s.date_soiree";
 
-        $lignes = $this->pdo->query($sql)->fetchAll();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $lignes = $stmt->fetchAll();
 
         $jauges = [];
         foreach ($lignes as $ligne) {

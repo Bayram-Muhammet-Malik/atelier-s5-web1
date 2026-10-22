@@ -1,5 +1,5 @@
 import { API_BASE_URL, API_PATH } from "./config";
-import { SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -7,6 +7,16 @@ function formatMediaUrl(url: string | null): string | null {
 
   const cleanPath = url.startsWith("/") ? url : `/${url}`;
   return `${API_BASE_URL}${cleanPath}`;
+}
+
+export async function fetchSoirees(): Promise<Soiree[]> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}soirees`);
+
+  if (!response.ok) throw new Error('Impossible de charger les soirées');
+
+  const data = await response.json() as SoireesResponse;
+
+  return data.soirees;
 }
 
 export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
@@ -44,8 +54,6 @@ export async function fetchSpectacles(style?: string | null, date?: string | nul
   if (date) url.searchParams.append("date", date);
   if (limit !== undefined) url.searchParams.append("limit", String(limit));
   if (offset !== undefined) url.searchParams.append("offset", String(offset));
-
-  console.log(url.toString());
 
   const response = await fetch(url.toString());
 
