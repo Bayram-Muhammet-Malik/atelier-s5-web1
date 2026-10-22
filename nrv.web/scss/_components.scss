@@ -5,8 +5,9 @@
 .badge {
     padding: 5px 10px;
     background-color: vars.color(badge);
-    color: vars.color(black);
+    color: vars.color(cblack);
     font-weight: bold;
+    width: max-content;
 
     &.gray {
         background-color: vars.color(medium-badge);
@@ -17,8 +18,8 @@
 .custom-checkbox-box {
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     cursor: pointer;
     user-select: none;
 }
@@ -32,7 +33,7 @@
 
         &:checked ~ .checkmark {
             border-color: transparent;
-            background-color: vars.color(red);
+            background-color: vars.color(cred);
 
             &::after {
                 display: block;
@@ -58,11 +59,37 @@
         display: none;
         width: 10px;
         height: 18px;
-        border: solid vars.color(black);
+        border: solid vars.color(cblack);
         border-width: 0 4px 4px 0;
         border-radius: 2px;
         content: "";
         transform: rotate(45deg);
+    }
+}
+
+.meter {
+    height: 13px;
+    width: 100%;
+    background: vars.color(medium-badge);
+    border-radius: 25px;
+    overflow: hidden;
+
+    > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 0%;
+        border-radius: 20px;
+        position: relative;
+        background-color: vars.color(cred); 
+        animation: progress 1s ease-out forwards;
+    }
+}
+
+@keyframes progress {
+    to { 
+        width: var(--target-width); 
     }
 }
 
@@ -75,8 +102,8 @@
 
     &.dynamic-bg {
         &:has(input[type="checkbox"]:checked) {
-            border-color: vars.color(black);
-            background-color: vars.color(container);
+            border-color: vars.color(cblack);
+            background-color: vars.color(cwhite);
         }
 
         &:has(input[type="checkbox"]:disabled),
@@ -94,7 +121,7 @@
     }
 
     p:first-of-type {
-        color: vars.color(red);
+        color: vars.color(cred);
         font-weight: bold;
     }
 }

@@ -5,7 +5,7 @@
     @include mix.flex(row, center, space-between);
     height: 75px;
     padding: 0 20px;
-    background-color: vars.color(black);
+    background-color: vars.color(cblack);
 
     &-title {
         @include mix.flex(row, center, flex-start, 10px);
@@ -13,21 +13,21 @@
 
         > .big-title {
             margin: 0;
-            color: vars.color(red);
+            color: vars.color(cred);
             font-size: 2.5em;
         }
 
         > .medium-title {
             width: 110px;
             margin: 0;
-            color: vars.color(container);
+            color: vars.color(cwhite);
             font-size: 0.75em;
         }
     }
 
     > h1 {
         width: 100%;
-        background-color: vars.color(black);
+        background-color: vars.color(cblack);
         color: vars.color(background);
     }
 
@@ -61,7 +61,7 @@
                 width: 100vw;
                 height: 100vh;
                 padding: 20px;
-                background-color: vars.color(black);
+                background-color: vars.color(cblack);
             }
         }
     }
@@ -83,7 +83,7 @@
         --length: 24;
         --offset: -38;
         fill: none;
-        stroke: vars.color(container);
+        stroke: vars.color(cwhite);
         stroke-width: 3;
         stroke-linecap: round;
         stroke-linejoin: round;
@@ -103,11 +103,11 @@
 
     &-content {
         display: none;
-        color: vars.color(container);
+        color: vars.color(cwhite);
         font-size: 0.6rem;
 
         .selected {
-            color: vars.color(red);
+            color: vars.color(cred);
         }
     }
 

@@ -3,14 +3,14 @@
 
 /* Msg erreur */
 #error {
-    color: vars.color(red);
+    color: vars.color(cred);
 }
 
 /* Head content pricipale */
 .head-main {
     padding: 30px 20px;
-    background-color: vars.color(black);
-    color: vars.color(container);
+    background-color: vars.color(cblack);
+    color: vars.color(cwhite);
 
     &-left {
         @include mix.flex(column, stretch, flex-start, 20px);
@@ -21,7 +21,7 @@
         }
 
         > p:first-of-type {
-            color: vars.color(red);
+            color: vars.color(cred);
             font-weight: bold;
         }
 
@@ -38,7 +38,7 @@
     padding: 20px;
 
     h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
         text-transform: uppercase;
     }
 }
@@ -53,14 +53,14 @@
     border-bottom: 1px solid vars.color(border);
 
     p {
+        color: vars.color(cblack);
         margin: 0;
     }
 }
 
 /* Spectacles */
 .spectacle-grid {
-    padding: 0;
-    overflow: hidden;
+    @include mix.responsive-grid();
 }
 
 .spectacle-list,
@@ -89,15 +89,19 @@
 }
 
 /* Forms add panier */
-#pass-form {
-    flex-direction: row;
+#signup-form, #login-form {
+    p:last-of-type{
+        color: vars.color(cblack);
+        margin-top: 10px;
+        text-align: center;
+    }
 }
 
 #ticket-form {
     padding: 20px;
     border-radius: 10px;
-    background-color: vars.color(black);
-    color: vars.color(container);
+    background-color: vars.color(cblack);
+    color: vars.color(cwhite);
 }
 
 /* head pass 3J */
@@ -113,8 +117,73 @@
 
     > h1 {
         margin-left: auto;
-        color: vars.color(red);
-        font-size: 5rem;
+        color: vars.color(cred);
+        font-size: 4rem;
+    }
+}
+
+/* Admin jauge */
+.jauge-recap{
+    @include mix.responsive-grid();
+}
+
+.jauge-recap > div{
+    background-color: vars.color(cwhite);
+    padding: 20px;
+    border: 1px vars.color(border) solid;
+
+    > p:first-child{
+        text-transform: uppercase;
+    }
+
+    &:nth-child(even) {
+        color: vars.color(cwhite);
+        background-color: vars.color(cblack);
+        
+        * {
+            color: inherit;
+        }
+
+        > h1{
+            color: vars.color(cred);
+        }
+    }
+}
+
+.jauges-list {
+    display: flex;
+    flex-direction: column;
+
+    > div:first-child {
+        display: none; 
+    }
+
+    .jauge-card {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        border: 1px solid vars.color(border);
+        background-color: vars.color(cwhite);
+        margin-bottom: 10px;
+    }
+
+    @include mix.responsive(tablet) {
+        > div:first-child {
+            @include mix.grid(4, 10px);
+            align-items: center;
+            background-color: vars.color(medium-badge);
+            padding: 15px 20px;
+            border: 1px solid vars.color(border);
+        }
+
+        .jauge-card {
+            @include mix.grid(4, 10px);
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 0;
+            margin-top: -1px;
+        }
     }
 }
 
@@ -150,9 +219,5 @@
             padding-right: 15px;
             padding-bottom: 0;
         }
-    }
-
-    .spectacle-grid {
-        @include mix.grid(3, 20px);
     }
 }

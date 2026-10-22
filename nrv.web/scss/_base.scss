@@ -18,6 +18,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    color: vars.color(cblack);
     background-color: vars.color(background);
 }
 
@@ -44,8 +45,8 @@ a {
 button {
     padding: 20px 40px;
     border: none;
-    background-color: vars.color(red);
-    color: vars.color(black);
+    background-color: vars.color(cred);
+    color: vars.color(cblack);
     cursor: pointer;
 
     &:hover {
@@ -82,5 +83,5 @@ input,
 .pbtn {
     padding: 12px 15px;
     border: 1px solid vars.color(border);
-    background-color: vars.color(container);
+    background-color: vars.color(cwhite);
 }

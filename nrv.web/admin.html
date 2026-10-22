@@ -43,7 +43,7 @@
             <section class="content-main">
                 <h1>Le festival en chiffres</h1>
                 <p>Places vendues et recettes par soirée.</p>
-                <div>
+                <div class="jauge-recap">
                     <div>
                         <p><strong>Billet vendus</strong></p>
                         <h1>{{total.billetsVendus}}</h1>
@@ -76,7 +76,12 @@
                             <p><strong>{{jauge.nomSoiree}}</strong></p>
                             <p>Le {{jauge.dateSoiree}}</p>
                         </div>
-                        <p><strong>{{jauge.placesVendues}} / {{jauge.capacite}}</strong></p>
+                        <div>
+                            <p><strong>{{jauge.placesVendues}} / {{jauge.capacite}}</strong></p>
+                            <div class="meter" style="--target-width: calc({{jauge.placesVendues}} / {{jauge.capacite}} * 100%);">
+                                <span></span>
+                            </div>
+                        </div>
                         <p><strong>{{jauge.recette}} €</strong></p>
                         {{#if jauge.placesRestantes}}
                         <p class="badge">{{jauge.placesRestantes}} places restantes</p>
