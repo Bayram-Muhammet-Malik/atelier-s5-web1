@@ -15,7 +15,8 @@ class StyleRepository implements StyleRepositoryInterface {
     }
 
     public function findAll(): array {
-        $stmt = $this->pdo->query("SELECT id, libelle FROM style");
+        $stmt = $this->pdo->prepare("SELECT id, libelle FROM style");
+        $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $styles = [];

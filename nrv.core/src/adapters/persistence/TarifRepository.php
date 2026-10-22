@@ -15,7 +15,8 @@ class TarifRepository implements TarifRepositoryInterface {
     }
 
     public function findAll(): array {
-        $stmt = $this->pdo->query("SELECT id, libelle, prix FROM tarif");
+        $stmt = $this->pdo->prepare("SELECT id, libelle, prix FROM tarif");
+        $stmt->execute();
         $tarifsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $tarifs = [];

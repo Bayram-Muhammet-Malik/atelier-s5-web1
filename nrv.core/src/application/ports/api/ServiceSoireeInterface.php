@@ -7,6 +7,7 @@ use nrv\application\dto\SoireeDetailDTO;
 use nrv\application\dto\MinMaxDateDTO;
 
 interface ServiceSoireeInterface {
+    public function getSoirees(): array;
     public function getSoireeDetail(string $id): SoireeDetailDTO;
     public function getMinMaxDate(): MinMaxDateDTO;
 }

@@ -35,12 +35,29 @@ export interface SpectaclesResult {
     hasNextPage: boolean;
 }
 
+export interface Soiree {
+    id: string;
+    nom: string;
+    thematique: string;
+    date: string;
+    horaire: string;
+    placesRestantes: number;
+    lieu: string;
+}
+
+export interface SoireesResponse {
+    soirees: {
+        soiree: Soiree;
+    }[];
+}
+
 export interface SoireeDetail {
     id: string;
     nom: string;
     thematique: string;
     date: string;
     horaire: string;
+    placesRestantes: number;
     lieu: string;
     tarifNormal: number;
     tarifReduit: number;
@@ -59,11 +76,6 @@ export interface Style {
 export interface StyleResponse {
     styles: {
         style: Style;
-        links: {
-            spectacles: {
-                href: string;
-            };
-        };
     }[];
 }
 

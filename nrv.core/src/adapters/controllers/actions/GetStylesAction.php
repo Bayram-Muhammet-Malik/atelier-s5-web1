@@ -17,7 +17,6 @@ class GetStylesAction extends AbstractAction {
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
-
         try {
             $styles = $this->serviceStyle->getStyles();
         } catch (DataNotFoundException $e) {
@@ -26,12 +25,10 @@ class GetStylesAction extends AbstractAction {
 
         $formattedStyles = [];
         foreach ($styles as $style) {
-            $styleValue = $style->libelle; 
-
             $formattedStyles[] = [
                 'style' => $style,
                 'links' => [
-                    'spectacles' => ['href' => '/spectacles?style=' . urlencode($styleValue)]
+                    'spectacles' => ['href' => '/spectacles?style=' . urlencode($style->libelle)]
                 ]
             ];
         }

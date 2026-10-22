@@ -16,6 +16,22 @@ class SoireeRepository implements SoireeRepositoryInterface {
         $this->pdo = $pdo;
     }
 
+    public function findAll(): array {
+        $stmt = $this->pdo->prepare("
+            SELECT s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
+                   l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places
+            FROM soiree s
+            JOIN lieu l ON s.id_lieu = l.id
+        ");
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $soirees = [];
+        foreach ($res as $data) $soirees[] = $this->construireSoiree($data);
+
+        return $soirees;
+    }
+        
     public function getSoireeById(string $id): ?Soiree {
         $stmt = $this->pdo->prepare("
             SELECT s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
@@ -50,6 +66,7 @@ class SoireeRepository implements SoireeRepositoryInterface {
         }
         return $this->construireSoiree($ligne);
     }
+    
     private function construireSoiree(array $ligne): Soiree {
         $lieu = new Lieu(
             (string) $ligne['id_lieu'],

@@ -6,6 +6,7 @@ use nrv\adapters\controllers\actions\AfficherJaugeAction;
 use nrv\application\ports\api\ServiceJaugeInterface;
 use nrv\adapters\controllers\actions\AfficherBilletAction;
 use nrv\application\ports\api\ServiceBilletInterface;
+use nrv\adapters\controllers\actions\GetSoireeByIdAction;
 use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
 use nrv\application\ports\api\ServiceSpectacleInterface;
 use nrv\adapters\controllers\actions\GetStylesAction;
@@ -21,6 +22,14 @@ return [
 
     AfficherBilletAction::class => function (ContainerInterface $c) {
         return new AfficherBilletAction($c->get(ServiceBilletInterface::class));
+    },
+
+    GetSoireesAction::class => function (ContainerInterface $c) {
+        return new GetSoireesAction($c->get(ServiceSoireeInterface::class));
+    },
+
+    GetSoireesByIdAction::class => function (ContainerInterface $c) {
+        return new GetSoireesAction($c->get(ServiceSoireeInterface::class));
     },
 
     GetSoireeBySpectacleIdAction::class => function (ContainerInterface $c) {

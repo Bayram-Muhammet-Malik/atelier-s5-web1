@@ -10,9 +10,13 @@ use nrv\domain\entities\Soiree;
 class FakeSoireeRepository implements SoireeRepositoryInterface {
 
     public function __construct(
-        private array $soirees,
+        private array $soirees  = [],
         private array $soireeDuSpectacle = []
     ) {}
+
+    public function findAll(): array {
+        return $this->soirees;
+    }
 
     public function getSoireeById(string $id): ?Soiree {
         return $this->soirees[$id] ?? null;

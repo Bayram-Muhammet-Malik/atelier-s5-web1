@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceSoireeInterface;
 
-class AfficherSoireeAction extends AbstractAction {
+class GetSoireeByIdAction extends AbstractAction {
     private ServiceSoireeInterface $serviceSoiree;
 
     public function __construct(ServiceSoireeInterface $serviceSoiree) {
@@ -28,7 +28,8 @@ class AfficherSoireeAction extends AbstractAction {
         return $this->json($response, [
             'soiree' => $soiree,
             'links' => [
-                'self' => ['href' => '/soirees/' . $soiree->id],
+                'self' => ['href' => '/soirees/' . urlencode($soiree->id)],
+                'soirees' => ['href' => '/soirees'],
             ],
         ]);
     }

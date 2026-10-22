@@ -30,6 +30,7 @@ class GetSoireeBySpectacleIdAction extends AbstractAction {
             'links' => [
                 'self'   => ['href' => '/spectacles/' . $idSpectacle . '/soiree'],
                 'soiree' => ['href' => '/soirees/' . $soireeDetail->id],
+                'soirees' => ['href' => '/soirees'],
             ],
         ]);
     }

@@ -30,6 +30,16 @@ function creerServiceSoiree(): ServiceSoiree {
     );
 }
 
+function creerServiceSoireeNoDetail(): ServiceSoiree {
+    $soiree = new Soiree('soiree-2', 'Nuit du blues', 'Soirée blues', new DateTime('2027-06-12 20:30:00'), 697, new Lieu('lieu-2', 'Salle Poirel', '3 rue Victor Poirel', 700));
+
+    return new ServiceSoiree(
+        new FakeSoireeRepository(['soiree-2' => $soiree]),
+        new FakeSpectacleRepository([]),
+        new FakeTarifRepository()
+    );
+}
+
 it('renvoie le détail d\'une soirée avec ses spectacles et ses tarifs', function () {
     $soiree = creerServiceSoiree()->getSoireeDetail('soiree-2');
 
@@ -45,3 +55,15 @@ it('renvoie le détail d\'une soirée avec ses spectacles et ses tarifs', functi
 it('lève une exception quand la soirée n\'existe pas', function () {
     creerServiceSoiree()->getSoireeDetail('soiree-inconnue');
 })->throws(DataNotFoundException::class);
+
+it('renvoie toutes les soirées', function () {
+    $soirees = creerServiceSoireeNoDetail()->getSoirees();
+
+    expect($soirees)->toHaveCount(1);
+
+    $soiree = $soirees[0];
+
+    expect($soiree->nom)->toBe('Nuit du blues');
+    expect($soiree->lieu)->toBe('Salle Poirel');
+    expect($soiree->date)->toBe('2027-06-12');
+});

@@ -4,50 +4,36 @@ declare(strict_types=1);
 namespace nrv\application\dto;
 
 use nrv\domain\entities\Soiree;
+use nrv\domain\entities\Tarif;
 
-class SoireeDTO
-{
+class SoireeDTO {
+    public string $id;
+    public string $nom;
+    public string $thematique;
+    public string $date;
+    public string $horaire;
+    public int $placesRestantes;
+    public string $lieu;
 
-      public function __construct(
-            private string $id,
-            private string $nom,
-            private string $theme,
-            private string $dateHeureDebut,
-            private int $placesRestantes,
-            private LieuDTO $lieu
-      ) {
-      }
+    public function __construct(string $id, string $nom, string $thematique, string $date, string $horaire, int $placesRestantes, string $lieu) {
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->thematique = $thematique;
+        $this->date = $date;
+        $this->horaire = $horaire;
+        $this->placesRestantes = $placesRestantes;
+        $this->lieu = $lieu;
+    }
 
-      public static function fromEntity(Soiree $soiree): self
-      {
-            return new self(
-                  $soiree->getId(),
-                  $soiree->getNom(),
-                  $soiree->getThematique(),
-                  $soiree->getDateHeureDebut()->format('Y-m-d H:i:s'),
-                  $soiree->getPlacesRestantes(),
-                  LieuDTO::fromEntity($soiree->getLieu())
-            );
-      }
-
-      public static function listToArray(array $soirees): array
-      {
-            $result = [];
-            foreach ($soirees as $soiree) {
-                  $result[] = self::fromEntity($soiree)->toArray();
-            }
-            return $result;
-      }
-
-      public function toArray(): array
-      {
-            return [
-                  'id' => $this->id,
-                  'nom' => $this->nom,
-                  'theme' => $this->theme,
-                  'dateHeureDebut' => $this->dateHeureDebut,
-                  'placesRestantes' => $this->placesRestantes,
-                  'lieu' => $this->lieu->toArray()
-            ];
-      }
+    public static function fromSoiree(Soiree $soiree): SoireeDTO {
+        return new SoireeDTO(
+            $soiree->getId(),
+            $soiree->getNom(),
+            $soiree->getThematique(),
+            $soiree->getDateHeureDebut()->format('Y-m-d'),
+            $soiree->getDateHeureDebut()->format('H:i:s'),
+            $soiree->getPlacesRestantes(),
+            $soiree->getLieu()->getNom(),
+        );
+    }
 }
