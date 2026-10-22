@@ -25,4 +25,16 @@ class FakeSoireeRepository implements SoireeRepositoryInterface {
         }
         return $this->getSoireeById($idSoiree);
     }
+
+    public function getMinMaxDate(): array {
+        $dates = [];
+        foreach ($this->soirees as $soiree) {
+            $dates[] = $soiree->getDateHeureDebut()->format('Y-m-d');
+        }
+
+        if (count($dates) === 0) {
+            return ['min_date' => null, 'max_date' => null];
+        }
+        return ['min_date' => min($dates), 'max_date' => max($dates)];
+    }
 }

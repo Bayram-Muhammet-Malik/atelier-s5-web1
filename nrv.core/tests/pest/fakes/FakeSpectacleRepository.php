@@ -12,14 +12,27 @@ class FakeSpectacleRepository implements SpectacleRepositoryInterface {
         private array $spectaclesParSoiree
     ) {}
 
-    public function findAll(): array {
-        $tous = [];
+    // Même comportement que le vrai repository : filtres par style et par date, puis pagination
+    public function findAll(?string $style = null, ?string $date = null, ?int $limit = null, ?int $offset = null): array {
+        $resultats = [];
         foreach ($this->spectaclesParSoiree as $spectacles) {
             foreach ($spectacles as $spectacle) {
-                $tous[] = $spectacle;
+                if ($style !== null && $style !== '' && $spectacle->getStyle()->getLibelle() !== $style) {
+                    continue;
+                }
+                if ($date !== null && $date !== '' && $spectacle->getDateSoiree() !== $date) {
+                    continue;
+                }
+                $resultats[] = $spectacle;
             }
         }
-        return $tous;
+
+        // array_slice découpe le tableau comme LIMIT / OFFSET en SQL
+        if ($limit !== null && $limit > 0) {
+            $resultats = array_slice($resultats, $offset ?? 0, $limit);
+        }
+
+        return $resultats;
     }
 
     public function findBySoireeId(string $idSoiree): array {
