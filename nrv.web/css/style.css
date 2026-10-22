@@ -12,7 +12,7 @@
     --container-color: #FFFFFA;
     --badge-color: #FFE3D4;
     --medium-badge-color: #E9E5DA;
-    --small-txt-color: #726F65;
+    --small-txt-color: #5b594e;
     --border-color: #D8D4C9;
 }
 
@@ -38,11 +38,11 @@ button{
 }
 button:hover{background-color: var(--badge-color);}
 
-p {margin: 0 0 10px 0;}
+p {margin: 0 0 10px 0; color: var(--small-txt-color);}
 h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 h1, h2 {font-family: 'Barlow Condensed';}
 
-#signup-form, #login-form, #ticket-form{
+form{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -55,8 +55,7 @@ select, input, .pbtn {
     border: 1px solid var(--border-color);
 }
 
-/* Custom checkbox */
-.custom-checkbox {
+.custom-checkbox-box {
     display: inline-block;
     position: relative;
     width: 40px;
@@ -67,7 +66,6 @@ select, input, .pbtn {
 .custom-checkbox input {
     position: absolute;
     opacity: 0;
-    cursor: pointer;
     height: 0;
     width: 0;
 }
@@ -96,6 +94,16 @@ select, input, .pbtn {
     transform: rotate(45deg);
 }
 .custom-checkbox input:checked ~ .checkmark::after {display: block;}
+
+.badge{
+    font-weight: bold;
+    color: var(--black-color);
+    background-color: var(--badge-color);
+    padding: 5px 10px;
+}
+.badge.gray{
+    background-color: var(--medium-badge-color);
+}
 
 /* Menu */
 .menu {
@@ -206,6 +214,7 @@ select, input, .pbtn {
 
 /* Specifique */
 #filter-spectacles {
+    display: flex;
     flex-direction: row;
     align-items: center;
     padding: 10px 0;
@@ -255,6 +264,7 @@ select, input, .pbtn {
     justify-content: center;
 }
 
+#pass-form{flex-direction: row;}
 #ticket-form{
     padding: 20px;
     color: var(--container-color);
@@ -268,22 +278,30 @@ select, input, .pbtn {
     margin-bottom: 20px;
 }
 
-.head-pass > div p{
-    color: var(--small-txt-color);
-}
-
 .head-pass > h1{
     font-size: 5rem; 
     color: var(--red-color);
     margin-left: auto;
 }
 
-.soiree{
+.soiree {
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 15px;
     border: 2px var(--border-color) solid;
+    cursor: pointer;
+}
+
+.soiree.dynamic-bg:has(input[type="checkbox"]:checked) {background-color: var(--container-color); border-color: var(--black-color);}
+.soiree.dynamic-bg:has(input[type="checkbox"]:disabled), .soiree.dynamic-bg:not(:has(input[type="checkbox"])) {background-color: var(--medium-badge-color);}
+
+.soirees-list .badge{
+    margin: 0 0 0 auto;
+}
+.soirees-list > div{
+    display: flex;
+    align-items: center;
 }
 
 @media screen and (min-width:768px){

@@ -14,11 +14,37 @@ async function main(): Promise<void> {
         const soirees = await fetchSoirees();
         
         container.innerHTML = renderPass(soirees);
-        errorp.innerHTML = "";
 
+        const form = document.querySelector<HTMLFormElement>("#pass-form");
+        if (!form) return;
+
+        const checkboxes = Array.from(form.querySelectorAll<HTMLInputElement>('.soirees-list input[type="checkbox"]'));
+        const counter = form.querySelector<HTMLElement>(".soirees-list > div:first-child .badge");
+
+        if (!counter) return;
+
+        const maxSelections = 3;
+
+        function updateCounter(): void {
+            const selectedCount = checkboxes.filter((checkbox) => checkbox.checked).length;
+
+            counter.textContent = `${selectedCount} / ${maxSelections} sélectionnées`;
+
+            checkboxes.forEach((checkbox) => {
+                if (!checkbox.checked) {
+                    checkbox.disabled = selectedCount >= maxSelections;
+                }
+            });
+        }
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", updateCounter);
+        });
+
+        updateCounter();
     } catch (error) {
         console.error(error);
-        errorp.innerHTML = "<p>Impossible de charger les spéctacles.</p>";
+        errorp.innerHTML = "<p>Impossible de charger les soirées.</p>";
     }
 }
 

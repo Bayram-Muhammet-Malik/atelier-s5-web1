@@ -41,7 +41,6 @@ async function main(): Promise<void> {
     const nextPageUrl = spectacles.hasNextPage ? createPageUrl(page + 1) : null;
 
     container.innerHTML = renderSpectacles(spectacles.spectacles, styles, minmax, page, previousPageUrl, nextPageUrl,);
-    errorp.innerHTML = "";
 
     const styleSelect = container.querySelector<HTMLSelectElement>("#style-select",);
     const dateInput = container.querySelector<HTMLInputElement>("#date-input",);

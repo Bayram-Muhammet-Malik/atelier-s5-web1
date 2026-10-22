@@ -50,24 +50,32 @@
         </main>
 
         <script id="pass-template" type="text/x-handlebars-template">
-            <form class="deuxtiers">
+            <form id="pass-form" class="deuxtiers">
                 {{#if soirees.length}}
                 <div class="soirees-list">
-                    <h2>01 / CHOISISSEZ VOS SOIRÉES</h2>
+                    <div>
+                        <h2>01 / CHOISISSEZ VOS SOIRÉES</h2>
+                        <p class="badge">0 / 3 sélectionnées</p>
+                    </div>
                     {{#each soirees}}
-                    <div class="soiree">
-                        <div>
-                            <label for="{{soiree.id}}" class="custom-checkbox">
-                                <input type="checkbox" id="{{soiree.id}}" name="{{soiree.id}}">
-                                <span class="checkmark"></span>
-                            </label>
+                    <label for="{{soiree.id}}" class="soiree custom-checkbox dynamic-bg">
+                        <div class="custom-checkbox-box">
+                            {{#if soiree.placesRestantes}}
+                            <input type="checkbox" id="{{soiree.id}}" name="{{soiree.id}}">
+                            {{/if}}
+                            <span class="checkmark"></span>
                         </div>
                         <div>
                             <p>Le {{soiree.date}} à {{soiree.horaire}}</p>
                             <h2>{{soiree.nom}}</h2>
                             <p>{{soiree.lieu}}</p>
                         </div>
-                    </div>
+                        {{#if soiree.placesRestantes}}
+                        <p class="badge">{{soiree.placesRestantes}} places restantes</p>
+                        {{else}}
+                        <p class="badge gray">Complet</p>
+                        {{/if}}
+                    </label>
                     {{/each}}
                 </div>
                 {{/if}}
