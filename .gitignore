@@ -14,6 +14,9 @@ nrv.core/vendor/
 package-lock.json
 nrv.web/node_modules/
 
+nrv.web/css/style.css
+nrv.web/css/style.css.map
+
 # ---- Cache et logs ----
 *.log
 *.cache
