@@ -7,5 +7,6 @@ use nrv\domain\entities\Utilisateur;
 
 interface UserRepositoryInterface {
     public function findByEmail(string $email): ?Utilisateur;
+    public function findById(string $id): ?Utilisateur;
     public function save(Utilisateur $user): void;
 }
