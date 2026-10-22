@@ -11,6 +11,8 @@ use nrv\adapters\controllers\actions\GetStylesAction;
 use nrv\adapters\controllers\actions\GetMinMaxAction;
 use nrv\adapters\controllers\actions\LoginAction;
 use nrv\adapters\controllers\actions\SignupAction;
+use nrv\adapters\controllers\actions\CreerCommandeAction;
+use nrv\adapters\controllers\actions\PayerCommandeAction;
 use nrv\adapters\controllers\middlewares\AuthMiddleware;
 use nrv\adapters\controllers\middlewares\AdminMiddleware;
 
@@ -28,5 +30,9 @@ return function (App $app): App {
 
     $app->post('/login', LoginAction::class);
     $app->post('/signup', SignupAction::class);
+    $app->post('/commandes', CreerCommandeAction::class)
+        ->add(AuthMiddleware::class);
+    $app->post('/commandes/{id}/paiement', PayerCommandeAction::class)
+        ->add(AuthMiddleware::class);
     return $app;
 };
