@@ -33,6 +33,8 @@ use nrv\application\usecases\ServiceSpectacle;
 use nrv\application\usecases\ServiceStyle;
 use nrv\application\usecases\ServiceUser;
 
+use nrv\adapters\controllers\middlewares\AuthMiddleware;
+
 return [
     // Connexion PDO partagée, injectée dans les repositories
     \PDO::class => function (ContainerInterface $c) {
@@ -105,7 +107,11 @@ return [
     ServiceUserInterface::class => function (ContainerInterface $c) {
         return new ServiceUser(
             $c->get(UserRepositoryInterface::class),
-            'nrv_jwt_secret_key_super_securisee'
+            $c->get('jwt.secret')
         );
+    },
+
+    AuthMiddleware::class => function (ContainerInterface $c) {
+        return new AuthMiddleware($c->get('jwt.secret'));
     },
 ];

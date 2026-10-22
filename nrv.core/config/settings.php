@@ -7,4 +7,5 @@ return [
     'db.database' => $_ENV['DB_NAME'],
     'db.username' => $_ENV['DB_USER'],
     'db.password' => $_ENV['DB_PASSWORD'],
+    'jwt.secret'  => $_ENV['JWT_SECRET'],
 ];
