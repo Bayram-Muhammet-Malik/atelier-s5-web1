@@ -42,7 +42,7 @@ p {margin: 0 0 10px 0;}
 h1, h2, h3, h4, h5, h6 {margin: 10px 0;}
 h1, h2 {font-family: 'Barlow Condensed';}
 
-form{
+#signup-form, #login-form, #ticket-form{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -54,6 +54,48 @@ select, input, .pbtn {
     padding: 12px 15px;
     border: 1px solid var(--border-color);
 }
+
+/* Custom checkbox */
+.custom-checkbox {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    user-select: none;
+}
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+}
+.custom-checkbox input:checked ~ .checkmark {background-color: var(--red-color); border: none;}
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 13px;
+    top: 6px;
+    width: 10px;
+    height: 18px;
+    border: solid var(--black-color);
+    border-width: 0 4px 4px 0;
+    border-radius: 2px;
+    transform: rotate(45deg);
+}
+.custom-checkbox input:checked ~ .checkmark::after {display: block;}
 
 /* Menu */
 .menu {
@@ -175,7 +217,7 @@ select, input, .pbtn {
     margin: 0;
 }
 
-.spectacle-list {
+.spectacle-list, .soirees-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -236,13 +278,21 @@ select, input, .pbtn {
     margin-left: auto;
 }
 
+.soiree{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 2px var(--border-color) solid;
+}
+
 @media screen and (min-width:768px){
     .menu-content {display: flex; gap: 10px;}
     .menu label { display: none;}
 
     .head-main-left > h1{ width: 400px; }
 
-    .deuxtiers{display: flex; }
+    .deuxtiers{display: flex; gap: 20px;}
     .deuxtiers > *:first-child {flex: 2; }
     .deuxtiers > *:last-child {flex: 1; }
 
