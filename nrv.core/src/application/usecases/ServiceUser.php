@@ -34,6 +34,7 @@ class ServiceUser implements ServiceUserInterface {
 
     public function register(string $nom, string $prenom, string $email, string $password): Utilisateur {
         if ($this->userRepository->findByEmail($email) !== null) throw new \InvalidArgumentException("Un compte existe déjà avec cette adresse email.");
+        if (strlen($password) < 12) throw new \InvalidArgumentException("Le mot de passe doit contenir au moins 12 caractères.");
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
 

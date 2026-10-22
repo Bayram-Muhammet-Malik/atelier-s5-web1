@@ -7,7 +7,7 @@ use nrv\application\ports\api\ServiceUserInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class LoginAction {
+class PostLoginAction {
     private ServiceUserInterface $serviceUser;
 
     public function __construct(ServiceUserInterface $serviceUser) {

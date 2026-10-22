@@ -159,11 +159,11 @@ INSERT INTO image (id, url, id_spectacle) VALUES
 
 -- Utilisateurs
 INSERT INTO utilisateur (id, nom, prenom, email, mot_de_passe, role) VALUES
-('b3c8f2a1-d4e5-4a6b-8c9d-0e1f2a3b4c5d', 'Admin', 'NRV', 'admin@nrv.net', '$2y$10$isrKauxXacGG7HSmQMBeR.fnTWRr8MI1Qzw0wWQsYAvUUCKz/zL5G', 1),
-('a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5e', 'Bayram', 'Muhammet', 'malik.bayram@mail.fr', '$2y$10$isrKauxXacGG7HSmQMBeR.fnTWRr8MI1Qzw0wWQsYAvUUCKz/zL5G', 0),
-('f4e3d2c1-b0a9-4a8b-7c6d-5e4f3a2b1c0d', 'Thomas', 'Léo', 'leo.thomas@mail.fr', '$2y$10$isrKauxXacGG7HSmQMBeR.fnTWRr8MI1Qzw0wWQsYAvUUCKz/zL5G', 0),
-('c9b8a7f6-e5d4-4c3b-2a10-f9e8d7c6b5a4', 'Schaeffer', 'Johan', 'johan.schaeffer@mail.fr', '$2y$10$isrKauxXacGG7HSmQMBeR.fnTWRr8MI1Qzw0wWQsYAvUUCKz/zL5G', 0),
-('d1e2f3a4-b5c6-4d7e-8f90-1a2b3c4d5e6f', 'Durand', 'Loïc', 'loic.durand@mail.fr', '$2y$10$isrKauxXacGG7HSmQMBeR.fnTWRr8MI1Qzw0wWQsYAvUUCKz/zL5G', 0);
+('b3c8f2a1-d4e5-4a6b-8c9d-0e1f2a3b4c5d', 'Admin', 'NRV', 'admin@nrv.net', '$2y$10$3GwOX1e.TDrPJej2O/7bL.56/mqpUBHmN8eCVnaWslu62iahwPmmG', 1),
+('a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5e', 'Bayram', 'Muhammet', 'malik.bayram@mail.fr', '$2y$10$B0hMG2vU2V/gS249GNbqOuNl63xStCCTq3HwV7dz8DgH1fQn7FQKC', 0),
+('f4e3d2c1-b0a9-4a8b-7c6d-5e4f3a2b1c0d', 'Thomas', 'Léo', 'leo.thomas@mail.fr', '$2y$10$cxcCSXJEIA8ClR0gs7R/MuvPItI8SWzXrVG9omBIIi1xCvdeSBsVK', 0),
+('c9b8a7f6-e5d4-4c3b-2a10-f9e8d7c6b5a4', 'Schaeffer', 'Johan', 'johan.schaeffer@mail.fr', '$2y$10$AFCIiAqoWGEHaguXzVzd8ODb3s2qml/HV/RCeYKiP9MMuzP6UnxX.', 0),
+('d1e2f3a4-b5c6-4d7e-8f90-1a2b3c4d5e6f', 'Durand', 'Loïc', 'loic.durand@mail.fr', '$2y$10$GpFVfOel406UrmbmHcm2uu4mUBRXR2drdfyhLCTSrovNSftgA3Jt.', 0);
 
 -- Tarifs
 INSERT INTO tarif (id, libelle, prix) VALUES
