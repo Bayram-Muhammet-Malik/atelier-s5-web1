@@ -4,14 +4,18 @@ declare(strict_types=1);
 namespace nrv\domain\entities;
 
 use DateTimeInterface;
+use nrv\domain\exceptions\StatusChangeNotAllowedException;
 
 class Commande {
+    public const STATUT_EN_ATTENTE = 'en_attente';
+    public const STATUT_PAYEE = 'payee';
+
     public function __construct(
         private string $id,
         private Utilisateur $utilisateur,
         private DateTimeInterface $dateCommande,
         private float $montantTotal,
-        private string $statut = 'en_attente',
+        private string $statut = self::STATUT_EN_ATTENTE,
         private array $billets = []
     ) {}
 
@@ -44,5 +48,12 @@ class Commande {
 
     public function addBillet(Billet $billet): void {
         $this->billets[] = $billet;
+    }
+
+    public function payer(): void {
+        if ($this->statut !== self::STATUT_EN_ATTENTE) {
+            throw new StatusChangeNotAllowedException("Cette commande a déjà été payée.");
+        }
+        $this->statut = self::STATUT_PAYEE;
     }
 }
