@@ -59,6 +59,7 @@ export function logout(): void {
 }
 
 export function initAuthMenu(): void {
+  localStorage.getItem(AUTH_TOKEN_KEY);
     const menuContent = document.querySelector<HTMLElement>(".menu-content");
     const loginButton = document.querySelector<HTMLAnchorElement>("#login-btn");
 

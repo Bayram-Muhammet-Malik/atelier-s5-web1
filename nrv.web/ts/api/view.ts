@@ -28,3 +28,12 @@ export function renderPass(soirees: Soiree[]): string {
     const template = Handlebars.compile(templateElement.innerHTML);
     return template({soirees});
 }
+
+export function renderJauges(jauges: Jauges[], total: { billetsVendus: number; recettes: number; capacite: number; placesRestantes: number; tauxRemplissage: number; }): string {
+    const templateElement = document.querySelector<HTMLScriptElement>("#admin-template");
+
+    if (!templateElement) throw new Error("Template #admin-template introuvable.");
+
+    const template = Handlebars.compile(templateElement.innerHTML);
+    return template({jauges, total});
+}

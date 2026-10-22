@@ -16,14 +16,13 @@ async function main(): Promise<void> {
     const date = params.get("date");
 
     try {
-        errorp.innerHTML = "<p>Chargement...</p>";
+        errorp.textContent = "Chargement...";
         
         const spectacles = await fetchSpectacles(style, date);
         const styles = await fetchStyles();
         const minmax = await fetchMinMaxDates();
         
         container.innerHTML = renderSpectacles(spectacles.spectacles, styles, minmax);
-        errorp.innerHTML = "";
 
         const styleSelect = container.querySelector<HTMLSelectElement>("#style-select");
         const dateInput = container.querySelector<HTMLInputElement>("#date-input");
@@ -46,8 +45,7 @@ async function main(): Promise<void> {
         dateInput?.addEventListener("change", handleFilterChange);
 
     } catch (error) {
-        console.error(error);
-        errorp.innerHTML = "<p>Impossible de charger les spéctacles.</p>";
+        errorp.textContent = error.message;
     }
 }
 

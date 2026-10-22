@@ -1,4 +1,5 @@
 import { API_BASE_URL, API_PATH } from "./config";
+import { getAuthHeaders } from './auth';
 import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 
 function formatMediaUrl(url: string | null): string | null {
@@ -94,4 +95,20 @@ export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> 
 
   const data = await response.json();
   return data.date_limits; 
+}
+
+export async function fetchJauges(): Promise<Jauge[]> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}admin/jauge`, {
+    method: "GET",
+    headers: getAuthHeaders()
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) throw new Error("Vous devez être connecté pour accéder à cette page.");
+    if (response.status === 403) throw new Error("Accès réservé aux administrateurs.");
+    throw new Error("Impossible de charger les jauges");
+  }
+
+  const data = await response.json() as JaugesResponse;
+  return data.soirees;
 }

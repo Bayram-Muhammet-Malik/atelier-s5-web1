@@ -8,19 +8,24 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Exception\HttpForbiddenException;
-use nrv\domain\entities\Utilisateur;
+use Slim\Exception\HttpUnauthorizedException;
+use nrv\application\ports\api\ServiceUserInterface;
 
-/**
- * Classe qui sert à faire passer uniquelent les admins sinon erreur 403
- * A utiliser après le auth middleware qui add le role dans la requete
-  */
+// Classe qui sert à faire passer uniquelent les admins sinon erreur 403
 class AdminMiddleware implements MiddlewareInterface
 {
+    private ServiceUserInterface $serviceUser;
+
+    public function __construct(ServiceUserInterface $serviceUser) {
+        $this->serviceUser = $serviceUser;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($request->getAttribute('role') !== Utilisateur::ROLE_ADMIN) {
-            throw new HttpForbiddenException($request, "Accès réservé aux administrateurs.");
-        }
+        $uuid = $request->getAttribute('idUtilisateur');
+
+        if (empty($uuid)) throw new HttpUnauthorizedException($request, "Non identifié.");
+        if (!$this->serviceUser->isAdmin($uuid)) throw new HttpForbiddenException($request, "Accès refusé");
 
         return $handler->handle($request);
     }

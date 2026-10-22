@@ -57,7 +57,7 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                display: block;
+                @include mix.flex(column, center, center);
                 width: 100vw;
                 height: 100vh;
                 padding: 20px;
@@ -82,7 +82,6 @@
     path {
         --length: 24;
         --offset: -38;
-
         fill: none;
         stroke: vars.color(container);
         stroke-width: 3;

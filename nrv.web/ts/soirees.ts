@@ -72,12 +72,12 @@ async function main(): Promise<void> {
     const spectacleId = params.get("spectacleId");
 
     if (!id && !spectacleId) {
-        if (errorp) errorp.innerHTML = "<p>Identifiant de soirée ou de spectacle manquant.</p>";
+        errorp.textContent = "Identifiant de soirée ou de spectacle manquant.";
         return;
     }
 
     try {
-        if (errorp) errorp.innerHTML = "<p>Chargement...</p>";
+        errorp.textContent = "Chargement...";
 
         let soiree;
         if (id) {
@@ -93,8 +93,7 @@ async function main(): Promise<void> {
         container.innerHTML = renderSoireeDetailView(soiree);
         setupFormHandler(soiree);
     } catch (error) {
-        console.error(error);
-        if (errorp) errorp.innerHTML = "<p>Impossible de charger la soirée. Vérifiez la connexion à l'API.</p>";
+        errorp.textContent = error.message;
     }
 }
 

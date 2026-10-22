@@ -38,6 +38,7 @@ use nrv\application\usecases\ServiceUser;
 use nrv\application\usecases\ServiceCommande;
 
 use nrv\adapters\controllers\middlewares\AuthMiddleware;
+use nrv\adapters\controllers\middlewares\AdminMiddleware;
 
 return [
     // Connexion PDO partagée, injectée dans les repositories
@@ -130,5 +131,9 @@ return [
 
     AuthMiddleware::class => function (ContainerInterface $c) {
         return new AuthMiddleware($c->get('jwt.secret'));
+    },
+
+    AdminMiddleware::class => function (ContainerInterface $c) {
+        return new AdminMiddleware($c->get(ServiceUserInterface::class));
     },
 ];

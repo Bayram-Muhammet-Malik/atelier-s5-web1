@@ -9,4 +9,5 @@ interface ServiceUserInterface {
     public function login(string $email, string $password): Utilisateur;
     public function register(string $nom, string $prenom, string $email, string $password): Utilisateur;
     public function generateJwt(Utilisateur $user): string;
+    public function isAdmin(string $id): bool;
 }

@@ -12,7 +12,7 @@ async function main(): Promise<void> {
     initAuthMenu();
 
     try {
-        errorp.innerHTML = "<p>Chargement...</p>";
+        errorp.textContent = "Chargement...";
         
         const soirees = await fetchSoirees();
         
@@ -46,8 +46,7 @@ async function main(): Promise<void> {
 
         updateCounter();
     } catch (error) {
-        console.error(error);
-        errorp.innerHTML = "<p>Impossible de charger les soirées.</p>";
+        errorp.textContent = error.message;
     }
 }
 

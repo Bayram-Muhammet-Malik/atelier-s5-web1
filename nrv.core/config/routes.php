@@ -18,7 +18,9 @@ use nrv\adapters\controllers\middlewares\AuthMiddleware;
 use nrv\adapters\controllers\middlewares\AdminMiddleware;
 
 return function (App $app): App {
-    $app->get('/admin/jauge', AfficherJaugeAction::class);
+    $app->get('/admin/jauge', AfficherJaugeAction::class)
+        ->add(AdminMiddleware::class)
+        ->add(AuthMiddleware::class);
 
     $app->get('/billets/{token}', AfficherBilletAction::class);
     $app->get('/soirees', GetSoireesAction::class);
@@ -34,5 +36,6 @@ return function (App $app): App {
         ->add(AuthMiddleware::class);
     $app->post('/commandes/{id}/paiement', PayerCommandeAction::class)
         ->add(AuthMiddleware::class);
+
     return $app;
 };

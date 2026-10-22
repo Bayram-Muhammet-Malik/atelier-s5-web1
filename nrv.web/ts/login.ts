@@ -27,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             window.location.href = "./index.html";
         } catch (error) {
-            console.error("Erreur de connexion :", error);
-
             alert(error instanceof Error ? error.message : "Impossible de contacter le serveur.");
         }
     });

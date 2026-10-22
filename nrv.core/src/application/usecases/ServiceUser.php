@@ -55,4 +55,10 @@ class ServiceUser implements ServiceUserInterface {
 
         return JWT::encode($payload, $this->secretKey, 'HS256');
     }
+
+    public function isAdmin(string $id): bool{
+        $user = $this->userRepository->findById($id);
+        
+        return $user->isAdmin();
+    }
 }

@@ -84,3 +84,29 @@ export interface AuthResponse {
   message?: string;
   error?: string;
 }
+
+export interface Jauge {
+    idSoiree: string;
+    nomSoiree: string;
+    dateSoiree: string;
+    capacite: number;
+    placesVendues: number;
+    placesRestantes: number;
+    recette: number;
+}
+
+export interface JaugesResponse {
+    soirees: {
+        jauge: Jauge;
+        links: {
+        soiree: {
+            href: string;
+        };
+    };
+    }[];
+    links: {
+        self: {
+            href: string;
+        };
+    };
+}

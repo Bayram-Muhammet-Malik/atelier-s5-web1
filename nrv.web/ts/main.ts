@@ -22,7 +22,7 @@ async function main(): Promise<void> {
   const offset = (page - 1) * PAGE_SIZE;
 
   try {
-    errorp.innerHTML = "<p>Chargement...</p>";
+    errorp.textContent = "Chargement...";
 
     const spectacles = await fetchSpectacles(style, date, PAGE_SIZE, offset,);
     const styles = await fetchStyles();
@@ -65,8 +65,7 @@ async function main(): Promise<void> {
     styleSelect?.addEventListener("change", handleFilterChange);
     dateInput?.addEventListener("change", handleFilterChange);
   } catch (error) {
-    console.error(error);
-    errorp.innerHTML = "<p>Impossible de charger les spectacles.</p>";
+    errorp.textContent = error.message;
   }
 }
 

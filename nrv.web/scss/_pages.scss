@@ -103,7 +103,6 @@
 /* head pass 3J */
 .head-pass {
     @include mix.flex(row, center);
-
     margin-bottom: 20px;
 
     > div {

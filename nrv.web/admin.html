@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/admin.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="."><h1>Accueil</h1></a>
+                    <a href="spectacles.html"><h1>Programme</h1></a>
+                    <a href="pass.html"><h1>Pass 3 jours</h1></a>
+                    <a href="login.html" id="login-btn"><h1>Connexion</h1></a>
+                </div>
+            </div>
+        </header>
+
+        <main id="app">
+            <section class="content-main">
+                <p id="error">Erreur de chargement.</p>
+            </section>
+        </main>
+
+        <script id="admin-template" type="text/x-handlebars-template">
+            <section class="content-main">
+                <h1>Le festival en chiffres</h1>
+                <p>Places vendues et recettes par soirée.</p>
+                <div>
+                    <div>
+                        <p><strong>Billet vendus</strong></p>
+                        <h1>{{total.billetsVendus}}</h1>
+                        <p>sur {{total.capacite}} places proposées</p>
+                    </div>
+                    <div>
+                        <p><strong>Recettes totales</strong></p>
+                        <h1>{{total.recettes}} €</h1>
+                        <p>Paiements validés uniquement</p>
+                    </div>
+                    <div>
+                        <p><strong>Taux de remplissage</strong></p>
+                        <h1>{{total.tauxRemplissage}}%</h1>
+                        <p>sur {{total.placesRestantes}} places disponibles</p>
+                    </div>
+                </div>
+                <div>
+                <h1>Les soirées</h1>
+                {{#if jauges.length}}
+                <div class="jauges-list">
+                    <div>
+                        <h2>Soirée / Date</h2>
+                        <h2>Vendues / Capacité</h2>
+                        <h2>Recettes</h2>
+                        <h2>Disponibilité</h2>
+                    </div>
+                    {{#each jauges}}
+                    <div class="jauge-card">
+                        <div>
+                            <p><strong>{{jauge.nomSoiree}}</strong></p>
+                            <p>Le {{jauge.dateSoiree}}</p>
+                        </div>
+                        <p><strong>{{jauge.placesVendues}} / {{jauge.capacite}}</strong></p>
+                        <p><strong>{{jauge.recette}} €</strong></p>
+                        {{#if jauge.placesRestantes}}
+                        <p class="badge">{{jauge.placesRestantes}} places restantes</p>
+                        {{else}}
+                        <p class="badge gray">Complet</p>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+                {{else}}
+                <p>Aucune soirée trouvé.</p>
+                {{/if}}
+            </section>
+        </script>
+    </body>
+</html>
