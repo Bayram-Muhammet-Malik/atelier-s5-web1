@@ -34,7 +34,8 @@ class BilletRepository implements BilletRepositoryInterface {
                 JOIN soiree s ON s.id = b.id_soiree
                 JOIN lieu l ON l.id = s.id_lieu
                 JOIN tarif t ON t.id = b.id_tarif
-                WHERE b.token = :token";
+                WHERE b.token = :token
+                  AND c.statut = 'payee'";
 
         // Requête préparée : le token vient de l'URL, on ne le colle jamais directement dans le SQL
         $stmt = $this->pdo->prepare($sql);

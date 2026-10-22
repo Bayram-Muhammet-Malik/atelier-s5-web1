@@ -28,6 +28,7 @@ class JaugeRepository implements JaugeRepositoryInterface {
                 FROM soiree s
                 JOIN lieu l ON l.id = s.id_lieu
                 LEFT JOIN billet b ON b.id_soiree = s.id
+                    AND b.id_commande IN (SELECT id FROM commande WHERE statut = 'payee')
                 GROUP BY s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
                          l.id, l.nom, l.adresse, l.nb_places
                 ORDER BY s.date_soiree";
