@@ -22,7 +22,12 @@ class ServiceUser implements ServiceUserInterface {
     public function login(string $email, string $password): Utilisateur {
         $user = $this->userRepository->findByEmail($email);
 
-        if ($user === null || !password_verify($password, $user->getMotDePasse())) throw new UnauthorizedException("Email ou mot de passe incorrect." . $password . "doit être" . $user->getMotDePasse() );
+        if ($user === null) {
+            throw new UnauthorizedException("Email ou mot de passe incorrect.");
+        }
+        if (!password_verify($password, $user->getMotDePasse())) {
+            throw new UnauthorizedException("Email ou mot de passe incorrect.");
+        }
 
         return $user;
     }
@@ -31,7 +36,7 @@ class ServiceUser implements ServiceUserInterface {
         if ($this->userRepository->findByEmail($email) !== null) throw new \InvalidArgumentException("Un compte existe déjà avec cette adresse email.");
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        
+
         $user = new Utilisateur(Uuid::uuid4()->toString(), $nom, $prenom, $email, $hash, Utilisateur::ROLE_CLIENT);
 
         $this->userRepository->save($user);
