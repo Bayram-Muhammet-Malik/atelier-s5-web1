@@ -24,6 +24,16 @@ class UserRepository implements UserRepositoryInterface {
         return new Utilisateur($row['id'], $row['nom'], $row['prenom'], $row['email'], $row['mot_de_passe'], (int) $row['role']);
     }
 
+    public function findById(string $id): ?Utilisateur {
+        $stmt = $this->pdo->prepare("SELECT id, nom, prenom, email, mot_de_passe, role FROM utilisateur WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) return null;
+
+        return new Utilisateur($row['id'], $row['nom'], $row['prenom'], $row['email'], $row['mot_de_passe'], (int) $row['role']);
+    }
+
     public function save(Utilisateur $user): void {
         $stmt = $this->pdo->prepare(
             "INSERT INTO utilisateur (id, nom, prenom, email, mot_de_passe, role) VALUES (:id, :nom, :prenom, :email, :motDePasse, :role)"
