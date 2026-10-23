@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
-import { Billet, BilletResponse, Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import { Billet, BilletResponse, Soiree, SoireesResponse, SoireeDetail, SoireeResponse, SpectaclesResponse, Style, StyleResponse, Jauge, JaugesResponse, MyBilletsResponse } from './types';
 import type { CartItem } from "./cart";
 
 export interface CommandeCreatedResponse {
@@ -211,7 +211,7 @@ export async function fetchStyles(): Promise<Style[]> {
         throw new Error("Impossible de charger les styles");
     }
 
-    const data = await response.json() as StylesResponse;
+    const data = await response.json() as StyleResponse;
 
     return data.styles;
 }
@@ -249,4 +249,23 @@ export async function fetchBillet(token: string): Promise<Billet> {
   const data = await response.json() as BilletResponse;
 
   return data.billet;
+}
+
+export async function fetchMyBillets(): Promise<Billet[]> {
+    const response = await fetch(`${API_BASE_URL}${API_PATH}billets`, {
+        method: "GET",
+        headers: getAuthHeaders()
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) throw new Error("Vous devez être connecté pour accéder à cette page.");
+        throw new Error("Impossible de charger les billets");
+    }
+
+    const data = await response.json() as MyBilletsResponse;
+
+    return data.billets.map(item => ({
+        ...item.billet,
+        soirees: item.billet.soirees.map((s: any) => s.soiree)
+    }));
 }

@@ -1,7 +1,6 @@
 import { fetchJauges } from "./api/api";
 import { renderJauges } from "./api/view";
-import { API_BASE_URL, API_PATH } from "./api/config";
-import { initAuthMenu, getAuthHeaders } from "./api/auth";
+import { initAuthMenu } from "./api/auth";
 
 const container = document.querySelector<HTMLElement>("#app");
 const errorp = document.querySelector<HTMLElement>("#error");

@@ -9,5 +9,5 @@
     "outDir": "./js",
     "noEmitOnError": true
   },
-  "include": ["src/**/*"]
+  "include": ["ts/**/*"]
 }

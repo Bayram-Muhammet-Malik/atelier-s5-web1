@@ -99,10 +99,10 @@ export interface JaugesResponse {
     soirees: {
         jauge: Jauge;
         links: {
-        soiree: {
-            href: string;
+            soiree: {
+                href: string;
+            };
         };
-    };
     }[];
     links: {
         self: {
@@ -111,27 +111,10 @@ export interface JaugesResponse {
     };
 }
 
-export interface BilletSoiree {
-    soiree: {
-        id: string;
-        nom: string;
-        thematique: string;
-        date: string;
-        horaire: string;
-        placesRestantes: number;
-        lieu: string;
-    };
-    links: {
-        soiree: {
-            href: string;
-        };
-    };
-}
-
 export interface Billet {
     reference: string;
     nomAcheteur: string;
-    soirees: BilletSoiree[];
+    soirees: SoireeDetail[];
     categorieTarif: string;
     prixPaye: number;
     estPass: boolean;
@@ -139,4 +122,9 @@ export interface Billet {
 
 export interface BilletResponse {
     billet: Billet;
+    links: { self: { href: string } };
+}
+
+export interface MyBilletsResponse {
+    billets: BilletResponse[];
 }

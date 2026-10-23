@@ -47,7 +47,7 @@ function renderCart(): void {
             tarifLibelle: item.tarifType === "normal" ? "Normal" : "Réduit"
       }));
 
-      app.innerHTML = renderTemplate("cart-template", {
+      app.innerHTML = renderTemplate("#cart-template", {
             lignes,
             total: getCartTotal().toFixed(2),
             panierVide: lignes.length === 0,

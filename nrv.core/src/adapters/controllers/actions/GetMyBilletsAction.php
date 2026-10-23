@@ -5,15 +5,14 @@ namespace nrv\adapters\controllers\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpNotFoundException;
-use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceBilletInterface;
 
-class GetMyBilletsAction extends AbstractAction {
-
+class GetMyBilletsAction extends AbstractAction
+{
     private ServiceBilletInterface $serviceBillet;
 
-    public function __construct(ServiceBilletInterface $serviceBillet) {
+    public function __construct(ServiceBilletInterface $serviceBillet)
+    {
         $this->serviceBillet = $serviceBillet;
     }
 
@@ -22,28 +21,30 @@ class GetMyBilletsAction extends AbstractAction {
 
         $billetsDTO = $this->serviceBillet->getBilletsByUserId($userId);
 
-        $billetsFormates = array_map(function($billetDTO) {
+        $billetsFormates = array_map(function ($billetDTO) {
             $soireesFormatees = [];
+
             foreach ($billetDTO->soirees as $soireeData) {
                 $soireesFormatees[] = [
                     'soiree' => $soireeData,
                     'links' => [
-                        'soiree' => ['href' => '/soirees/' . $soireeData['id']]
+                        'soiree' => [
+                            'href' => '/soirees/' . $soireeData['id']
+                        ]
                     ]
                 ];
             }
 
+            $billet = get_object_vars($billetDTO);
+
+            $billet['soirees'] = $soireesFormatees;
+
             return [
-                'billet' => [
-                    'reference' => $billetDTO->reference,
-                    'nomAcheteur' => $billetDTO->nomAcheteur,
-                    'soirees' => $soireesFormatees,
-                    'categorieTarif' => $billetDTO->categorieTarif,
-                    'prixPaye' => $billetDTO->prixPaye,
-                    'estPass' => $billetDTO->estPass,
-                ],
+                'billet' => $billet,
                 'links' => [
-                    'self' => ['href' => '/billets/' . $billetDTO->token]
+                    'self' => [
+                        'href' => '/billets/' . $billetDTO->token
+                    ]
                 ]
             ];
         }, $billetsDTO);
@@ -52,8 +53,12 @@ class GetMyBilletsAction extends AbstractAction {
             'billets' => $billetsFormates
         ];
 
-        $rs->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES));
-        return $rs->withStatus(200)
-                ->withHeader('Content-Type', 'application/json;charset=utf-8');
+        $rs->getBody()->write(
+            json_encode($data, JSON_UNESCAPED_SLASHES)
+        );
+
+        return $rs
+            ->withStatus(200)
+            ->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
 }

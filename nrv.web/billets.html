@@ -32,7 +32,6 @@
                 </div>
             </div>
         </header>
-
         <main id="app">
             <section class="content-main">
                 <p id="error">Erreur de chargement.</p>
@@ -40,24 +39,87 @@
         </main>
 
         <script id="billet-template" type="text/x-handlebars-template">
-            <section class="content-main">
-                <article class="billet">
-                    <p class="medium-title">NRV.net - Nancy Rock Vibration</p>
-                    <h1>{{#if estPass}}Pass 3 jours{{else}}Billet{{/if}}</h1>
-                    {{#each soirees}}
-                        <p><strong>{{soiree.nom}}</strong> : le {{soiree.date}} à {{soiree.horaire}}, {{soiree.lieu}}</p>
-                    {{/each}}
-
-                    <div class="billet-infos">
-                        <p><strong>Acheteur :</strong> {{nomAcheteur}}</p>
-                        <p><strong>Référence :</strong> {{reference}}</p>
-                        <p><strong>Tarif :</strong> {{categorieTarif}}</p>
-                        <p><strong>Prix payé :</strong> {{prixPaye}} €</p>
-                    </div>
-                </article>
-
+            <section class="content-main billet">
                 <button type="button" id="print-btn" class="no-print">Imprimer le billet <i class="fa-solid fa-print"></i></button>
+                <h1>NANCY ROCK VIBRATION</h1>
+                {{#if estPass}}
+                <span>PASS 3J / 1 ENTRÉE</span>
+                {{else}}
+                <span>BILLET SOIRÉE / 1 ENTRÉE</span>
+                {{/if}}
+                <span>{{categorieTarif}} · {{prixPaye}} €</span>
+
+                {{#each soirees}}
+                <div class="section">
+                    <h1>{{soiree.nom}}</h1>
+                    <div class="info-grid">
+                        <div>
+                            <p>DATE ET HORAIRE</p>
+                            <h2>{{soiree.date}}</h2>
+                            <p>Début : {{soiree.horaire}}</p>
+                        </div>
+                        <div>
+                            <p>LIEU</p>
+                            <h2>{{soiree.lieu}}</h2>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+
+                <div>
+                    <div>
+                        <p>ACHETEUR · PAS LE PORTEUR DU BILLET</p>
+                        <h2>{{nomAcheteur}}</h2>
+                        <p>RÉFÉRENCE UNIQUE DU BILLET</p>
+                        <h2>{{reference}}</h2>
+                        <p><strong>Billet non nominatif</strong></p>
+                        <p>Valable pour une seule entrée. Le nom de l'acheteur n'impose pas l'identité du porteur. Ne partagez ce billet qu'avec son utilisateur.</p>
+                    </div>
+                </div>
+                <p>Présentez ce billet lisible, sur téléphone ou imprimé. Achat exclusivement en ligne. Données de démonstration · Paiement simulé, aucun débit réel.</p>
             </section>
         </script>
+
+        <script id="mybillets-template" type="text/x-handlebars-template">
+    <section class="content-main mybillets">
+        <h1>Mes billets</h1>
+        {{#each billets}}
+        <div class="billet-container">
+            <div class="billet-header-row">
+                <div>
+                    <h2>Billet {{reference}}</h2>
+                    <p>
+                        {{#if estPass}}
+                        <span>PASS 3J / 1 ENTRÉE</span>
+                        {{else}}
+                        <span>BILLET SOIRÉE / 1 ENTRÉE</span>
+                        {{/if}}
+                        - {{prixPaye}} € (Tarif {{categorieTarif}})
+                    </p>
+                </div>
+                <div>
+                    <a href="?token={{token}}" class="btn">Voir le billet <i class="fa-solid fa-arrow-up-right"></i></a>
+                </div>
+            </div>
+            <div class="soirees-list">
+                {{#each soirees}}
+                <div class="billet-soire-info">
+                    <div>
+                        <p>Le {{date}} à {{horaire}}</p>
+                        <h2>{{nom}} / {{thematique}}</h2>
+                        <p>{{lieu}}</p>
+                    </div>
+                    <div>
+                        <a href="soirees.html?id={{id}}">Voir la soirée <i class="fa-solid fa-arrow-up-right"></i></a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{else}}
+        <p>Vous n'avez aucun billet pour le moment.</p>
+        {{/each}}
+    </section>
+</script>
     </body>
 </html>

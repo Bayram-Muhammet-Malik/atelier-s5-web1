@@ -122,6 +122,34 @@
     }
 }
 
+/* Billet */
+.billet{
+    background-color: vars.color(cwhite);
+
+    h2{
+        margin: -5px 0 20px;
+    }
+
+    .section{
+        margin: 25px 0;
+
+        h1{
+            font-size: 2rem;
+        }
+
+        @media screen{
+            border-radius: 5px;
+            padding: 7px;
+            background-color: vars.color(medium-badge);
+        }
+
+        .info-grid{
+            margin-top: 20px;
+            @include mix.grid(2, 10px);
+        }
+    }
+}
+
 /* Admin jauge */
 .jauge-recap{
     @include mix.responsive-grid();
@@ -183,6 +211,39 @@
             padding: 15px 20px;
             margin-bottom: 0;
             margin-top: -1px;
+        }
+    }
+}
+
+.mybillets {
+    .billet-container {
+        margin-bottom: 2rem;
+        border: 1px solid vars.color(cblack);
+        background-color: vars.color(cwhite);
+    }
+
+    .billet-header-row {
+        background-color: vars.color(medium-badge);
+        padding: 20px;
+        @include mix.flex(column, flex-start, flex-start, 20px);
+
+        @include mix.responsive(tablet) {
+            @include mix.flex(row, center, space-between, 0);
+        }
+    }
+
+    .billet-soire-info {
+        background-color: vars.color(cwhite);
+        border-bottom: 1px solid vars.color(cblack);
+        padding: 20px;
+        @include mix.flex(column, flex-start, flex-start, 20px);
+
+        @include mix.responsive(tablet) {
+            @include mix.flex(row, center, space-between, 0);
+        }
+
+        &:last-child {
+            border-bottom: none;
         }
     }
 }

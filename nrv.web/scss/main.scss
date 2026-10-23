@@ -1,6 +1,99 @@
-@use "variables";
-@use "mixins";
-@use "base";
+@use "variables" as vars;
+@use "mixins" as mix;
 @use "menu";
 @use "components";
 @use "pages";
+
+/* Font */
+@font-face {
+    font-family: "Barlow Condensed";
+    src: url("../fonts/BarlowCondensed-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Global */
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: vars.color(cblack);
+    background-color: vars.color(background);
+}
+
+body {
+    font-family: vars.font(body);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        color: vars.color(small-text);
+    }
+}
+
+button, .btn {
+    display: block;
+    padding: 20px 40px;
+    border: none;
+    background-color: vars.color(cred);
+    color: vars.color(cblack);
+    cursor: pointer;
+
+    &:hover {
+        background-color: vars.color(badge);
+    }
+}
+
+p {
+    margin: 0 0 10px;
+    color: vars.color(small-text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 10px 0;
+}
+
+h1,
+h2 {
+    font-family: vars.font(title);
+}
+
+#ticket-form,
+form {
+    @include mix.flex(column, stretch, flex-start, 15px);
+}
+
+select,
+input,
+.pbtn {
+    padding: 12px 15px;
+    border: 1px solid vars.color(border);
+    background-color: vars.color(cwhite);
+}
+
+.no-print{
+    display: block;
+
+    @media print {
+        display: none;
+    }
+}

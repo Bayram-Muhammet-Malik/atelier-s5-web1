@@ -1,7 +1,7 @@
 import Handlebars from "handlebars";
-import { Billet, Soiree, SoireeDetail, Spectacle, Style } from './types';
+import { Spectacle, Style, Jauge } from './types';
 
-export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minmax: { min: string; max: string }, page: number, previousPageUrl: string | null, nextPageUrl: string | null): string {
+export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minmax: { min: string; max: string }, page?: number, previousPageUrl?: string | null, nextPageUrl?: string | null): string {
     const templateElement = document.querySelector<HTMLScriptElement>("#spectacles-template");
 
     if (!templateElement) throw new Error("Le template #spectacles-template est introuvable.");
@@ -11,13 +11,13 @@ export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minma
     return template({ spectacles, styles, minmax, page, previousPageUrl, nextPageUrl });
 }
 
-export function renderSoireeDetailView(soiree: SoireeDetail): string {
-    const templateElement = document.querySelector<HTMLScriptElement>("#soiree-detail-template");
+export function renderJauges(jauges: Jauge[], total: { billetsVendus: number; recettes: number; capacite: number; placesRestantes: number; tauxRemplissage: number; }): string {
+    const templateElement = document.querySelector<HTMLScriptElement>("#admin-template");
 
-    if (!templateElement) throw new Error("Template #soiree-detail-template introuvable.");
+    if (!templateElement) throw new Error("Template #admin-template introuvable.");
 
     const template = Handlebars.compile(templateElement.innerHTML);
-    return template(soiree);
+    return template({jauges, total});
 }
 
 export function renderPass(soirees: Soiree[]): string {
@@ -29,35 +29,11 @@ export function renderPass(soirees: Soiree[]): string {
     return template({ soirees });
 }
 
-export function renderJauges(jauges: Jauges[], total: { billetsVendus: number; recettes: number; capacite: number; placesRestantes: number; tauxRemplissage: number; }): string {
-    const templateElement = document.querySelector<HTMLScriptElement>("#admin-template");
+export function renderTemplate(templateId: string, data: object): string {
+    const element = document.querySelector<HTMLScriptElement>(`${templateId}`);
 
-    if (!templateElement) throw new Error("Template #admin-template introuvable.");
-
-    const template = Handlebars.compile(templateElement.innerHTML);
-    return template({jauges, total});
-}
-
-export function renderBillet(billet: Billet): string {
-    const templateElement = document.querySelector<HTMLScriptElement>("#billet-template");
-
-    if (!templateElement) throw new Error("Template #billet-template introuvable.");
-
-    const template = Handlebars.compile(templateElement.innerHTML);
-    return template(billet);
-}
-
-export function renderTemplate(
-    templateId: string,
-    data: object
-): string {
-    const element = document.querySelector<HTMLScriptElement>(
-        `#${templateId}`
-    );
-
-    if (!element) {
-        throw new Error(`Template #${templateId} introuvable.`);
-    }
+    if (!element) throw new Error(`Template ${templateId} introuvable.`);
 
     return Handlebars.compile(element.innerHTML)(data);
 }
+

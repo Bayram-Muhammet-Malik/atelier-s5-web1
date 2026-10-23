@@ -1,5 +1,5 @@
 import { fetchSoireeDetail, fetchSoireeBySpectacleId } from "./api/api";
-import { renderSoireeDetailView } from "./api/view";
+import { renderTemplate } from "./api/view";
 import { initAuthMenu } from "./api/auth";
 import { addToCart, type CartItem, type TarifType } from "./api/cart";
 
@@ -94,7 +94,7 @@ async function main(): Promise<void> {
             throw new Error("Soirée introuvable");
         }
 
-        container.innerHTML = renderSoireeDetailView(soiree);
+        container.innerHTML = renderTemplate("#soiree-detail-template", soiree);
         setupFormHandler(soiree);
     } catch (error) {
         errorp.textContent = error.message;

@@ -24,7 +24,7 @@ async function main(): Promise<void> {
   try {
     errorp.textContent = "Chargement...";
 
-    const spectacles = await fetchSpectacles(style, date, PAGE_SIZE, offset,);
+    const spectacles = await fetchSpectacles(style, date, PAGE_SIZE, offset);
     const styles = await fetchStyles();
     const minmax = await fetchMinMaxDates();
 
@@ -42,7 +42,7 @@ async function main(): Promise<void> {
     const previousPageUrl = spectacles.hasPreviousPage ? createPageUrl(page - 1) : null;
     const nextPageUrl = spectacles.hasNextPage ? createPageUrl(page + 1) : null;
 
-    container.innerHTML = renderSpectacles(spectacles.spectacles, styles, minmax, page, previousPageUrl, nextPageUrl,);
+    container.innerHTML = renderSpectacles(spectacles.spectacles, styles, minmax, page, previousPageUrl, nextPageUrl);
 
     const styleSelect = container.querySelector<HTMLSelectElement>("#style-select",);
     const dateInput = container.querySelector<HTMLInputElement>("#date-input",);
