@@ -1,5 +1,5 @@
 import { fetchBillet, fetchMyBillets } from "./api/api";
-import { renderTemplate } from "./api/view";
+import { renderTemplate, renderMyBillets } from "./api/view";
 import { initAuthMenu } from "./api/auth";
 
 const container = document.querySelector<HTMLElement>("#app");
@@ -21,7 +21,7 @@ async function main(): Promise<void> {
             const billets = await fetchMyBillets();
             console.log(billets);
 
-            container.innerHTML = renderTemplate("#mybillets-template", billets);
+            container.innerHTML = renderMyBillets(billets);
             return;
         }
 
