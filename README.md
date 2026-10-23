@@ -21,47 +21,48 @@ S5DWM2
 
 ### Fonctionnalité réalisées
 - Muhammet :
-    - Backend (Panel Admin)
-        - 1 (Créer un article : affichage et traitement d’un formulaire de saisie d’un article)
-        - 3 (Afficher la liste des articles : affichage de la liste des articles sur le CMS)
-        - 10 (Api : liste des articles disponible au format JSON sur l’url /api/articles)
-        - 11 (Api : articles d’une catégorie disponible sur l’url /api/categories/{id_categ}/articles.)
-        - 16 (Tri de la liste d’articles dans l’api)
-    - Frontend (Site static)
-        - 5 (Affichage liste articles d'un auteur en cliquant sur son nom)
+    - Maquettes
+    - Backend
+        - 1 (Affichage de la liste des spectacles : pour chaque spectacle, on affiche le titre, la date et  l’horaire, une image.)
+        - 4 (Filtrage de la liste des spectacles par date.)
+        - 5 (Filtrage de la liste des spectacles par style de musique.)
+    - Frontend
+        - 7 (Visualisation de l’état courant du panier, calcul et affichage du montant total.)
 - Loïc :
-    - Backend (Panel Admin)
-        - 1 (Créer un article : affichage et traitement d’un formulaire de saisie d’un article)
-        - 2 (Créer un article en choisissant une catégorie)
-        - 3 (Afficher la liste des articles : affichage de la liste des articles sur le CMS)
-        - 4 (Afficher la liste des articles en filtrant par catégorie)
-        - 13 (Api : liste des articles d’un auteur disponible à l’url /api/auteurs/{id}/articles)
-    - Frontend (Site static)
-        - 2 (Affichage complet d’un article en cliquant sur un article dans une liste)
-        - 6 (Tri des listes d’articles selon l’ordre ascendant ou descendant de la date de création)
+    - Maquettes
+    - Backend
+        - 2 (Affichage du détail d’une soirée : nom de la soirée, thématique, date et horaire, lieu, tarifs,  ainsi que la liste des spectacles : titre, artistes, description, style de musique, vidéo.)
+        - Système de login/inscription
+    - Frontend
+        - Système de login/inscription
+        - 6 (Lors de la visualisation d’une soirée, possibilité d’ajouter des billets d’entrée pour cette soirée dans un panier.)
 - Johan :
-    - Backend (Panel Admin)
-        - 5 (Création d’une catégorie)
-        - 6 (Formulaire d’authentification)
-        - 9 (Api : liste des catégories disponible au format JSON sur l’url /api/categories)
-        - 12 (Api : article complet disponible au format JSON à l’url /api/articles/{id_a})
-        - 15 (Création d’utilisateurs)
-    - Frontend (Site static)
-        - 1 (Affichage de la liste des articles dans l’ordre chronologique inverse)
-        - 3 (Affichage de la liste des articles d’une catégorie, en cliquant sur la catégorie)
-        - 7 (Filtrage des listes d’articles selon un mot clé dans le titre)
-        - 8 (Filtrage des listes d’articles selon un mot clé dans le titre ou dans le résumé)
+    - Backend
+        - 10 (Création des billets qui doivent comporter : nom de l’acheteur, référence, date et horaire de la soirée, catégorie de tarif; les billets doivent être imprimables et peuvent être réalisés en html/css avec @media print.)
+        - 11 (Affichage de la jauge des spectacles: nombre de places vendues pour chaque soirée, recette de la soirée.)
+        - Tests fonctionnalités 1 2 3
+        - Système de login/inscription
+        - 8 (Validation du panier et transformation en commande.) 
+        - 9 (Paiement de la commande : on simule en transmettant des données correspondant à une carte bancaire : n°, date expiration, code ; le contrôle de disponibilité des places est réalisé à ce moment-là, ainsi que la mise à jour du nombre de places disponibles pour la soirée. C’est à ce moment que la commande est validée.)
+    - Frontend
+        - 10 (Création des billets qui doivent comporter : nom de l’acheteur, référence, date et horaire de la soirée, catégorie de tarif; les billets doivent être imprimables et peuvent être réalisés en html/css avec @media print.)
 - Léo :
-    - Backend (Panel Admin)
-        - 7 (Contrôle d’accès)
-        - 8 (Auteurs : affichage de l'auteur de chaque article dans la liste d'article)
-        - 14 (Publication/dépublication des articles)
-        - 15 (Création d’utilisateurs)
-        - 16 (Tri de la liste d’articles dans l’api)
-    - Frontend (Site static)
-        - 1 (Affichage de la liste des articles dans l’ordre chronologique inverse)
-        - 4 (Affichage complet d’un article en cliquant sur un article dans une liste)
-        - 5 (Affichage liste articles d'un auteur en cliquant sur son nom)
+    - Maquettes
+    - Backend
+        - 3 (En cliquant sur un spectacle dans la liste, le détail de la soirée correspondante est affiché.)
+        - E1 (Pagination de la liste de spectacles.)
+        - Pass 3J
+    - Frontend
+        - 1 (Affichage de la liste des spectacles : pour chaque spectacle, on affiche le titre, la date et  l’horaire, une image.)
+        - 2 (Affichage du détail d’une soirée : nom de la soirée, thématique, date et horaire, lieu, tarifs,  ainsi que la liste des spectacles : titre, artistes, description, style de musique, vidéo.)
+        - 3 (En cliquant sur un spectacle dans la liste, le détail de la soirée correspondante est affiché.)
+        - 4 (Filtrage de la liste des spectacles par date.)
+        - 5 (Filtrage de la liste des spectacles par style de musique.)
+        - E1 (Pagination de la liste de spectacles.)
+        - Système de login/inscription
+        - Pass 3J
+        - (Affichage de la jauge des spectacles: nombre de places vendues pour chaque soirée, recette de la soirée.)
+        - 10 (Création des billets qui doivent comporter : nom de l’acheteur, référence, date et horaire de la soirée, catégorie de tarif; les billets doivent être imprimables et peuvent être réalisés en html/css avec @media print.)
 
 ### Comptes utilisateurs de démo
 - Mail ``admin@nrv.net``, mdp `AdM1n1&tr4t0R`, rôle : Administrateur
@@ -69,12 +70,3 @@ S5DWM2
 - Mail ``loic.durand@mail.fr``, mdp `Loic1234`, rôle : Client
 - Mail ``johan.schaeffer@mail.fr``, mdp `Johan1234`, rôle : Client
 - Mail ``leo.thomas@mail.fr``, mdp `Leo1234`, rôle : Client
-
-| Permission | **Auteur (>= 1 && < 50)** | **Admin (>= 50 && < 100)** | **SuperAdmin (100)** |
-|-----------|-------------------------------|----------------------------------|-------------------------------------------|
-| **Comptes pour tester** | Mail `loic@gmail.com`, mdp `Loic1234` | Mail `hi@gmail.com`, mdp `Malik1234`<br>Mail `johan@gmail.com`, mdp `Johan1234` | Mail `leo.thomas@minipress.com`, mdp `Utilisateur1` |
-| **Créer un article** | Oui | Oui | Oui |
-| **Créer une catégorie** | Oui | Oui | Oui |
-| **Voir les articles** | Oui | Oui | Oui |
-| **Publier/dépublier des articles** | Uniquement les siens | Tous | Tous |
-| **Créer des comptes utilisateurs** | Non | Non | Oui |
