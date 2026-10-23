@@ -64,7 +64,7 @@
                 <div>
                 <h1>Les soirées</h1>
                 {{#if jauges.length}}
-                <div class="jauges-list">
+                <div class="jauges-tab">
                     <div>
                         <h2>Soirée / Date</h2>
                         <h2>Vendues / Capacité</h2>
@@ -72,7 +72,7 @@
                         <h2>Disponibilité</h2>
                     </div>
                     {{#each jauges}}
-                    <div class="jauge-card">
+                    <div>
                         <div>
                             <p><strong>{{jauge.nomSoiree}}</strong></p>
                             <p>Le {{jauge.dateSoiree}}</p>

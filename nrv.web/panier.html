@@ -62,17 +62,7 @@
                 >
 
                 <label for="code">Code de sécurité simulé</label>
-                <input
-                    type="password"
-                    id="code"
-                    name="code"
-                    inputmode="numeric"
-                    maxlength="3"
-                    pattern="[0-9]{3}"
-                    autocomplete="off"
-                    placeholder="123"
-                    required
-                >
+                <input type="password" id="code" name="code" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" autocomplete="off" placeholder="123" required>
 
                 <button type="submit">Payer la commande</button>
             </form>
@@ -88,105 +78,44 @@
                 Découvrir le programme
             </a>
         {{else}}
-            <div class="cart-table-wrapper">
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Soirée</th>
-                            <th>Tarif</th>
-                            <th>Prix unitaire</th>
-                            <th>Quantité</th>
-                            <th>Sous-total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {{#each lignes}}
-                            <tr>
-                                <td>{{nomSoiree}}</td>
-
-                                <td>
-                                    {{#if (eq tarifType "normal")}}
-                                        Normal
-                                    {{else}}
-                                        Réduit
-                                    {{/if}}
-                                </td>
-
-                                <td>{{prixAffiche}} €</td>
-
-                                <td>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="10"
-                                        value="{{quantite}}"
-                                        aria-label="Quantité pour {{nomSoiree}}"
-                                        data-quantity
-                                        data-soiree-id="{{soireeId}}"
-                                        data-tarif-type="{{tarifType}}"
-                                    >
-                                </td>
-
-                                <td>{{sousTotal}} €</td>
-
-                                <td>
-                                    <button
-                                        type="button"
-                                        data-remove
-                                        data-soiree-id="{{soireeId}}"
-                                        data-tarif-type="{{tarifType}}"
-                                    >
-                                        Supprimer
-                                    </button>
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            <div class="cart-tab">
+                <div>
+                    <h2>Soirée</h2>
+                    <h2>Tarif / Prix unitaire</h2>
+                    <h2>Quantité</h2>
+                    <h2>Sous-total</h2>
+                    <h2>Action</h2>
+                </div>
+                {{#each lignes}}
+                <div class="tab-card">
+                    <div>
+                        <p><strong>{{nomSoiree}}</strong></p>
+                    </div>
+                    <div>
+                        {{#if (eq tarifType "normal")}}
+                        <p>Normal</p>
+                        {{else}}
+                        <p>Réduit</p>
+                        {{/if}}
+                        <p>{{prixAffiche}} € / place</p>
+                    </div>
+                    <div>
+                        <input type="number" min="1" max="10" value="{{quantite}}" aria-label="Quantité pour {{nomSoiree}}" data-quantity data-soiree-id="{{soireeId}}" data-tarif-type="{{tarifType}}">
+                    </div>
+                    <p><strong>{{sousTotal}} €</strong></p>
+                    <button type="button" data-remove data-soiree-id="{{soireeId}}" data-tarif-type="{{tarifType}}">Supprimer</button>
+                </div>
+                {{/each}}
             </div>
-
             <h2>Total affiché : {{total}} €</h2>
             <p>Le montant définitif est recalculé par le serveur.</p>
-
             <form id="checkout-form">
                 {{#unless authentifie}}
-                    <p>
-                        Tu dois être connecté pour valider ta commande.
-                        <a href="login.html">Se connecter</a>
-                    </p>
+                <p>Tu dois être connecté pour valider ta commande.<a href="login.html">Se connecter</a></p>
                 {{/unless}}
-
-                <button type="submit">
-                    Valider le panier
-                </button>
+                <button type="submit">Valider le panier</button>
             </form>
         {{/if}}
-    </script>
-
-    <script id="tickets-template" type="text/x-handlebars-template">
-        <h2>Mes billets</h2>
-
-        {{#each billets}}
-            <article class="printed-ticket">
-                <p class="ticket-brand">NRV.net — NANCY ROCK VIBRATION</p>
-                <h2>{{typeBillet}}</h2>
-                {{#each soirees}}
-                    <p><strong>{{soiree.nom}}</strong> : le {{soiree.date}} à {{soiree.horaire}}, {{soiree.lieu}}</p>
-                {{/each}}
-
-                <p><strong>Nom :</strong> {{nomAcheteur}}</p>
-                <p><strong>Référence :</strong> {{reference}}</p>
-                <p><strong>Catégorie :</strong> {{categorieTarif}}</p>
-                <p><strong>Prix payé :</strong> {{prixAffiche}} €</p>
-                <p><strong>Type :</strong> {{typeBillet}}</p>
-            </article>
-        {{/each}}
-
-        <button type="button" id="print-tickets">
-            Imprimer mes billets
-        </button>
     </script>
 </body>
 </html>

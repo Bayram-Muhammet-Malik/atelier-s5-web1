@@ -92,3 +92,21 @@ S5DWM2
 
 #### Backoffice (espace Admin)
 - ``GET`` - ``/admin/jauge`` : Jauge du panneau principale du backoffice **(doit être connecté + administrateur)**
+
+### Liste des pages du frontend web
+#### Global
+- ``index.html`` ou ``/`` : Page d'accueil, liste les spéctacles par groupe de 6 par pages
+- ``spectacles.html`` : Liste tous les spéctacles
+- ``pass.html`` : Page pour crée un pass 3J (Ajout au panier non implémenté à cause d'un manque de temps)
+- ``soirees.html?id={id}`` : Affiche le détail d'une soirée par son id
+- ``soirees.html?spectacleId={id}`` : Affiche le détail d'une soirée à partir de l'id d'un spectacle
+- ``panier.html`` : Affiche le contenu du panier, **si connecté** permet de valider le panier et effectuer le payement
+
+#### Espace utilisateur
+- ``billets.html`` : Liste des billets payé de l'utilisateur **(doit être connecté)**
+- ``billets.html?token={token}`` : Voir le billet associer au token
+- ``login.html`` : Se connecter
+- ``signup.html`` : Créer un compte
+
+#### Backoffice (espace Admin)
+- ``admin.html`` : Jauge du panneau principale du backoffice **(doit être connecté + administrateur)**

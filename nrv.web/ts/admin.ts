@@ -25,7 +25,7 @@ async function main(): Promise<void> {
 
         const total = {
             billetsVendus: stats.totalBilletsVendus,
-            recettes: stats.totalRecettes,
+            recettes: Number(stats.totalRecettes.toFixed(2)),
             capacite: stats.totalCapacite,
             placesRestantes: stats.totalCapacite - stats.totalBilletsVendus,
             tauxRemplissage: stats.totalCapacite > 0 ? Number(((stats.totalBilletsVendus / stats.totalCapacite) * 100).toFixed(2)) : 0

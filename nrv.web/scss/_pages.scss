@@ -104,8 +104,13 @@
     color: vars.color(cwhite);
 }
 
+/* Panier */
 #cart-message{
     color: green;
+}
+
+.cart-tab {
+    @include mix.responsive-tab(5, 10px);
 }
 
 /* head pass 3J */
@@ -182,41 +187,8 @@
     }
 }
 
-.jauges-list {
-    display: flex;
-    flex-direction: column;
-
-    > div:first-child {
-        display: none; 
-    }
-
-    .jauge-card {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 15px;
-        border: 1px solid vars.color(border);
-        background-color: vars.color(cwhite);
-        margin-bottom: 10px;
-    }
-
-    @include mix.responsive(tablet) {
-        > div:first-child {
-            @include mix.grid(4, 10px);
-            align-items: center;
-            background-color: vars.color(medium-badge);
-            padding: 15px 20px;
-            border: 1px solid vars.color(border);
-        }
-
-        .jauge-card {
-            @include mix.grid(4, 10px);
-            align-items: center;
-            padding: 15px 20px;
-            margin-bottom: 0;
-            margin-top: -1px;
-        }
-    }
+.jauges-tab {
+    @include mix.responsive-tab(4, 10px);
 }
 
 .mybillets {

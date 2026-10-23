@@ -53,3 +53,38 @@
         );
     }
 }
+
+@mixin responsive-tab($columns: 4, $gap: 10px) {
+    display: flex;
+    flex-direction: column;
+
+    > div:first-child {
+        display: none;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: $gap;
+        padding: 15px;
+        border: 1px solid vars.color(border);
+        background-color: vars.color(cwhite);
+        margin-bottom: 10px;
+    }
+
+    @include responsive(tablet) {
+        > div:first-child {
+            @include grid($columns, $gap);
+            align-items: center;
+            background-color: vars.color(medium-badge);
+            border: 1px solid vars.color(border);
+        }
+
+        > div {
+            @include grid($columns, $gap);
+            align-items: center;
+            margin-bottom: 0;
+            margin-top: -1px;
+        }
+    }
+}

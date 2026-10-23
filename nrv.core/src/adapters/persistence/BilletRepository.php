@@ -105,7 +105,8 @@ class BilletRepository implements BilletRepositoryInterface {
                 JOIN lieu l ON l.id = s.id_lieu
                 JOIN tarif t ON t.id = b.id_tarif
                 WHERE u.id = :userId
-                  And c.statut = 'payee'";
+                  And c.statut = 'payee'
+                ORDER BY s.date_soiree DESC, s.heure_debut DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['userId' => $userId]);

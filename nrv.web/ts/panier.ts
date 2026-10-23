@@ -25,8 +25,6 @@ const paymentSection =
       document.querySelector<HTMLElement>("#payment-section");
 const paymentForm =
       document.querySelector<HTMLFormElement>("#payment-form");
-const ticketsSection =
-      document.querySelector<HTMLElement>("#tickets-section");
 
 let commandeIdEnCours: string | null = null;
 
@@ -147,10 +145,6 @@ function renderCart(): void {
                         paymentSection.hidden = false;
                   }
 
-                  if (ticketsSection) {
-                        ticketsSection.innerHTML = "";
-                  }
-
                   afficherMessage(
                         `Commande ${commandeIdEnCours} créée. Tu peux maintenant procéder au paiement.`
                   );
@@ -179,19 +173,6 @@ function extraireToken(href: string): string {
       }
 
       return decodeURIComponent(token);
-}
-
-function afficherBillets(billets: Billet[]): void {
-      if (!ticketsSection) return;
-
-      ticketsSection.innerHTML = renderTemplate("tickets-template", {
-            billets: billets.map(billet => ({
-                  ...billet,
-                  prixAffiche: billet.prixPaye.toFixed(2),
-                  typeBillet: billet.estPass ? "Pass 3 jours" : "Billet"
-            }))
-      });
-      ticketsSection.scrollIntoView({ behavior: "smooth" });
 }
 
 paymentForm?.addEventListener("submit", async event => {
@@ -226,7 +207,6 @@ paymentForm?.addEventListener("submit", async event => {
                   expiration: String(formData.get("expiration") ?? "")
             });
 
-            // Le paiement est confirmé : le panier peut être vidé.
             clearCart();
             renderCart();
 
@@ -234,28 +214,7 @@ paymentForm?.addEventListener("submit", async event => {
                   paymentSection.hidden = true;
             }
 
-            afficherMessage(
-                  "Paiement confirmé ! Tes billets sont disponibles ci-dessous."
-            );
-
-            const liens = resultat.links?.billets ?? [];
-
-            if (liens.length === 0) {
-                  afficherMessage(
-                        "Le paiement a réussi, mais aucun lien de billet n'a été retourné.",
-                        true
-                  );
-                  return;
-            }
-
-            // Les billets ne sont consultés qu'après confirmation du paiement.
-            const billets = await Promise.all(
-                  liens.map(lien => fetchBillet(extraireToken(lien.href)))
-            );
-
-            afficherBillets(billets);
-
-            commandeIdEnCours = null;
+            window.location.href = "./billets.html";
       } catch (error) {
             afficherMessage(
                   error instanceof Error
@@ -266,13 +225,6 @@ paymentForm?.addEventListener("submit", async event => {
       } finally {
             if (button) button.disabled = false;
       }
-});
-
-const printButton =
-      document.querySelector<HTMLButtonElement>("#print-tickets");
-
-printButton?.addEventListener("click", () => {
-      window.print();
 });
 
 initAuthMenu();
