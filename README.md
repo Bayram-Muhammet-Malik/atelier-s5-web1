@@ -14,7 +14,7 @@ S5DWM2
 ### Installation
 - Copier-coller le fichier ``.env.dist`` en ``.env`` et remplir le fichier
 - Faire de même pour ``nrv.core/config/.env.dist`` en ``nrv.core/config/.env``
-- Executer les requètes SQL des fichiers ``sql/SAE_tables.sql`` puis ``sql/donnees.sql`` dans adminer (http://localhost:16800 par defaut)
+- Executer les requètes SQL des fichiers ``sql/nrv.schema.sql`` puis ``sql/nrv.data.sql`` dans adminer (http://localhost:16800 par defaut)
 - Une fois les fichiers complétés avec la bonne configuration
 - Lancer docker (s'il n'est pas déjà lancé) puis ouvrez un terminal dans le repertoire racine du projet giftbox et excecutez la commande suivante : ``docker compose up``
 - Acceder à l'appli via http://localhost:16797 et http://localhost:16798
