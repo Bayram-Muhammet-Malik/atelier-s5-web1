@@ -111,14 +111,6 @@ export interface JaugesResponse {
     };
 }
 
-export interface BilletSoiree {
-    idSoiree: string;
-    nomSoiree: string;
-    lieu: string;
-    dateSoiree: string;
-    heureDebut: string;
-}
-
 export interface Billet {
     reference: string;
     nomAcheteur: string;
@@ -130,7 +122,6 @@ export interface Billet {
     categorieTarif: string;
     prixPaye: number;
     estPass: boolean;
-    soirees?: BilletSoiree[];
 }
 
 export interface BilletResponse {
