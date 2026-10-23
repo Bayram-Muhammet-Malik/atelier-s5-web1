@@ -46,3 +46,13 @@ export function renderBillet(billet: Billet): string {
     const template = Handlebars.compile(templateElement.innerHTML);
     return template(billet);
 }
+
+export function renderMyBillets(billets: Billet[]): string {
+    const templateElement = document.querySelector<HTMLScriptElement>("#mybillets-template");
+
+    if (!templateElement) throw new Error("Template #mybillets-template introuvable.");
+
+    const template = Handlebars.compile(templateElement.innerHTML);
+    return template({ billets });
+}
+

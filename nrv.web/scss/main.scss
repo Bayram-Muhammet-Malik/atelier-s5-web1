@@ -45,7 +45,8 @@ a {
     }
 }
 
-button {
+button, .btn {
+    display: block;
     padding: 20px 40px;
     border: none;
     background-color: vars.color(cred);

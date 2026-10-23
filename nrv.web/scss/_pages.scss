@@ -215,6 +215,39 @@
     }
 }
 
+.mybillets {
+    .billet-container {
+        margin-bottom: 2rem;
+        border: 1px solid vars.color(cblack);
+        background-color: vars.color(cwhite);
+    }
+
+    .billet-header-row {
+        background-color: vars.color(medium-badge);
+        padding: 20px;
+        @include mix.flex(column, flex-start, flex-start, 20px);
+
+        @include mix.responsive(tablet) {
+            @include mix.flex(row, center, space-between, 0);
+        }
+    }
+
+    .billet-soire-info {
+        background-color: vars.color(cwhite);
+        border-bottom: 1px solid vars.color(cblack);
+        padding: 20px;
+        @include mix.flex(column, flex-start, flex-start, 20px);
+
+        @include mix.responsive(tablet) {
+            @include mix.flex(row, center, space-between, 0);
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
 /* Responsive */
 @include mix.responsive(tablet) {
     .head-main-left {

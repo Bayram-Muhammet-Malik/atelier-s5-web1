@@ -1,5 +1,5 @@
-import { fetchBillet } from "./api/api";
-import { renderBillet } from "./api/view";
+import { fetchBillet, fetchMyBillets } from "./api/api";
+import { renderBillet, renderMyBillets } from "./api/view";
 import { initAuthMenu } from "./api/auth";
 
 const container = document.querySelector<HTMLElement>("#app");
@@ -14,13 +14,16 @@ async function main(): Promise<void> {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
-    if (!token) {
-        errorp.textContent = "Aucun billet sélectionné.";
-        return;
-    }
+    errorp.textContent = "Chargement...";
 
     try {
-        errorp.textContent = "Chargement...";
+        if (!token) {
+            const billets = await fetchMyBillets();
+            console.log(billets);
+
+            container.innerHTML = renderMyBillets(billets);
+            return;
+        }
 
         const billet = await fetchBillet(token);
         console.log(billet);

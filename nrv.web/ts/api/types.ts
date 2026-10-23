@@ -99,10 +99,10 @@ export interface JaugesResponse {
     soirees: {
         jauge: Jauge;
         links: {
-        soiree: {
-            href: string;
+            soiree: {
+                href: string;
+            };
         };
-    };
     }[];
     links: {
         self: {
@@ -110,6 +110,7 @@ export interface JaugesResponse {
         };
     };
 }
+
 export interface Billet {
     reference: string;
     nomAcheteur: string;
@@ -122,4 +123,8 @@ export interface Billet {
 export interface BilletResponse {
     billet: Billet;
     links: { self: { href: string } };
+}
+
+export interface MyBilletsResponse {
+    billets: BilletResponse[];
 }

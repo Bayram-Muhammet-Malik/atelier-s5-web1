@@ -9,11 +9,12 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceBilletInterface;
 
-class GetBilletByTokenAction extends AbstractAction {
-
+class GetBilletByTokenAction extends AbstractAction
+{
     private ServiceBilletInterface $serviceBillet;
 
-    public function __construct(ServiceBilletInterface $serviceBillet) {
+    public function __construct(ServiceBilletInterface $serviceBillet)
+    {
         $this->serviceBillet = $serviceBillet;
     }
 
@@ -21,13 +22,14 @@ class GetBilletByTokenAction extends AbstractAction {
         $token = $args['token'];
 
         try {
-            $billet = $this->serviceBillet->afficherBillet($token);
+            $billetDTO = $this->serviceBillet->afficherBillet($token);
         } catch (DataNotFoundException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
         $soireesFormatees = [];
-        foreach ($billet->soirees as $soireeData) {
+
+        foreach ($billetDTO->soirees as $soireeData) {
             $soireesFormatees[] = [
                 'soiree' => $soireeData,
                 'links' => [
@@ -38,22 +40,25 @@ class GetBilletByTokenAction extends AbstractAction {
             ];
         }
 
+        $billet = get_object_vars($billetDTO);
+
+        $billet['soirees'] = $soireesFormatees;
+
         $data = [
-            'billet' => [
-                'reference' => $billet->reference,
-                'nomAcheteur' => $billet->nomAcheteur,
-                'soirees' => $soireesFormatees,
-                'categorieTarif' => $billet->categorieTarif,
-                'prixPaye' => $billet->prixPaye,
-                'estPass' => $billet->estPass,
-            ],
+            'billet' => $billet,
             'links' => [
-                'self' => ['href' => '/billets/' . $token],
-            ],
+                'self' => [
+                    'href' => '/billets/' . $token
+                ]
+            ]
         ];
 
-        $rs->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES));
-        return $rs->withStatus(200)
-                  ->withHeader('Content-Type', 'application/json;charset=utf-8');
+        $rs->getBody()->write(
+            json_encode($data, JSON_UNESCAPED_SLASHES)
+        );
+
+        return $rs
+            ->withStatus(200)
+            ->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
 }
