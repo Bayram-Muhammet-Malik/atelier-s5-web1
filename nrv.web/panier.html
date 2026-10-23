@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon panier - NRV.net</title>
+    <link rel="stylesheet" href="css/fa7.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="dist/panier.js" defer></script>
+</head>
+
+<body>
+    <header class="menu">
+        <div class="menu-title">
+            <h1 class="big-title">NRV.net</h1>
+            <p class="medium-title">NANCY ROCK VIBRATION</p>
+        </div>
+
+        <div class="menu-content">
+            <a href="index.html"><h1>Accueil</h1></a>
+            <a href="spectacles.html"><h1>Programme</h1></a>
+            <a href="pass.html"><h1>Pass 3 jours</h1></a>
+            <a href="panier.html"><h1>Mon panier</h1></a>
+            <a href="login.html" id="login-btn"><h1>Connexion</h1></a>
+        </div>
+    </header>
+
+    <main class="content-main cart-page">
+        <h1>Mon panier</h1>
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <div id="app"></div>
+
+        <section id="payment-section" hidden>
+            <h2>Paiement de la commande</h2>
+            <p>
+                Il s'agit d'une simulation : aucune transaction bancaire réelle
+                n'est effectuée.
+            </p>
+
+            <form id="payment-form">
+                <label for="numero">Numéro de carte simulé</label>
+                <input
+                    type="text"
+                    id="numero"
+                    name="numero"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    maxlength="19"
+                    placeholder="4242 4242 4242 4242"
+                    required
+                >
+
+                <label for="expiration">Date d'expiration (MM/AA)</label>
+                <input
+                    type="text"
+                    id="expiration"
+                    name="expiration"
+                    placeholder="12/29"
+                    pattern="(0[1-9]|1[0-2])/[0-9]{2}"
+                    required
+                >
+
+                <label for="code">Code de sécurité simulé</label>
+                <input
+                    type="password"
+                    id="code"
+                    name="code"
+                    inputmode="numeric"
+                    maxlength="3"
+                    pattern="[0-9]{3}"
+                    autocomplete="off"
+                    placeholder="123"
+                    required
+                >
+
+                <button type="submit">Payer la commande</button>
+            </form>
+        </section>
+
+        <section id="tickets-section" aria-live="polite"></section>
+    </main>
+
+    <script id="cart-template" type="text/x-handlebars-template">
+        {{#if panierVide}}
+            <p>Ton panier est vide.</p>
+            <a class="pbtn" href="spectacles.html">
+                Découvrir le programme
+            </a>
+        {{else}}
+            <div class="cart-table-wrapper">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Soirée</th>
+                            <th>Tarif</th>
+                            <th>Prix unitaire</th>
+                            <th>Quantité</th>
+                            <th>Sous-total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{#each lignes}}
+                            <tr>
+                                <td>{{nomSoiree}}</td>
+
+                                <td>
+                                    {{#if (eq tarifType "normal")}}
+                                        Normal
+                                    {{else}}
+                                        Réduit
+                                    {{/if}}
+                                </td>
+
+                                <td>{{prixAffiche}} €</td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        value="{{quantite}}"
+                                        aria-label="Quantité pour {{nomSoiree}}"
+                                        data-quantity
+                                        data-soiree-id="{{soireeId}}"
+                                        data-tarif-type="{{tarifType}}"
+                                    >
+                                </td>
+
+                                <td>{{sousTotal}} €</td>
+
+                                <td>
+                                    <button
+                                        type="button"
+                                        data-remove
+                                        data-soiree-id="{{soireeId}}"
+                                        data-tarif-type="{{tarifType}}"
+                                    >
+                                        Supprimer
+                                    </button>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Total affiché : {{total}} €</h2>
+            <p>Le montant définitif est recalculé par le serveur.</p>
+
+            <form id="checkout-form">
+                {{#unless authentifie}}
+                    <p>
+                        Tu dois être connecté pour valider ta commande.
+                        <a href="login.html">Se connecter</a>
+                    </p>
+                {{/unless}}
+
+                <button type="submit">
+                    Valider le panier
+                </button>
+            </form>
+        {{/if}}
+    </script>
+
+    <script id="tickets-template" type="text/x-handlebars-template">
+        <h2>Mes billets</h2>
+
+        {{#each billets}}
+            <article class="printed-ticket">
+                <p class="ticket-brand">NRV.net — NANCY ROCK VIBRATION</p>
+                <h2>{{nomSoiree}}</h2>
+
+                <p><strong>Nom :</strong> {{nomAcheteur}}</p>
+                <p><strong>Référence :</strong> {{reference}}</p>
+                <p><strong>Date :</strong> {{dateSoiree}}</p>
+                <p><strong>Heure :</strong> {{heureDebut}}</p>
+                <p><strong>Lieu :</strong> {{lieu}}</p>
+                <p><strong>Catégorie :</strong> {{categorieTarif}}</p>
+                <p><strong>Prix payé :</strong> {{prixAffiche}} €</p>
+                <p><strong>Type :</strong> {{typeBillet}}</p>
+            </article>
+        {{/each}}
+
+        <button type="button" id="print-tickets">
+            Imprimer mes billets
+        </button>
+    </script>
+</body>
+</html>

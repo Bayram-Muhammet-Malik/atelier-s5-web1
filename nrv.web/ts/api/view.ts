@@ -8,7 +8,7 @@ export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minma
 
     const template = Handlebars.compile(templateElement.innerHTML);
 
-    return template({spectacles, styles, minmax, page, previousPageUrl, nextPageUrl});
+    return template({ spectacles, styles, minmax, page, previousPageUrl, nextPageUrl });
 }
 
 export function renderSoireeDetailView(soiree: SoireeDetail): string {
@@ -26,7 +26,7 @@ export function renderPass(soirees: Soiree[]): string {
     if (!templateElement) throw new Error("Template #pass-template introuvable.");
 
     const template = Handlebars.compile(templateElement.innerHTML);
-    return template({soirees});
+    return template({ soirees });
 }
 
 export function renderJauges(jauges: Jauges[], total: { billetsVendus: number; recettes: number; capacite: number; placesRestantes: number; tauxRemplissage: number; }): string {
@@ -35,5 +35,20 @@ export function renderJauges(jauges: Jauges[], total: { billetsVendus: number; r
     if (!templateElement) throw new Error("Template #admin-template introuvable.");
 
     const template = Handlebars.compile(templateElement.innerHTML);
-    return template({jauges, total});
+    return template({ jauges, total });
+}
+
+export function renderTemplate(
+    templateId: string,
+    data: object
+): string {
+    const element = document.querySelector<HTMLScriptElement>(
+        `#${templateId}`
+    );
+
+    if (!element) {
+        throw new Error(`Template #${templateId} introuvable.`);
+    }
+
+    return Handlebars.compile(element.innerHTML)(data);
 }

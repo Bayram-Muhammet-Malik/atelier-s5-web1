@@ -1,6 +1,169 @@
 import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
 import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import type { CartItem } from "./cart";
+import Handlebars from "handlebars";
+
+export interface CommandeCreatedResponse {
+    commande: {
+        id: string;
+        [key: string]: unknown;
+    };
+    links?: {
+        paiement?: {
+            href: string;
+        };
+    };
+}
+
+export interface BilletDTO {
+    reference: string;
+    nomAcheteur: string;
+    idSoiree: string;
+    nomSoiree: string;
+    lieu: string;
+    dateSoiree: string;
+    heureDebut: string;
+    categorieTarif: string;
+    prixPaye: number;
+    estPass: boolean;
+}
+
+export interface BilletApiResponse {
+    billet: BilletDTO;
+}
+
+export interface CommandeApiResponse {
+    commande: {
+        id: string;
+        [key: string]: unknown;
+    };
+    links?: {
+        paiement?: {
+            href: string;
+        };
+        billets?: {
+            href: string;
+        }[];
+    };
+}
+
+async function lireErreurApi(
+    response: Response,
+    messageParDefaut: string
+): Promise<Error> {
+    const data: unknown = await response.json().catch(() => null);
+
+    if (data && typeof data === "object") {
+        const obj = data as Record<string, unknown>;
+
+        if (typeof obj.message === "string") {
+            return new Error(obj.message);
+        }
+
+        if (typeof obj.error === "string") {
+            return new Error(obj.error);
+        }
+    }
+
+    return new Error(messageParDefaut);
+}
+
+/**
+ * Crée une commande à partir des lignes du panier.
+ * Les prix sont recalculés par le backend.
+ */
+export async function creerCommande(
+    lignes: CartItem[]
+): Promise<CommandeApiResponse> {
+    if (lignes.length === 0) {
+        throw new Error("Le panier est vide.");
+    }
+
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}commandes`,
+        {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+                lignes: lignes.map(item => ({
+                    soireeId: String(item.soireeId),
+                    tarifType: item.tarifType,
+                    quantite: item.quantite
+                }))
+            })
+        }
+    );
+
+    if (!response.ok) {
+        throw await lireErreurApi(
+            response,
+            "Impossible de créer la commande."
+        );
+    }
+
+    const data = await response.json() as CommandeApiResponse;
+
+    if (!data.commande || !data.commande.id) {
+        throw new Error(
+            "Le backend n'a pas retourné l'identifiant de la commande."
+        );
+    }
+
+    return data;
+}
+
+/**
+ * Paie une commande avec la simulation de carte.
+ */
+export async function payerCommande(
+    idCommande: string,
+    carte: {
+        numero: string;
+        code: string;
+        expiration: string;
+    }
+): Promise<CommandeApiResponse> {
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}commandes/${encodeURIComponent(idCommande)}/paiement`,
+        {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(carte)
+        }
+    );
+
+    if (!response.ok) {
+        throw await lireErreurApi(
+            response,
+            "Le paiement a échoué."
+        );
+    }
+
+    return await response.json() as CommandeApiResponse;
+}
+
+/**
+ * Récupère un billet par son token.
+ */
+export async function fetchBillet(
+    token: string
+): Promise<BilletDTO> {
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}billets/${encodeURIComponent(token)}`
+    );
+
+    if (!response.ok) {
+        throw await lireErreurApi(
+            response,
+            "Impossible de récupérer ce billet."
+        );
+    }
+
+    const data = await response.json() as BilletApiResponse;
+
+    return data.billet;
+}
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -17,7 +180,7 @@ export async function fetchSoirees(): Promise<Soiree[]> {
 
   const data = await response.json() as SoireesResponse;
 
-  return data.soirees;
+  return data.soirees.map(item => item.soiree);
 }
 
 export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
@@ -79,13 +242,17 @@ export async function fetchSpectacles(style?: string | null, date?: string | nul
 }
 
 export async function fetchStyles(): Promise<Style[]> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}styles`);
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}styles`
+    );
 
-  if (!response.ok) throw new Error("Impossible de charger les styles");
+    if (!response.ok) {
+        throw new Error("Impossible de charger les styles");
+    }
 
-  const data = await response.json() as StylesResponse;
+    const data = await response.json() as StylesResponse;
 
-  return data.styles;
+    return data.styles.map(item => item.style);
 }
 
 export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> {
@@ -111,4 +278,19 @@ export async function fetchJauges(): Promise<Jauge[]> {
 
   const data = await response.json() as JaugesResponse;
   return data.soirees;
+}
+
+export function renderTemplate(
+    templateId: string,
+    data: object
+): string {
+    const element = document.querySelector<HTMLScriptElement>(
+        `#${templateId}`
+    );
+
+    if (!element) {
+        throw new Error(`Template #${templateId} introuvable.`);
+    }
+
+    return Handlebars.compile(element.innerHTML)(data);
 }

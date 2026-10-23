@@ -17,7 +17,8 @@ use nrv\application\ports\spi\UserRepositoryInterface;
 use nrv\domain\entities\Billet;
 use nrv\domain\entities\Commande;
 
-class ServiceCommande implements ServiceCommandeInterface {
+class ServiceCommande implements ServiceCommandeInterface
+{
     private const QUANTITE_MAX = 10;
 
     private CommandeRepositoryInterface $commandeRepository;
@@ -43,37 +44,68 @@ class ServiceCommande implements ServiceCommandeInterface {
             throw new DataNotFoundException("Utilisateur introuvable.");
         }
 
-        if (count($lignes) === 0) {
-            throw new ValidationException(['panier' => "Le panier est vide."]);
+        if (empty($lignes)) {
+            throw new ValidationException([
+                'panier' => "Le panier est vide."
+            ]);
         }
 
         $tarifs = [];
         foreach ($this->tarifRepository->findAll() as $tarif) {
-            $type = str_replace('é', 'e', strtolower($tarif->getLibelle()));
-            $tarifs[$type] = $tarif;
+            $tarifs[$tarif->getId()] = $tarif;
         }
-
         $billets = [];
         $montantTotal = 0.0;
+        $quantites = [];
         $idCommande = Uuid::uuid4()->toString();
-
         foreach ($lignes as $ligne) {
-            $soireeId = $ligne['soireeId'] ?? '';
-            $tarifType = $ligne['tarifType'] ?? '';
-            $quantite = $ligne['quantite'] ?? 0;
+            if (!is_array($ligne)) {
+                throw new ValidationException([
+                    'lignes' => "Chaque ligne du panier doit être un objet valide."
+                ]);
+            }
+
+            $soireeId = $ligne['idSoiree'] ?? null;
+            $tarifId = $ligne['idTarif'] ?? null;
+            $quantite = $ligne['quantite'] ?? null;
+
+            if ((!is_string($soireeId) && !is_int($soireeId)) || (string) $soireeId === '') {
+                throw new ValidationException(['idSoiree' => "L'identifiant de la soirée est invalide."]);
+            }
+
+            if ((!is_string($tarifId) && !is_int($tarifId)) || (string) $tarifId === '') {
+                throw new ValidationException(['idTarif' => "L'identifiant du tarif est invalide."]);
+            }
 
             if (!is_int($quantite) || $quantite < 1 || $quantite > self::QUANTITE_MAX) {
-                throw new ValidationException(['quantite' => "La quantité doit être comprise entre 1 et " . self::QUANTITE_MAX . "."]);
-            }
-            if (!isset($tarifs[$tarifType])) {
-                throw new ValidationException(['tarifType' => "Le tarif doit être « normal » ou « reduit »."]);
-            }
-            $soiree = $this->soireeRepository->getSoireeById((string) $soireeId);
-            if ($soiree === null) {
-                throw new ValidationException(['soireeId' => "La soirée demandée n'existe pas."]);
+                throw new ValidationException(['quantite' => "La quantité doit être comprise entre 1 et ". self::QUANTITE_MAX . "."]);
             }
 
-            $tarif = $tarifs[$tarifType];
+            $soireeId = (string) $soireeId;
+            $tarifId = (string) $tarifId;
+            if (!isset($tarifs[$tarifId])) {
+                throw new ValidationException([
+                    'idTarif' => "Le tarif demandé n'existe pas."
+                ]);
+            }
+
+            $cle = $soireeId . '|' . $tarifId;
+            $quantites[$cle] = ($quantites[$cle] ?? 0) + $quantite;
+            if ($quantites[$cle] > self::QUANTITE_MAX) {
+                throw new ValidationException([
+                    'quantite' => "La quantité maximale est de "
+                        . self::QUANTITE_MAX
+                        . " billets par soirée et par tarif."
+                ]);
+            }
+            $soiree = $this->soireeRepository->getSoireeById($soireeId);
+            if ($soiree === null) {
+                throw new DataNotFoundException(
+                    "La soirée demandée n'existe pas."
+                );
+            }
+
+            $tarif = $tarifs[$tarifId];
             for ($i = 0; $i < $quantite; $i++) {
                 $billets[] = new Billet(
                     Uuid::uuid4()->toString(),
@@ -85,21 +117,27 @@ class ServiceCommande implements ServiceCommandeInterface {
                     false,
                     $utilisateur
                 );
+
                 $montantTotal += $tarif->getPrix();
             }
         }
-
-        $commande = new Commande($idCommande, $utilisateur, new DateTimeImmutable(), $montantTotal, Commande::STATUT_EN_ATTENTE);
+        $commande = new Commande(
+            $idCommande,
+            $utilisateur,
+            new DateTimeImmutable(),
+            $montantTotal,
+            Commande::STATUT_EN_ATTENTE
+        );
         foreach ($billets as $billet) {
             $commande->addBillet($billet);
         }
-
         $this->commandeRepository->creer($commande);
-
+        
         return CommandeDTO::fromCommande($commande);
     }
 
-    public function payerCommande(string $idCommande, string $idUtilisateur, array $carte): CommandeDTO {
+    public function payerCommande(string $idCommande, string $idUtilisateur, array $carte): CommandeDTO
+    {
         $this->validerCarte($carte);
 
         $commande = $this->commandeRepository->getCommandeById($idCommande);
@@ -115,7 +153,8 @@ class ServiceCommande implements ServiceCommandeInterface {
         return CommandeDTO::fromCommande($commande);
     }
 
-    private function validerCarte(array $carte): void {
+    private function validerCarte(array $carte): void
+    {
         $erreurs = [];
 
         $numero = str_replace(' ', '', (string) ($carte['numero'] ?? ''));
