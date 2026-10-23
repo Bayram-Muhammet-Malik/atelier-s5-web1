@@ -24,11 +24,12 @@ class CommandeRepository implements CommandeRepositoryInterface {
     public function creer(Commande $commande): void {
         $this->pdo->beginTransaction();
         try {
-            $stmt = $this->pdo->prepare("
+            // 1. Insertion de la commande
+            $stmtCommande = $this->pdo->prepare("
                 INSERT INTO commande (id, id_utilisateur, date_commande, montant_total, statut)
                 VALUES (:id, :id_utilisateur, :date_commande, :montant_total, :statut)
             ");
-            $stmt->execute([
+            $stmtCommande->execute([
                 'id'             => $commande->getId(),
                 'id_utilisateur' => $commande->getUtilisateur()->getId(),
                 'date_commande'  => $commande->getDateCommande()->format('Y-m-d H:i:s'),
@@ -36,14 +37,18 @@ class CommandeRepository implements CommandeRepositoryInterface {
                 'statut'         => $commande->getStatut(),
             ]);
 
+            // 2. Préparation des requêtes pour les billets et la table pivot
             $stmtBillet = $this->pdo->prepare("
                 INSERT INTO billet (id, reference, token, id_commande, id_tarif, prix_paye)
                 VALUES (:id, :reference, :token, :id_commande, :id_tarif, :prix_paye)
             ");
-            // Une ligne dans billet_soiree par soirée du billet (3 pour un pass)
+
             $stmtBilletSoiree = $this->pdo->prepare("
-                INSERT INTO billet_soiree (id_billet, id_soiree) VALUES (:id_billet, :id_soiree)
+                INSERT INTO billet_soiree (id_billet, id_soiree)
+                VALUES (:id_billet, :id_soiree)
             ");
+
+            // 3. Insertion des billets et de leurs soirées
             foreach ($commande->getBillets() as $billet) {
                 $stmtBillet->execute([
                     'id'          => $billet->getId(),
@@ -55,7 +60,10 @@ class CommandeRepository implements CommandeRepositoryInterface {
                 ]);
 
                 foreach ($billet->getSoirees() as $soiree) {
-                    $stmtBilletSoiree->execute(['id_billet' => $billet->getId(), 'id_soiree' => $soiree->getId()]);
+                    $stmtBilletSoiree->execute([
+                        'id_billet' => $billet->getId(),
+                        'id_soiree' => $soiree->getId(),
+                    ]);
                 }
             }
 
