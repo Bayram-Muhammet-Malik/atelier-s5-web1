@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import { Soiree, SoireeDetail, Spectacle, Style } from './types';
+import { Billet, Soiree, SoireeDetail, Spectacle, Style } from './types';
 
 export function renderSpectacles(spectacles: Spectacle[], styles: Style[], minmax: { min: string; max: string }, page: number, previousPageUrl: string | null, nextPageUrl: string | null): string {
     const templateElement = document.querySelector<HTMLScriptElement>("#spectacles-template");
@@ -35,7 +35,16 @@ export function renderJauges(jauges: Jauges[], total: { billetsVendus: number; r
     if (!templateElement) throw new Error("Template #admin-template introuvable.");
 
     const template = Handlebars.compile(templateElement.innerHTML);
-    return template({ jauges, total });
+    return template({jauges, total});
+}
+
+export function renderBillet(billet: Billet): string {
+    const templateElement = document.querySelector<HTMLScriptElement>("#billet-template");
+
+    if (!templateElement) throw new Error("Template #billet-template introuvable.");
+
+    const template = Handlebars.compile(templateElement.innerHTML);
+    return template(billet);
 }
 
 export function renderTemplate(

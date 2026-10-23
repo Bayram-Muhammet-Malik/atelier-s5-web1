@@ -59,7 +59,9 @@ class ServiceUser implements ServiceUserInterface {
 
     public function isAdmin(string $id): bool{
         $user = $this->userRepository->findById($id);
-        
+
+        if ($user === null) return false;
+
         return $user->isAdmin();
     }
 }

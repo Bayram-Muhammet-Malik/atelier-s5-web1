@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
-import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import { Billet, BilletResponse, Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 import type { CartItem } from "./cart";
 
 export interface CommandeCreatedResponse {
@@ -13,23 +13,6 @@ export interface CommandeCreatedResponse {
             href: string;
         };
     };
-}
-
-export interface BilletDTO {
-    reference: string;
-    nomAcheteur: string;
-    idSoiree: string;
-    nomSoiree: string;
-    lieu: string;
-    dateSoiree: string;
-    heureDebut: string;
-    categorieTarif: string;
-    prixPaye: number;
-    estPass: boolean;
-}
-
-export interface BilletApiResponse {
-    billet: BilletDTO;
 }
 
 export interface CommandeApiResponse {
@@ -142,27 +125,6 @@ export async function payerCommande(
     return await response.json() as CommandeApiResponse;
 }
 
-/**
- * Récupère un billet par son token.
- */
-export async function fetchBillet(
-    token: string
-): Promise<BilletDTO> {
-    const response = await fetch(
-        `${API_BASE_URL}${API_PATH}billets/${encodeURIComponent(token)}`
-    );
-
-    if (!response.ok) {
-        throw await lireErreurApi(
-            response,
-            "Impossible de récupérer ce billet."
-        );
-    }
-
-    const data = await response.json() as BilletApiResponse;
-
-    return data.billet;
-}
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -179,7 +141,7 @@ export async function fetchSoirees(): Promise<Soiree[]> {
 
   const data = await response.json() as SoireesResponse;
 
-  return data.soirees.map(item => item.soiree);
+  return data.soirees;
 }
 
 export async function fetchSoireeDetail(id: string): Promise<SoireeDetail> {
@@ -251,7 +213,7 @@ export async function fetchStyles(): Promise<Style[]> {
 
     const data = await response.json() as StylesResponse;
 
-    return data.styles.map(item => item.style);
+    return data.styles;
 }
 
 export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> {
@@ -260,7 +222,7 @@ export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> 
   if (!response.ok) throw new Error("Impossible de charger les dates min et max");
 
   const data = await response.json();
-  return data.date_limits; 
+  return data.date_limits;
 }
 
 export async function fetchJauges(): Promise<Jauge[]> {
@@ -277,4 +239,14 @@ export async function fetchJauges(): Promise<Jauge[]> {
 
   const data = await response.json() as JaugesResponse;
   return data.soirees;
+}
+
+export async function fetchBillet(token: string): Promise<Billet> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}billets/${token}`);
+
+  if (!response.ok) throw new Error("Billet introuvable ou pas encore payé.");
+
+  const data = await response.json() as BilletResponse;
+
+  return data.billet;
 }

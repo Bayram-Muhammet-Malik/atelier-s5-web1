@@ -22,4 +22,14 @@ class FakeBilletRepository implements BilletRepositoryInterface {
         }
         return $this->billets[$token];
     }
+
+    public function getBilletsByUserId(string $userId): array {
+        $resultat = [];
+        foreach ($this->billets as $billet) {
+            if ($billet->getAcheteur() !== null && $billet->getAcheteur()->getId() === $userId) {
+                $resultat[] = $billet;
+            }
+        }
+        return $resultat;
+    }
 }

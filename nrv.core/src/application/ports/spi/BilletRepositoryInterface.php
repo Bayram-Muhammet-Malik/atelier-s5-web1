@@ -7,9 +7,6 @@ use nrv\application\exceptions\DataNotFoundException;
 use nrv\domain\entities\Billet;
 
 interface BilletRepositoryInterface {
-
-    /**
-     * @throws DataNotFoundException si aucun billet n'a ce token
-     */
     public function getBilletByToken(string $token): Billet;
+    public function getBilletsByUserId(string $userId): array;
 }

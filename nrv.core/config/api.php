@@ -6,7 +6,8 @@ use Psr\Container\ContainerInterface;
 
 use nrv\adapters\controllers\actions\GetJaugeAction;
 use nrv\application\ports\api\ServiceJaugeInterface;
-use nrv\adapters\controllers\actions\GetBilletAction;
+use nrv\adapters\controllers\actions\GetBilletByTokenAction;
+use nrv\adapters\controllers\actions\GetMyBilletsAction;
 use nrv\application\ports\api\ServiceBilletInterface;
 use nrv\adapters\controllers\actions\GetSoireeByIdAction;
 use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
@@ -22,8 +23,12 @@ return [
         return new GetJaugeAction($c->get(ServiceJaugeInterface::class));
     },
 
-    GetBilletAction::class => function (ContainerInterface $c) {
-        return new GetBilletAction($c->get(ServiceBilletInterface::class));
+    GetBilletByTokenAction::class => function (ContainerInterface $c) {
+        return new GetBilletByTokenAction($c->get(ServiceBilletInterface::class));
+    },
+
+    GetMyBilletsAction::class => function (ContainerInterface $c) {
+        return new GetMyBilletsAction($c->get(ServiceBilletInterface::class));
     },
 
     GetSoireesAction::class => function (ContainerInterface $c) {

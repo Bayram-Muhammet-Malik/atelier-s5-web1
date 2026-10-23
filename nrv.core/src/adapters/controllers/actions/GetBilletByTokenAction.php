@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceBilletInterface;
 
-class GetBilletAction extends AbstractAction {
+class GetBilletByTokenAction extends AbstractAction {
 
     private ServiceBilletInterface $serviceBillet;
 
@@ -26,11 +26,29 @@ class GetBilletAction extends AbstractAction {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
+        $soireesFormatees = [];
+        foreach ($billet->soirees as $soireeData) {
+            $soireesFormatees[] = [
+                'soiree' => $soireeData,
+                'links' => [
+                    'soiree' => [
+                        'href' => '/soirees/' . $soireeData['id']
+                    ]
+                ]
+            ];
+        }
+
         $data = [
-            'billet' => $billet,
+            'billet' => [
+                'reference' => $billet->reference,
+                'nomAcheteur' => $billet->nomAcheteur,
+                'soirees' => $soireesFormatees,
+                'categorieTarif' => $billet->categorieTarif,
+                'prixPaye' => $billet->prixPaye,
+                'estPass' => $billet->estPass,
+            ],
             'links' => [
-                'self'   => ['href' => '/billets/' . $token],
-                'soiree' => ['href' => '/soirees/' . $billet->idSoiree],
+                'self' => ['href' => '/billets/' . $token],
             ],
         ];
 
