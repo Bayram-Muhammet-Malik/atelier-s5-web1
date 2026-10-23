@@ -171,13 +171,13 @@
         {{#each billets}}
             <article class="printed-ticket">
                 <p class="ticket-brand">NRV.net — NANCY ROCK VIBRATION</p>
-                <h2>{{nomSoiree}}</h2>
+                <h2>{{typeBillet}}</h2>
+                {{#each soirees}}
+                    <p><strong>{{soiree.nom}}</strong> : le {{soiree.date}} à {{soiree.horaire}}, {{soiree.lieu}}</p>
+                {{/each}}
 
                 <p><strong>Nom :</strong> {{nomAcheteur}}</p>
                 <p><strong>Référence :</strong> {{reference}}</p>
-                <p><strong>Date :</strong> {{dateSoiree}}</p>
-                <p><strong>Heure :</strong> {{heureDebut}}</p>
-                <p><strong>Lieu :</strong> {{lieu}}</p>
                 <p><strong>Catégorie :</strong> {{categorieTarif}}</p>
                 <p><strong>Prix payé :</strong> {{prixAffiche}} €</p>
                 <p><strong>Type :</strong> {{typeBillet}}</p>
