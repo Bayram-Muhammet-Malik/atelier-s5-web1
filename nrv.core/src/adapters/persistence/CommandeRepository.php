@@ -37,8 +37,12 @@ class CommandeRepository implements CommandeRepositoryInterface {
             ]);
 
             $stmtBillet = $this->pdo->prepare("
-                INSERT INTO billet (id, reference, token, id_commande, id_soiree, id_tarif, prix_paye, est_pass)
-                VALUES (:id, :reference, :token, :id_commande, :id_soiree, :id_tarif, :prix_paye, :est_pass)
+                INSERT INTO billet (id, reference, token, id_commande, id_tarif, prix_paye)
+                VALUES (:id, :reference, :token, :id_commande, :id_tarif, :prix_paye)
+            ");
+            // Une ligne dans billet_soiree par soirée du billet (3 pour un pass)
+            $stmtBilletSoiree = $this->pdo->prepare("
+                INSERT INTO billet_soiree (id_billet, id_soiree) VALUES (:id_billet, :id_soiree)
             ");
             foreach ($commande->getBillets() as $billet) {
                 $stmtBillet->execute([
@@ -46,11 +50,13 @@ class CommandeRepository implements CommandeRepositoryInterface {
                     'reference'   => $billet->getReference(),
                     'token'       => $billet->getToken(),
                     'id_commande' => $commande->getId(),
-                    'id_soiree'   => $billet->getSoiree()->getId(),
                     'id_tarif'    => $billet->getTarif()->getId(),
                     'prix_paye'   => $billet->getPrixPaye(),
-                    'est_pass'    => $billet->isPass() ? 1 : 0,
                 ]);
+
+                foreach ($billet->getSoirees() as $soiree) {
+                    $stmtBilletSoiree->execute(['id_billet' => $billet->getId(), 'id_soiree' => $soiree->getId()]);
+                }
             }
 
             $this->pdo->commit();
@@ -89,31 +95,42 @@ class CommandeRepository implements CommandeRepositoryInterface {
         );
 
         $stmtBillets = $this->pdo->prepare("
-            SELECT b.id, b.reference, b.token, b.prix_paye, b.est_pass,
-                   s.id AS id_soiree, s.nom AS nom_soiree, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
-                   l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places,
+            SELECT b.id, b.reference, b.token, b.prix_paye,
                    t.id AS id_tarif, t.libelle, t.prix
             FROM billet b
-            JOIN soiree s ON s.id = b.id_soiree
-            JOIN lieu l ON l.id = s.id_lieu
             JOIN tarif t ON t.id = b.id_tarif
             WHERE b.id_commande = :id_commande
             ORDER BY b.reference
         ");
         $stmtBillets->execute(['id_commande' => $id]);
 
+        $stmtSoirees = $this->pdo->prepare("
+            SELECT s.id, s.nom, s.thematique, s.date_soiree, s.heure_debut, s.places_restantes,
+                   l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places
+            FROM billet_soiree bs
+            JOIN soiree s ON s.id = bs.id_soiree
+            JOIN lieu l ON l.id = s.id_lieu
+            WHERE bs.id_billet = :id_billet
+            ORDER BY s.date_soiree
+        ");
+
         foreach ($stmtBillets->fetchAll(PDO::FETCH_ASSOC) as $b) {
-            $lieu = new Lieu($b['id_lieu'], $b['nom_lieu'], $b['adresse'], (int) $b['nb_places']);
-            $soiree = new Soiree(
-                $b['id_soiree'], $b['nom_soiree'], $b['thematique'],
-                new DateTime($b['date_soiree'] . ' ' . $b['heure_debut']),
-                (int) $b['places_restantes'], $lieu
-            );
+            $stmtSoirees->execute(['id_billet' => $b['id']]);
+
+            $soirees = [];
+            foreach ($stmtSoirees->fetchAll(PDO::FETCH_ASSOC) as $s) {
+                $lieu = new Lieu($s['id_lieu'], $s['nom_lieu'], $s['adresse'], (int) $s['nb_places']);
+                $soirees[] = new Soiree(
+                    $s['id'], $s['nom'], $s['thematique'],
+                    new DateTime($s['date_soiree'] . ' ' . $s['heure_debut']),
+                    (int) $s['places_restantes'], $lieu
+                );
+            }
             $tarif = new Tarif($b['id_tarif'], $b['libelle'], (float) $b['prix']);
 
             $commande->addBillet(new Billet(
-                $b['id'], $b['reference'], $b['token'], $soiree, $tarif,
-                (float) $b['prix_paye'], (bool) $b['est_pass'], $utilisateur
+                $b['id'], $b['reference'], $b['token'], $soirees, $tarif,
+                (float) $b['prix_paye'], $utilisateur
             ));
         }
 
@@ -123,8 +140,10 @@ class CommandeRepository implements CommandeRepositoryInterface {
     public function enregistrerPaiement(Commande $commande): void {
         $placesParSoiree = [];
         foreach ($commande->getBillets() as $billet) {
-            $idSoiree = $billet->getSoiree()->getId();
-            $placesParSoiree[$idSoiree] = ($placesParSoiree[$idSoiree] ?? 0) + 1;
+            foreach ($billet->getSoirees() as $soiree) {
+                $idSoiree = $soiree->getId();
+                $placesParSoiree[$idSoiree] = ($placesParSoiree[$idSoiree] ?? 0) + 1;
+            }
         }
 
         $this->pdo->beginTransaction();
