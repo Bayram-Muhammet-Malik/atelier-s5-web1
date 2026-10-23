@@ -1,3 +1,8 @@
+import Handlebars from "handlebars";
+import { renderTemplate } from "./api/view";
+import type { Billet } from "./api/types";
+Handlebars.registerHelper("eq", (a: unknown, b: unknown) => a === b);
+
 import {
       getCart,
       getCartTotal,
@@ -9,8 +14,7 @@ import {
 import {
       creerCommande,
       payerCommande,
-      fetchBillet,
-      type BilletDTO
+      fetchBillet
 } from "./api/api";
 
 import { initAuthMenu, isAuthenticated } from "./api/auth";
@@ -177,17 +181,16 @@ function extraireToken(href: string): string {
       return decodeURIComponent(token);
 }
 
-function afficherBillets(billets: BilletDTO[]): void {
+function afficherBillets(billets: Billet[]): void {
       if (!ticketsSection) return;
 
       ticketsSection.innerHTML = renderTemplate("tickets-template", {
             billets: billets.map(billet => ({
                   ...billet,
                   prixAffiche: billet.prixPaye.toFixed(2),
-                  typeBillet: billet.estPass ? "Pass" : "Billet"
+                  typeBillet: billet.estPass ? "Pass 3 jours" : "Billet"
             }))
       });
-
       ticketsSection.scrollIntoView({ behavior: "smooth" });
 }
 
