@@ -23,6 +23,7 @@ async function main(): Promise<void> {
         errorp.textContent = "Chargement...";
 
         const billet = await fetchBillet(token);
+        console.log(billet);
 
         container.innerHTML = renderBillet(billet);
 

@@ -39,22 +39,47 @@
         </main>
 
         <script id="billet-template" type="text/x-handlebars-template">
-            <section class="content-main">
-                <article class="billet">
-                    <p class="medium-title">NRV.net - Nancy Rock Vibration</p>
-                    <h1>{{nomSoiree}}</h1>
-                    <p>Le {{dateSoiree}} à {{heureDebut}}</p>
-                    <p>{{lieu}}</p>
-
-                    <div class="billet-infos">
-                        <p><strong>Acheteur :</strong> {{nomAcheteur}}</p>
-                        <p><strong>Référence :</strong> {{reference}}</p>
-                        <p><strong>Tarif :</strong> {{categorieTarif}}</p>
-                        <p><strong>Prix payé :</strong> {{prixPaye}} €</p>
-                    </div>
-                </article>
-
+            <section class="content-main billet">
                 <button type="button" id="print-btn" class="no-print">Imprimer le billet <i class="fa-solid fa-print"></i></button>
+                <article class="billet">
+                    <h1>NANCY ROCK VIBRATION</h1>
+                    {{#if estPass}}
+                    <span>PASS 3J / 1 ENTRÉE</span>
+                    {{else}}
+                    <span>BILLET SOIRÉE / 1 ENTRÉE</span>
+                    {{/if}}
+                    <span>{{categorieTarif}} · {{prixPaye}} €</span>
+
+                    {{#each soirees}}
+                    <div class="section">
+                        <h1>{{soiree.nom}}</h1>
+                        
+                        <div class="info-grid">
+                            <div>
+                                <p class="section-label">DATE ET HORAIRE</p>
+                                <h2 class="section-value">{{soiree.date}}</h2>
+                                <p class="sub-value">Début : {{soiree.horaire}}</p>
+                            </div>
+                            <div>
+                                <p class="section-label">LIEU</p>
+                                <h2 class="section-value">{{soiree.lieu}}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+
+                    <div class="billet-footer-container">
+                        <div class="footer-left">
+                            <p>ACHETEUR · PAS LE PORTEUR DU BILLET</p>
+                            <h2>{{nomAcheteur}}</h2>
+                            <p>RÉFÉRENCE UNIQUE DU BILLET</p>
+                            <h2>{{reference}}</h2>
+                            <p><strong>Billet non nominatif</strong></p>
+                            <p>Valable pour une seule entrée. Le nom de l'acheteur n'impose pas l'identité du porteur. Ne partagez ce billet qu'avec son utilisateur.</p>
+                        </div>
+                    </div>
+                    <p>Présentez ce billet lisible, sur téléphone ou imprimé. Achat exclusivement en ligne. Données de démonstration · Paiement simulé, aucun débit réel.</p>
+                </article>
             </section>
         </script>
     </body>
