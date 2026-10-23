@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace nrv\domain\entities;
@@ -6,7 +7,8 @@ namespace nrv\domain\entities;
 use DateTimeInterface;
 use nrv\domain\exceptions\StatusChangeNotAllowedException;
 
-class Commande {
+class Commande
+{
     public const STATUT_EN_ATTENTE = 'en_attente';
     public const STATUT_PAYEE = 'payee';
 
@@ -17,43 +19,50 @@ class Commande {
         private float $montantTotal,
         private string $statut = self::STATUT_EN_ATTENTE,
         private array $billets = []
-    ) {}
+    ) {
+    }
 
-    public function getId(): string {
+    public function getId(): string
+    {
         return $this->id;
     }
 
-    public function getUtilisateur(): Utilisateur {
+    public function getUtilisateur(): Utilisateur
+    {
         return $this->utilisateur;
     }
 
-    public function getDateCommande(): DateTimeInterface {
+    public function getDateCommande(): DateTimeInterface
+    {
         return $this->dateCommande;
     }
 
-    public function getMontantTotal(): float {
+    public function getMontantTotal(): float
+    {
         return $this->montantTotal;
     }
 
-    public function getStatut(): string {
+    public function getStatut(): string
+    {
         return $this->statut;
     }
 
-    /**
-     * @return Billet[]
-     */
-    public function getBillets(): array {
+    public function getBillets(): array
+    {
         return $this->billets;
     }
 
-    public function addBillet(Billet $billet): void {
+    public function addBillet(Billet $billet): void
+    {
         $this->billets[] = $billet;
     }
 
-    public function payer(): void {
+    public function payer(): void
+    {
         if ($this->statut !== self::STATUT_EN_ATTENTE) {
-            throw new StatusChangeNotAllowedException("Cette commande a déjà été payée.");
+            throw new StatusChangeNotAllowedException("Cette commande a déjà été payée ou ne peut plus être payée.");
         }
+
         $this->statut = self::STATUT_PAYEE;
     }
 }

@@ -1,6 +1,130 @@
 import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
 import { Billet, BilletResponse, Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import type { CartItem } from "./cart";
+
+export interface CommandeCreatedResponse {
+    commande: {
+        id: string;
+        [key: string]: unknown;
+    };
+    links?: {
+        paiement?: {
+            href: string;
+        };
+    };
+}
+
+export interface CommandeApiResponse {
+    commande: {
+        id: string;
+        [key: string]: unknown;
+    };
+    links?: {
+        paiement?: {
+            href: string;
+        };
+        billets?: {
+            href: string;
+        }[];
+    };
+}
+
+async function lireErreurApi(
+    response: Response,
+    messageParDefaut: string
+): Promise<Error> {
+    const data: unknown = await response.json().catch(() => null);
+
+    if (data && typeof data === "object") {
+        const obj = data as Record<string, unknown>;
+
+        if (typeof obj.message === "string") {
+            return new Error(obj.message);
+        }
+
+        if (typeof obj.error === "string") {
+            return new Error(obj.error);
+        }
+    }
+
+    return new Error(messageParDefaut);
+}
+
+/**
+ * Crée une commande à partir des lignes du panier.
+ * Les prix sont recalculés par le backend.
+ */
+export async function creerCommande(
+    lignes: CartItem[]
+): Promise<CommandeApiResponse> {
+    if (lignes.length === 0) {
+        throw new Error("Le panier est vide.");
+    }
+
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}commandes`,
+        {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+                lignes: lignes.map(item => ({
+                    soireeId: String(item.soireeId),
+                    tarifType: item.tarifType,
+                    quantite: item.quantite
+                }))
+            })
+        }
+    );
+
+    if (!response.ok) {
+        throw await lireErreurApi(
+            response,
+            "Impossible de créer la commande."
+        );
+    }
+
+    const data = await response.json() as CommandeApiResponse;
+
+    if (!data.commande || !data.commande.id) {
+        throw new Error(
+            "Le backend n'a pas retourné l'identifiant de la commande."
+        );
+    }
+
+    return data;
+}
+
+/**
+ * Paie une commande avec la simulation de carte.
+ */
+export async function payerCommande(
+    idCommande: string,
+    carte: {
+        numero: string;
+        code: string;
+        expiration: string;
+    }
+): Promise<CommandeApiResponse> {
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}commandes/${encodeURIComponent(idCommande)}/paiement`,
+        {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(carte)
+        }
+    );
+
+    if (!response.ok) {
+        throw await lireErreurApi(
+            response,
+            "Le paiement a échoué."
+        );
+    }
+
+    return await response.json() as CommandeApiResponse;
+}
+
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -79,13 +203,17 @@ export async function fetchSpectacles(style?: string | null, date?: string | nul
 }
 
 export async function fetchStyles(): Promise<Style[]> {
-  const response = await fetch(`${API_BASE_URL}${API_PATH}styles`);
+    const response = await fetch(
+        `${API_BASE_URL}${API_PATH}styles`
+    );
 
-  if (!response.ok) throw new Error("Impossible de charger les styles");
+    if (!response.ok) {
+        throw new Error("Impossible de charger les styles");
+    }
 
-  const data = await response.json() as StylesResponse;
+    const data = await response.json() as StylesResponse;
 
-  return data.styles;
+    return data.styles;
 }
 
 export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> {

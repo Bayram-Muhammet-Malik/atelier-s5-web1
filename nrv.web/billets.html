@@ -1,3 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NRV.net</title>
+        <link rel="preload" href="css/fa7.css" as="style">
+        <link rel="stylesheet" href="css/fa7.css">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="dist/billets.js" defer></script>
+    </head>
+    <body>
+        <header class="menu">
+            <div class="menu-title">
+                <h1 class="big-title">NRV.net</h1>
+                <p class="medium-title">NANCY ROCK VIBRATION</p>
+            </div>
+            <div class="menu-link">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line1" d="M0 40h62c13 0 6 28-4 18L35 35" />
+                        <path class="line2" d="M0 50h70" />
+                        <path class="line3" d="M0 60h62c13 0 6-28-4-18L35 65" />
+                    </svg>
+                </label>
+                <div class="menu-content">
+                    <a href="index.html"><h1>Accueil</h1></a>
+                    <a href="spectacles.html"><h1>Programme</h1></a>
+                    <a href="pass.html"><h1>Pass 3 jours</h1></a>
+                    <a href="login.html" id="login-btn"><h1>Connexion</h1></a>
+                </div>
+            </div>
+        </header>
+
         <main id="app">
             <section class="content-main">
                 <p id="error">Erreur de chargement.</p>
@@ -8,9 +43,10 @@
             <section class="content-main">
                 <article class="billet">
                     <p class="medium-title">NRV.net - Nancy Rock Vibration</p>
-                    <h1>{{nomSoiree}}</h1>
-                    <p>Le {{dateSoiree}} à {{heureDebut}}</p>
-                    <p>{{lieu}}</p>
+                    <h1>{{#if estPass}}Pass 3 jours{{else}}Billet{{/if}}</h1>
+                    {{#each soirees}}
+                        <p><strong>{{soiree.nom}}</strong> : le {{soiree.date}} à {{soiree.horaire}}, {{soiree.lieu}}</p>
+                    {{/each}}
 
                     <div class="billet-infos">
                         <p><strong>Acheteur :</strong> {{nomAcheteur}}</p>

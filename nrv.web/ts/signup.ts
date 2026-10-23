@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const data = await signup({prenom, nom, email, mdp});
+            const data = await signup(prenom, nom, email, mdp);
 
             localStorage.setItem("auth_token", data.token);
 

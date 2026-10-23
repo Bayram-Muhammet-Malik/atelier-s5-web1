@@ -26,7 +26,7 @@ export async function login(email: string, mdp: string): Promise<AuthResponse> {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(email, mdp)
+    body: JSON.stringify({email, mdp})
   });
 
   const data = await response.json();
@@ -42,7 +42,7 @@ export async function signup(prenom: string, nom: string, email: string, mdp: st
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(prenom, nom, email, mdp)
+    body: JSON.stringify({prenom, nom, email, mdp})
   });
 
   const data = await response.json();
