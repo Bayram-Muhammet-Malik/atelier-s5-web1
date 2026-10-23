@@ -41,6 +41,8 @@ it('retourne la liste des soirées au format JSON', function () {
 });
 
 it('lève une TypeError si le service lève DataNotFoundException (variable $rq indéfinie)', function () {
+    set_error_handler(fn () => true, E_WARNING | E_NOTICE);
+
     $this->serviceSoireeMock
         ->method('getSoirees')
         ->willThrowException(new DataNotFoundException('Aucune soirée disponible'));
@@ -50,5 +52,9 @@ it('lève une TypeError si le service lève DataNotFoundException (variable $rq 
     $request = $this->requestFactory->createRequest('GET', '/soirees');
     $response = $this->responseFactory->createResponse();
 
-    $action($request, $response, []);
+    try {
+        $action($request, $response, []);
+    } finally {
+        restore_error_handler();
+    }
 })->throws(\TypeError::class);
