@@ -19,6 +19,8 @@ use nrv\domain\entities\Commande;
 
 class ServiceCommande implements ServiceCommandeInterface {
     private const QUANTITE_MAX = 10;
+    private const NB_SOIREES_PASS = 3;
+    private const REMISE_PASS = 0.03;
 
     private CommandeRepositoryInterface $commandeRepository;
     private SoireeRepositoryInterface $soireeRepository;
@@ -58,9 +60,9 @@ class ServiceCommande implements ServiceCommandeInterface {
         $idCommande = Uuid::uuid4()->toString();
 
         foreach ($lignes as $ligne) {
-            $soireeId = $ligne['soireeId'] ?? '';
             $tarifType = $ligne['tarifType'] ?? '';
             $quantite = $ligne['quantite'] ?? 0;
+            $estPass = ($ligne['pass'] ?? false) === true;
 
             if (!is_int($quantite) || $quantite < 1 || $quantite > self::QUANTITE_MAX) {
                 throw new ValidationException(['quantite' => "La quantité doit être comprise entre 1 et " . self::QUANTITE_MAX . "."]);
@@ -68,26 +70,43 @@ class ServiceCommande implements ServiceCommandeInterface {
             if (!isset($tarifs[$tarifType])) {
                 throw new ValidationException(['tarifType' => "Le tarif doit être « normal » ou « reduit »."]);
             }
-            $soiree = $this->soireeRepository->getSoireeById((string) $soireeId);
-            if ($soiree === null) {
-                throw new ValidationException(['soireeId' => "La soirée demandée n'existe pas."]);
+            $tarif = $tarifs[$tarifType];
+
+            if ($estPass) {
+                $idsSoirees = $ligne['soireeIds'] ?? [];
+                if (!is_array($idsSoirees) || count(array_unique($idsSoirees)) !== self::NB_SOIREES_PASS) {
+                    throw new ValidationException(['soireeIds' => "Un pass 3 jours doit contenir 3 soirées différentes."]);
+                }
+                $prix = round(self::NB_SOIREES_PASS * $tarif->getPrix() * (1 - self::REMISE_PASS), 2);
+            } else {
+                $idsSoirees = [$ligne['soireeId'] ?? ''];
+                $prix = $tarif->getPrix();
             }
 
-            $tarif = $tarifs[$tarifType];
+            $soirees = [];
+            foreach ($idsSoirees as $idSoiree) {
+                $soiree = $this->soireeRepository->getSoireeById((string) $idSoiree);
+                if ($soiree === null) {
+                    throw new ValidationException(['soireeId' => "La soirée demandée n'existe pas."]);
+                }
+                $soirees[] = $soiree;
+            }
+
             for ($i = 0; $i < $quantite; $i++) {
                 $billets[] = new Billet(
                     Uuid::uuid4()->toString(),
                     'NRV-' . strtoupper(bin2hex(random_bytes(5))),
                     bin2hex(random_bytes(16)),
-                    $soiree,
+                    $soirees,
                     $tarif,
-                    $tarif->getPrix(),
-                    false,
+                    $prix,
                     $utilisateur
                 );
-                $montantTotal += $tarif->getPrix();
+                $montantTotal += $prix;
             }
         }
+
+        $montantTotal = round($montantTotal, 2);
 
         $commande = new Commande($idCommande, $utilisateur, new DateTimeImmutable(), $montantTotal, Commande::STATUT_EN_ATTENTE);
         foreach ($billets as $billet) {

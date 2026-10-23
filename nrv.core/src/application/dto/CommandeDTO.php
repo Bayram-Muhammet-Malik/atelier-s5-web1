@@ -23,11 +23,13 @@ class CommandeDTO {
     public static function fromCommande(Commande $commande): CommandeDTO {
         $billets = [];
         foreach ($commande->getBillets() as $billet) {
+            $premiereSoiree = $billet->getSoirees()[0];
             $billets[] = [
                 'reference'      => $billet->getReference(),
                 'token'          => $billet->getToken(),
-                'nomSoiree'      => $billet->getSoiree()->getNom(),
-                'dateSoiree'     => $billet->getSoiree()->getDateHeureDebut()->format('Y-m-d'),
+                'nomSoiree'      => $billet->isPass() ? 'Pass 3 jours' : $premiereSoiree->getNom(),
+                'dateSoiree'     => $premiereSoiree->getDateHeureDebut()->format('Y-m-d'),
+                'estPass'        => $billet->isPass(),
                 'categorieTarif' => $billet->getTarif()->getLibelle(),
                 'prixPaye'       => $billet->getPrixPaye(),
             ];
