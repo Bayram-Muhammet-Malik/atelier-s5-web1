@@ -1,4 +1,4 @@
-        <main id="app">
+<main id="app">
             <section class="content-main">
                 <p id="error">Erreur de chargement.</p>
             </section>
@@ -8,9 +8,10 @@
             <section class="content-main">
                 <article class="billet">
                     <p class="medium-title">NRV.net - Nancy Rock Vibration</p>
-                    <h1>{{nomSoiree}}</h1>
-                    <p>Le {{dateSoiree}} à {{heureDebut}}</p>
-                    <p>{{lieu}}</p>
+                    <h1>{{#if estPass}}Pass 3 jours{{else}}Billet{{/if}}</h1>
+                    {{#each soirees}}
+                        <p><strong>{{soiree.nom}}</strong> : le {{soiree.date}} à {{soiree.horaire}}, {{soiree.lieu}}</p>
+                    {{/each}}
 
                     <div class="billet-infos">
                         <p><strong>Acheteur :</strong> {{nomAcheteur}}</p>
