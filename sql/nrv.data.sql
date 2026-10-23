@@ -188,7 +188,7 @@ INSERT INTO billet (id, reference, token, id_commande, id_tarif, prix_paye) VALU
 ('b04d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f', 'NRV-2027-0004', 'def068b37f9e6843e33006070a14df59', '10a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 30.00),
 ('b05e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a', 'NRV-2027-0005', 'f05fe95c24c408e354a9ba4257396efd', '10a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 30.00),
 
-('b06f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b', 'NRV-2027-0006', 'cae00dabed158bde52be071ac7b3d7ca', '20b3c4d5-e6f7-4a8b-9c0d-1e2f3a4b5c6d', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 29.10),
+('b06f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b', 'NRV-2027-0006', 'cae00dabed158bde52be071ac7b3d7ca', '20b3c4d5-e6f7-4a8b-9c0d-1e2f3a4b5c6d', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 87.30),
 
 ('b09c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e', 'NRV-2027-0009', '3df037b61b0f030f2359f3d249a66157', '30c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 30.00),
 ('b10d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f', 'NRV-2027-0010', 'fa95cb9be8ddb298ce93eb00ef152eeb', '30c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e', 'e1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c', 30.00),
