@@ -104,6 +104,10 @@
     color: vars.color(cwhite);
 }
 
+#cart-message{
+    color: green;
+}
+
 /* head pass 3J */
 .head-pass {
     @include mix.flex(row, center);
