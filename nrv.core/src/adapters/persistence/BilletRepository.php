@@ -22,7 +22,7 @@ class BilletRepository implements BilletRepositoryInterface {
     }
 
     public function getBilletByToken(string $token): Billet {
-        $sql = "SELECT b.id, b.reference, b.token, b.prix_paye, b.est_pass,
+        $sql = "SELECT b.id, b.reference, b.token, b.prix_paye,
                        u.id AS id_utilisateur, u.nom, u.prenom, u.email, u.mot_de_passe, u.role,
                        s.id AS id_soiree, s.nom AS nom_soiree, s.thematique,
                        s.date_soiree, s.heure_debut, s.places_restantes,
@@ -31,61 +31,65 @@ class BilletRepository implements BilletRepositoryInterface {
                 FROM billet b
                 JOIN commande c ON c.id = b.id_commande
                 JOIN utilisateur u ON u.id = c.id_utilisateur
-                JOIN soiree s ON s.id = b.id_soiree
+                JOIN billet_soiree bs ON bs.id_billet = b.id
+                JOIN soiree s ON s.id = bs.id_soiree
                 JOIN lieu l ON l.id = s.id_lieu
                 JOIN tarif t ON t.id = b.id_tarif
                 WHERE b.token = :token
                   AND c.statut = 'payee'";
 
-        // Requête préparée : le token vient de l'URL, on ne le colle jamais directement dans le SQL
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['token' => $token]);
-        $ligne = $stmt->fetch();
+        $lignes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($ligne === false) {
+        if (empty($lignes)) {
             throw new DataNotFoundException("Billet introuvable");
         }
 
-        // On reconstruit les entités : le lieu, la soirée qui contient le lieu, le tarif, l'acheteur, puis le billet
-        $lieu = new Lieu(
-            $ligne['id_lieu'],
-            $ligne['nom_lieu'],
-            $ligne['adresse'],
-            (int) $ligne['nb_places']
-        );
-
-        $soiree = new Soiree(
-            $ligne['id_soiree'],
-            $ligne['nom_soiree'],
-            $ligne['thematique'],
-            new DateTime($ligne['date_soiree'] . ' ' . $ligne['heure_debut']),
-            (int) $ligne['places_restantes'],
-            $lieu
-        );
+        $premiereLigne = $lignes[0];
 
         $tarif = new Tarif(
-            $ligne['id_tarif'],
-            $ligne['tarif'],
-            (float) $ligne['prix']
+            $premiereLigne['id_tarif'],
+            $premiereLigne['tarif'],
+            (float) $premiereLigne['prix']
         );
 
         $acheteur = new Utilisateur(
-            $ligne['id_utilisateur'],
-            $ligne['nom'],
-            $ligne['prenom'],
-            $ligne['email'],
-            $ligne['mot_de_passe'],
-            (int) $ligne['role']
+            $premiereLigne['id_utilisateur'],
+            $premiereLigne['nom'],
+            $premiereLigne['prenom'],
+            $premiereLigne['email'],
+            $premiereLigne['mot_de_passe'],
+            (int) $premiereLigne['role']
         );
 
+        // On récupère toutes les soirées associées (1 pour un billet standard, plusieurs pour un pass)
+        $soirees = [];
+        foreach ($lignes as $ligne) {
+            $lieu = new Lieu(
+                $ligne['id_lieu'],
+                $ligne['nom_lieu'],
+                $ligne['adresse'],
+                (int) $ligne['nb_places']
+            );
+
+            $soirees[] = new Soiree(
+                $ligne['id_soiree'],
+                $ligne['nom_soiree'],
+                $ligne['thematique'],
+                new DateTime($ligne['date_soiree'] . ' ' . $ligne['heure_debut']),
+                (int) $ligne['places_restantes'],
+                $lieu
+            );
+        }
+
         return new Billet(
-            $ligne['id'],
-            $ligne['reference'],
-            $ligne['token'],
-            $soiree,
+            $premiereLigne['id'],
+            $premiereLigne['reference'],
+            $premiereLigne['token'],
+            $soirees, // Tableau de soirées (ou adapté selon le constructeur de votre entité Billet)
             $tarif,
-            (float) $ligne['prix_paye'],
-            (bool) $ligne['est_pass'],
+            (float) $premiereLigne['prix_paye'],
             $acheteur
         );
     }

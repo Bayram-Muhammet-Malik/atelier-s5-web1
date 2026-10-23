@@ -8,10 +8,9 @@ class Billet {
         private string $id,
         private string $reference,
         private string $token,
-        private Soiree $soiree,
+        private array $soirees,
         private Tarif $tarif,
         private float $prixPaye,
-        private bool $estPass = false,
         private ?Utilisateur $acheteur = null
     ) {}
 
@@ -27,8 +26,8 @@ class Billet {
         return $this->token;
     }
 
-    public function getSoiree(): Soiree {
-        return $this->soiree;
+    public function getSoirees(): array {
+        return $this->soirees;
     }
 
     public function getTarif(): Tarif {
@@ -40,10 +39,9 @@ class Billet {
     }
 
     public function isPass(): bool {
-        return $this->estPass;
+        return count($this->soirees) > 1;
     }
 
-    // L'utilisateur qui a passé la commande (null si on ne l'a pas chargé)
     public function getAcheteur(): ?Utilisateur {
         return $this->acheteur;
     }

@@ -21,16 +21,36 @@ class GetBilletAction extends AbstractAction {
         $token = $args['token'];
 
         try {
-            $billet = $this->serviceBillet->afficherBillet($token);
+            $billetDTO = $this->serviceBillet->afficherBillet($token);
         } catch (DataNotFoundException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
+        // Construction du tableau de soirées avec leurs liens respectifs gérés ici
+        $soireesFormatees = [];
+        foreach ($billetDTO->soirees as $soireeData) {
+            $soireesFormatees[] = [
+                'soiree' => $soireeData,
+                'links' => [
+                    'soiree' => [
+                        'href' => '/soirees/' . $soireeData['id']
+                    ]
+                ]
+            ];
+        }
+
+        // Assemblage final de la réponse JSON
         $data = [
-            'billet' => $billet,
+            'billet' => [
+                'reference' => $billetDTO->reference,
+                'nomAcheteur' => $billetDTO->nomAcheteur,
+                'soirees' => $soireesFormatees,
+                'categorieTarif' => $billetDTO->categorieTarif,
+                'prixPaye' => $billetDTO->prixPaye,
+                'estPass' => $billetDTO->estPass,
+            ],
             'links' => [
-                'self'   => ['href' => '/billets/' . $token],
-                'soiree' => ['href' => '/soirees/' . $billet->idSoiree],
+                'self' => ['href' => '/billets/' . $token],
             ],
         ];
 
