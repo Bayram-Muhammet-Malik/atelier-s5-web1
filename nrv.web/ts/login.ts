@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const data = await login({email, mdp});
+            const data = await login(email, mdp);
 
             localStorage.setItem("auth_token", data.token);
 
