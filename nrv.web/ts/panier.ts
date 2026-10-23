@@ -1,6 +1,3 @@
-import { renderTemplate } from "./api/view";
-Handlebars.registerHelper("eq", (a: unknown, b: unknown) => a === b);
-
 import {
       getCart,
       getCartTotal,
@@ -183,15 +180,6 @@ function extraireToken(href: string): string {
 function afficherBillets(billets: BilletDTO[]): void {
       if (!ticketsSection) return;
 
-      const templateElement =
-            document.querySelector<HTMLScriptElement>("#tickets-template");
-
-      if (!templateElement) {
-            throw new Error("Le template des billets est introuvable.");
-      }
-
-      const template = Handlebars.compile(templateElement.innerHTML);
-
       ticketsSection.innerHTML = renderTemplate("tickets-template", {
             billets: billets.map(billet => ({
                   ...billet,
@@ -199,6 +187,7 @@ function afficherBillets(billets: BilletDTO[]): void {
                   typeBillet: billet.estPass ? "Pass" : "Billet"
             }))
       });
+
       ticketsSection.scrollIntoView({ behavior: "smooth" });
 }
 

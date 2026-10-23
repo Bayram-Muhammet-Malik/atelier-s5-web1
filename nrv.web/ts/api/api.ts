@@ -2,7 +2,6 @@ import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
 import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 import type { CartItem } from "./cart";
-import Handlebars from "handlebars";
 
 export interface CommandeCreatedResponse {
     commande: {
@@ -278,19 +277,4 @@ export async function fetchJauges(): Promise<Jauge[]> {
 
   const data = await response.json() as JaugesResponse;
   return data.soirees;
-}
-
-export function renderTemplate(
-    templateId: string,
-    data: object
-): string {
-    const element = document.querySelector<HTMLScriptElement>(
-        `#${templateId}`
-    );
-
-    if (!element) {
-        throw new Error(`Template #${templateId} introuvable.`);
-    }
-
-    return Handlebars.compile(element.innerHTML)(data);
 }
