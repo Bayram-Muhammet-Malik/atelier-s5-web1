@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 use Slim\App;
 use nrv\adapters\controllers\actions\GetJaugeAction;
-use nrv\adapters\controllers\actions\GetBilletAction;
+use nrv\adapters\controllers\actions\GetBilletByTokenAction;
+use nrv\adapters\controllers\actions\GetMyBilletsAction;
 use nrv\adapters\controllers\actions\GetSoireeBySpectacleIdAction;
 use nrv\adapters\controllers\actions\GetSpectaclesAction;
 use \nrv\adapters\controllers\actions\GetSoireesAction;
@@ -25,7 +26,9 @@ return function (App $app): App {
         ->add(AdminMiddleware::class)
         ->add(AuthMiddleware::class);
 
-    $app->get('/billets/{token}', GetBilletAction::class);
+    $app->get('/billets', GetMyBilletsAction::class)
+        ->add(AuthMiddleware::class);
+    $app->get('/billets/{token}', GetBilletByTokenAction::class);
     $app->get('/soirees', GetSoireesAction::class);
     $app->get('/soirees/{id}', GetSoireeByIdAction::class);
     $app->get('/spectacles/{id}/soiree', GetSoireeBySpectacleIdAction::class);

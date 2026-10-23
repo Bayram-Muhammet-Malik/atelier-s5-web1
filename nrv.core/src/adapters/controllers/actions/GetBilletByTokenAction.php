@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use nrv\application\exceptions\DataNotFoundException;
 use nrv\application\ports\api\ServiceBilletInterface;
 
-class GetBilletAction extends AbstractAction {
+class GetBilletByTokenAction extends AbstractAction {
 
     private ServiceBilletInterface $serviceBillet;
 
@@ -21,14 +21,13 @@ class GetBilletAction extends AbstractAction {
         $token = $args['token'];
 
         try {
-            $billetDTO = $this->serviceBillet->afficherBillet($token);
+            $billet = $this->serviceBillet->afficherBillet($token);
         } catch (DataNotFoundException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }
 
-        // Construction du tableau de soirées avec leurs liens respectifs gérés ici
         $soireesFormatees = [];
-        foreach ($billetDTO->soirees as $soireeData) {
+        foreach ($billet->soirees as $soireeData) {
             $soireesFormatees[] = [
                 'soiree' => $soireeData,
                 'links' => [
@@ -39,15 +38,14 @@ class GetBilletAction extends AbstractAction {
             ];
         }
 
-        // Assemblage final de la réponse JSON
         $data = [
             'billet' => [
-                'reference' => $billetDTO->reference,
-                'nomAcheteur' => $billetDTO->nomAcheteur,
+                'reference' => $billet->reference,
+                'nomAcheteur' => $billet->nomAcheteur,
                 'soirees' => $soireesFormatees,
-                'categorieTarif' => $billetDTO->categorieTarif,
-                'prixPaye' => $billetDTO->prixPaye,
-                'estPass' => $billetDTO->estPass,
+                'categorieTarif' => $billet->categorieTarif,
+                'prixPaye' => $billet->prixPaye,
+                'estPass' => $billet->estPass,
             ],
             'links' => [
                 'self' => ['href' => '/billets/' . $token],

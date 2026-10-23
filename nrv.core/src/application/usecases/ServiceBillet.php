@@ -20,4 +20,13 @@ class ServiceBillet implements ServiceBilletInterface {
         
         return BilletDTO::fromBillet($billet);
     }
+
+    public function getBilletsByUserId(string $userId): array {
+        $billets = $this->billetRepository->getBilletsByUserId($userId);
+
+        $dtos = [];
+        foreach ($billets as $billet) $dtos[] = BilletDTO::fromBillet($billet);
+
+        return $dtos;
+    }
 }

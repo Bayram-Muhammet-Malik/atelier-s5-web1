@@ -5,9 +5,9 @@
   },
   "scripts": {
     "build": "npm run build:ts && npm run build:sass",
-    "build:ts": "esbuild ts/main.ts ts/soirees.ts ts/spectacles.ts ts/login.ts ts/signup.ts ts/pass.ts ts/admin.ts ts/billets.ts --bundle --outdir=dist",
+    "build:ts": "esbuild ts/index.ts ts/soirees.ts ts/spectacles.ts ts/login.ts ts/signup.ts ts/pass.ts ts/admin.ts ts/billets.ts --bundle --outdir=dist",
     "build:sass": "sass scss/main.scss css/style.css",
-    "watch:ts": "esbuild ts/main.ts ts/soirees.ts ts/spectacles.ts ts/login.ts ts/signup.ts ts/pass.ts ts/admin.ts --bundle --outdir=dist --watch",
+    "watch:ts": "esbuild ts/index.ts ts/soirees.ts ts/spectacles.ts ts/login.ts ts/signup.ts ts/pass.ts ts/admin.ts ts/billets.ts --bundle --outdir=dist --watch",
     "watch:sass": "sass --watch scss/main.scss css/style.css"
   },
   "type": "module",

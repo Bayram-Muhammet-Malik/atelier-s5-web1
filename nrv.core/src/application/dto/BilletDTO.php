@@ -6,8 +6,8 @@ namespace nrv\application\dto;
 use nrv\domain\entities\Billet;
 
 class BilletDTO {
-
     public string $reference;
+    public string $token;
     public string $nomAcheteur;
     public array $soirees;
     public string $categorieTarif;
@@ -16,6 +16,7 @@ class BilletDTO {
 
     public function __construct(
         string $reference,
+        string $token,
         string $nomAcheteur,
         array $soirees,
         string $categorieTarif,
@@ -23,6 +24,7 @@ class BilletDTO {
         bool $estPass
     ) {
         $this->reference = $reference;
+        $this->token = $token;
         $this->nomAcheteur = $nomAcheteur;
         $this->soirees = $soirees;
         $this->categorieTarif = $categorieTarif;
@@ -47,6 +49,7 @@ class BilletDTO {
 
         return new self(
             $billet->getReference(),
+            $billet->getToken(),
             $acheteur !== null ? $acheteur->getPrenom() . ' ' . $acheteur->getNom() : '',
             $soireesData,
             $billet->getTarif()->getLibelle(),

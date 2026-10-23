@@ -14,7 +14,6 @@ use nrv\domain\entities\Tarif;
 use nrv\domain\entities\Utilisateur;
 
 class BilletRepository implements BilletRepositoryInterface {
-
     private PDO $pdo;
 
     public function __construct(PDO $pdo) {
@@ -42,9 +41,7 @@ class BilletRepository implements BilletRepositoryInterface {
         $stmt->execute(['token' => $token]);
         $lignes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($lignes)) {
-            throw new DataNotFoundException("Billet introuvable");
-        }
+        if (empty($lignes)) throw new DataNotFoundException("Billet introuvable");
 
         $premiereLigne = $lignes[0];
 
@@ -63,7 +60,6 @@ class BilletRepository implements BilletRepositoryInterface {
             (int) $premiereLigne['role']
         );
 
-        // On récupère toutes les soirées associées (1 pour un billet standard, plusieurs pour un pass)
         $soirees = [];
         foreach ($lignes as $ligne) {
             $lieu = new Lieu(
@@ -87,10 +83,98 @@ class BilletRepository implements BilletRepositoryInterface {
             $premiereLigne['id'],
             $premiereLigne['reference'],
             $premiereLigne['token'],
-            $soirees, // Tableau de soirées (ou adapté selon le constructeur de votre entité Billet)
+            $soirees,
             $tarif,
             (float) $premiereLigne['prix_paye'],
             $acheteur
         );
+    }
+
+    public function getBilletsByUserId(string $userId): array {
+        $sql = "SELECT b.id, b.reference, b.token, b.prix_paye,
+                       u.id AS id_utilisateur, u.nom, u.prenom, u.email, u.mot_de_passe, u.role,
+                       s.id AS id_soiree, s.nom AS nom_soiree, s.thematique,
+                       s.date_soiree, s.heure_debut, s.places_restantes,
+                       l.id AS id_lieu, l.nom AS nom_lieu, l.adresse, l.nb_places,
+                       t.id AS id_tarif, t.libelle AS tarif, t.prix
+                FROM billet b
+                JOIN commande c ON c.id = b.id_commande
+                JOIN utilisateur u ON u.id = c.id_utilisateur
+                JOIN billet_soiree bs ON bs.id_billet = b.id
+                JOIN soiree s ON s.id = bs.id_soiree
+                JOIN lieu l ON l.id = s.id_lieu
+                JOIN tarif t ON t.id = b.id_tarif
+                WHERE u.id = :userId
+                  And c.statut = 'payee'";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['userId' => $userId]);
+        $lignes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($lignes)) return [];
+
+        $billetsMap = [];
+
+        foreach ($lignes as $ligne) {
+            $billetId = $ligne['id'];
+
+            if (!isset($billetsMap[$billetId])) {
+                $tarif = new Tarif(
+                    $ligne['id_tarif'],
+                    $ligne['tarif'],
+                    (float) $ligne['prix']
+                );
+
+                $acheteur = new Utilisateur(
+                    $ligne['id_utilisateur'],
+                    $ligne['nom'],
+                    $ligne['prenom'],
+                    $ligne['email'],
+                    $ligne['mot_de_passe'],
+                    (int) $ligne['role']
+                );
+
+                $billetsMap[$billetId] = [
+                    'id' => $ligne['id'],
+                    'reference' => $ligne['reference'],
+                    'token' => $ligne['token'],
+                    'prix_paye' => (float) $ligne['prix_paye'],
+                    'tarif' => $tarif,
+                    'acheteur' => $acheteur,
+                    'soirees' => []
+                ];
+            }
+
+            $lieu = new Lieu(
+                $ligne['id_lieu'],
+                $ligne['nom_lieu'],
+                $ligne['adresse'],
+                (int) $ligne['nb_places']
+            );
+
+            $billetsMap[$billetId]['soirees'][] = new Soiree(
+                $ligne['id_soiree'],
+                $ligne['nom_soiree'],
+                $ligne['thematique'],
+                new DateTime($ligne['date_soiree'] . ' ' . $ligne['heure_debut']),
+                (int) $ligne['places_restantes'],
+                $lieu
+            );
+        }
+
+        $billets = [];
+        foreach ($billetsMap as $data) {
+            $billets[] = new Billet(
+                $data['id'],
+                $data['reference'],
+                $data['token'],
+                $data['soirees'],
+                $data['tarif'],
+                $data['prix_paye'],
+                $data['acheteur']
+            );
+        }
+
+        return $billets;
     }
 }
