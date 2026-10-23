@@ -13,12 +13,16 @@ use tests\pest\fakes\FakeSoireeRepository;
 use tests\pest\fakes\FakeTarifRepository;
 use tests\pest\fakes\FakeUserRepository;
 
-// Prépare un service avec 2 utilisateurs et 2 soirées (dont une presque complète : 2 places)
+// Prépare un service avec 2 utilisateurs et 4 soirées (dont une presque complète : 2 places)
 function creerServiceCommande(): ServiceCommande {
     $lieu = new Lieu('lieu-1', "L'Autre Canal", "45 boulevard d'Austrasie", 1200);
     $soirees = [
         'soiree-1' => new Soiree('soiree-1', 'Ouverture du festival', 'Soirée classic rock',
             new DateTime('2027-06-11 20:00:00'), 1196, $lieu),
+        'soiree-2' => new Soiree('soiree-2', 'Nuit du blues', 'Soirée blues',
+            new DateTime('2027-06-12 20:30:00'), 697, $lieu),
+        'soiree-3' => new Soiree('soiree-3', 'Métal Fury', 'Soirée métal',
+            new DateTime('2027-06-13 19:30:00'), 1200, $lieu),
         'soiree-7' => new Soiree('soiree-7', 'Blues & Rock Session', 'Soirée blues rock',
             new DateTime('2027-06-18 20:30:00'), 2, $lieu),
     ];
@@ -144,6 +148,39 @@ it('refuse le paiement quand il n\'y a plus assez de places', function () {
     // La soirée 7 n'a plus que 2 places
     $commande = $service->creerCommande('user-1', [
         ['soireeId' => 'soiree-7', 'tarifType' => 'normal', 'quantite' => 3],
+    ]);
+
+    $service->payerCommande($commande->id, 'user-1', carteValide());
+})->throws(PlacesInsuffisantesException::class);
+
+it('crée un pass 3 jours : un seul billet pour 3 soirées, avec 3 % de remise', function () {
+    $commande = creerServiceCommande()->creerCommande('user-1', [
+        ['pass' => true, 'soireeIds' => ['soiree-1', 'soiree-2', 'soiree-3'], 'tarifType' => 'normal', 'quantite' => 1],
+    ]);
+
+    expect($commande->billets)->toHaveCount(1);
+    expect($commande->billets[0]['estPass'])->toBeTrue();
+    expect($commande->montantTotal)->toBe(87.30); // 3 x 30 € - 3 %
+});
+
+it('accepte aussi le pass 3 jours en tarif réduit', function () {
+    $commande = creerServiceCommande()->creerCommande('user-1', [
+        ['pass' => true, 'soireeIds' => ['soiree-1', 'soiree-2', 'soiree-3'], 'tarifType' => 'reduit', 'quantite' => 1],
+    ]);
+
+    expect($commande->montantTotal)->toBe(58.20); // 3 x 20 € - 3 %
+});
+
+it('refuse un pass qui n\'a pas 3 soirées différentes', function () {
+    creerServiceCommande()->creerCommande('user-1', [
+        ['pass' => true, 'soireeIds' => ['soiree-1', 'soiree-1', 'soiree-2'], 'tarifType' => 'normal', 'quantite' => 1],
+    ]);
+})->throws(ValidationException::class);
+
+it('refuse le paiement d\'un pass si une de ses soirées est complète', function () {
+    $service = creerServiceCommande();
+    $commande = $service->creerCommande('user-1', [
+        ['pass' => true, 'soireeIds' => ['soiree-1', 'soiree-2', 'soiree-7'], 'tarifType' => 'normal', 'quantite' => 3],
     ]);
 
     $service->payerCommande($commande->id, 'user-1', carteValide());
