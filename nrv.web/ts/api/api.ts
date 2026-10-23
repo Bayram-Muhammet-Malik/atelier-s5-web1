@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_PATH } from "./config";
 import { getAuthHeaders } from './auth';
-import { Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
+import { Billet, BilletResponse, Soiree, SoireesResponse, SoireeDetail, SoireeResponse, Spectacle, SpectaclesResponse, Style, StylesResponse, AuthResponse } from './types';
 
 function formatMediaUrl(url: string | null): string | null {
   if (!url) return null;
@@ -94,7 +94,7 @@ export async function fetchMinMaxDates(): Promise<{ min: string; max: string }> 
   if (!response.ok) throw new Error("Impossible de charger les dates min et max");
 
   const data = await response.json();
-  return data.date_limits; 
+  return data.date_limits;
 }
 
 export async function fetchJauges(): Promise<Jauge[]> {
@@ -111,4 +111,14 @@ export async function fetchJauges(): Promise<Jauge[]> {
 
   const data = await response.json() as JaugesResponse;
   return data.soirees;
+}
+
+export async function fetchBillet(token: string): Promise<Billet> {
+  const response = await fetch(`${API_BASE_URL}${API_PATH}billets/${token}`);
+
+  if (!response.ok) throw new Error("Billet introuvable ou pas encore payé.");
+
+  const data = await response.json() as BilletResponse;
+
+  return data.billet;
 }

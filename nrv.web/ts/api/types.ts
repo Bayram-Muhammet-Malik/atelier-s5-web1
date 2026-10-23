@@ -110,3 +110,20 @@ export interface JaugesResponse {
         };
     };
 }
+
+export interface Billet {
+    reference: string;
+    nomAcheteur: string;
+    idSoiree: string;
+    nomSoiree: string;
+    lieu: string;
+    dateSoiree: string;
+    heureDebut: string;
+    categorieTarif: string;
+    prixPaye: number;
+    estPass: boolean;
+}
+
+export interface BilletResponse {
+    billet: Billet;
+}
