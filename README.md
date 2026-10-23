@@ -26,8 +26,10 @@ S5DWM2
         - 1 (Affichage de la liste des spectacles : pour chaque spectacle, on affiche le titre, la date et  l’horaire, une image.)
         - 4 (Filtrage de la liste des spectacles par date.)
         - 5 (Filtrage de la liste des spectacles par style de musique.)
+        - E2 (Modification du panier : nombre de billets.)
     - Frontend
         - 7 (Visualisation de l’état courant du panier, calcul et affichage du montant total.)
+        - E2 (Modification du panier : nombre de billets.)
 - Loïc :
     - Maquettes
     - Backend
@@ -47,6 +49,7 @@ S5DWM2
         - 9 (Paiement de la commande : on simule en transmettant des données correspondant à une carte bancaire : n°, date expiration, code ; le contrôle de disponibilité des places est réalisé à ce moment-là, ainsi que la mise à jour du nombre de places disponibles pour la soirée. C’est à ce moment que la commande est validée.)
     - Frontend
         - 10 (Création des billets qui doivent comporter : nom de l’acheteur, référence, date et horaire de la soirée, catégorie de tarif; les billets doivent être imprimables et peuvent être réalisés en html/css avec @media print.)
+        - 9 (Paiement de la commande : on simule en transmettant des données correspondant à une carte bancaire : n°, date expiration, code ; le contrôle de disponibilité des places est réalisé à ce moment-là, ainsi que la mise à jour du nombre de places disponibles pour la soirée. C’est à ce moment que la commande est validée.)
 - Léo :
     - Maquettes
     - Backend
@@ -64,7 +67,6 @@ S5DWM2
         - Pass 3J
         - (Affichage de la jauge des spectacles: nombre de places vendues pour chaque soirée, recette de la soirée.)
         - 10 (Création des billets qui doivent comporter : nom de l’acheteur, référence, date et horaire de la soirée, catégorie de tarif; les billets doivent être imprimables et peuvent être réalisés en html/css avec @media print.)
-        - 9 (Paiement de la commande : on simule en transmettant des données correspondant à une carte bancaire : n°, date expiration, code ; le contrôle de disponibilité des places est réalisé à ce moment-là, ainsi que la mise à jour du nombre de places disponibles pour la soirée. C’est à ce moment que la commande est validée.)
 
 ### Comptes utilisateurs de démo
 - Mail ``admin@nrv.net``, mdp `AdM1n1&tr4t0R`, rôle : Administrateur
