@@ -23,14 +23,17 @@ class FakeCommandeRepository implements CommandeRepositoryInterface {
     public function enregistrerPaiement(Commande $commande): void {
         $placesParSoiree = [];
         foreach ($commande->getBillets() as $billet) {
-            $idSoiree = $billet->getSoiree()->getId();
-            $placesParSoiree[$idSoiree] = ($placesParSoiree[$idSoiree] ?? 0) + 1;
+            foreach ($billet->getSoirees() as $soiree) {
+                $idSoiree = $soiree->getId();
+                $placesParSoiree[$idSoiree] = ($placesParSoiree[$idSoiree] ?? 0) + 1;
+            }
         }
 
         foreach ($commande->getBillets() as $billet) {
-            $soiree = $billet->getSoiree();
-            if ($soiree->getPlacesRestantes() < $placesParSoiree[$soiree->getId()]) {
-                throw new PlacesInsuffisantesException("Il ne reste plus assez de places.");
+            foreach ($billet->getSoirees() as $soiree) {
+                if ($soiree->getPlacesRestantes() < $placesParSoiree[$soiree->getId()]) {
+                    throw new PlacesInsuffisantesException("Il ne reste plus assez de places.");
+                }
             }
         }
 
